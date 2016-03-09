@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8A52D525-52AF-4134-BB25-2F86AAE07FFE}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>LeetCodeTest</RootNamespace>
+    <ProjectName>CPP</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile />
+      <AdditionalIncludeDirectories>src\include;src\include\Academic;src\include\LC;src\include\Amazon;$(INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Common.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\include\2Sum.h" />
+    <ClInclude Include="src\include\3Sum.h" />
+    <ClInclude Include="src\include\3SumClosest.h" />
+    <ClInclude Include="src\include\Academic\Academic.h" />
+    <ClInclude Include="src\include\Academic\PriorityQueue.h" />
+    <ClInclude Include="src\include\Academic\MergeSort.h" />
+    <ClInclude Include="src\include\Academic\QuickSort.h" />
+    <ClInclude Include="src\include\AddBinary.h" />
+    <ClInclude Include="src\include\AddTwoNumbers.h" />
+    <ClInclude Include="src\include\Amazon\CourseRatings.h" />
+    <ClInclude Include="src\include\Amazon\Yama.h" />
+    <ClInclude Include="src\include\amazon\2SumWithCount.h" />
+    <ClInclude Include="src\include\Amazon\ArrayIntersections.h" />
+    <ClInclude Include="src\include\Amazon\FindDuplicateInMatrix.h" />
+    <ClInclude Include="src\include\Amazon\GreyCodeTest.h" />
+    <ClInclude Include="src\include\Amazon\KClosestPoints.h" />
+    <ClInclude Include="src\include\Amazon\LockerDistance.h" />
+    <ClInclude Include="src\include\Amazon\RemoveVowel.h" />
+    <ClInclude Include="src\include\Amazon\ReverseHalfLinkedList.h" />
+    <ClInclude Include="src\include\Amazon\RightRotation.h" />
+    <ClInclude Include="src\include\Amazon\SocialNetwork.h" />
+    <ClInclude Include="src\include\Amazon\SubtreeTest.h" />
+    <ClInclude Include="src\include\Amazon\WindowSum.h" />
+    <ClInclude Include="src\include\BalancedBinaryTree.h" />
+    <ClInclude Include="src\include\BestTimeToBuyAndSellStock.h" />
+    <ClInclude Include="src\include\BestTimeToBuyAndSellStock3.h" />
+    <ClInclude Include="src\include\BinaryTreeInorderTraversal.h" />
+    <ClInclude Include="src\include\BinaryTreeLevelOrderTraversal.h" />
+    <ClInclude Include="src\include\BinaryTreeLevelOrderTraversal2.h" />
+    <ClInclude Include="src\include\BinaryTreePostorderTraversal.h" />
+    <ClInclude Include="src\include\BinaryTreeZigzagLevelOrderTraversal.h" />
+    <ClInclude Include="src\include\ClimbingStairs.h" />
+    <ClInclude Include="src\include\Common.h" />
+    <ClInclude Include="src\include\ConvertSortedListToBinarySearchTree.h" />
+    <ClInclude Include="src\include\CopyListWithRandomPointer.h" />
+    <ClInclude Include="src\include\DecodeWays.h" />
+    <ClInclude Include="src\include\DistinctSubsequences.h" />
+    <ClInclude Include="src\include\DivideTwoIntegers.h" />
+    <ClInclude Include="src\include\EditDistance.h" />
+    <ClInclude Include="src\include\FileReader.h" />
+    <ClInclude Include="src\include\FirstMissingPositive.h" />
+    <ClInclude Include="src\include\GrayCode.h" />
+    <ClInclude Include="src\include\InsertInterval.h" />
+    <ClInclude Include="src\include\InsertionSortList.h" />
+    <ClInclude Include="src\include\IntegerToRoman.h" />
+    <ClInclude Include="src\include\InterleavingString.h" />
+    <ClInclude Include="src\include\IOTemplate.h" />
+    <ClInclude Include="src\include\LC.h" />
+    <ClInclude Include="src\include\LC\BestTimeToBuyAndSellStock2.h" />
+    <ClInclude Include="src\include\LC\BestTimeToBuyAndSellStock4.h" />
+    <ClInclude Include="src\include\LC\Candy.h" />
+    <ClInclude Include="src\include\LC\FindKClosestElements.h" />
+    <ClInclude Include="src\include\LC\FindMedianFromDataStream.h" />
+    <ClInclude Include="src\include\LC\ReverseLinkedList.h" />
+    <ClInclude Include="src\include\LC\ReverseLinkedList2.h" />
+    <ClInclude Include="src\include\LC\RotateImage.h" />
+    <ClInclude Include="src\include\LC\SearchA2DMatrix2.h" />
+    <ClInclude Include="src\include\LC\SlidingWindowMaximum.h" />
+    <ClInclude Include="src\include\LC\ValidParentheses.h" />
+    <ClInclude Include="src\include\LinkedListCycle.h" />
+    <ClInclude Include="src\include\LinkedListCycle2.h" />
+    <ClInclude Include="src\include\LongestConsecutiveSequence.h" />
+    <ClInclude Include="src\include\LongestIncreasingSubsequence.h" />
+    <ClInclude Include="src\include\LongestPalindromicSubstring.h" />
+    <ClInclude Include="src\include\LongestSubstringWithoutRepeatingCharacters.h" />
+    <ClInclude Include="src\include\MaximumProductSubarray.h" />
+    <ClInclude Include="src\include\MaxPointsOnALine.h" />
+    <ClInclude Include="src\include\MedianOfTwoSortedArrays.h" />
+    <ClInclude Include="src\include\MergeIntervals.h" />
+    <ClInclude Include="src\include\MergeKSortedLists.h" />
+    <ClInclude Include="src\include\MergeSortedArray.h" />
+    <ClInclude Include="src\include\MergeTwoSortedLists.h" />
+    <ClInclude Include="src\include\MultiplyStrings.h" />
+    <ClInclude Include="src\include\PalindromeNumber.h" />
+    <ClInclude Include="src\include\PartitionList.h" />
+    <ClInclude Include="src\include\PlusOne.h" />
+    <ClInclude Include="src\include\Pow.h" />
+    <ClInclude Include="src\include\RemoveDuplicatesFromSortedArray.h" />
+    <ClInclude Include="src\include\RemoveDuplicatesFromSortedArray2.h" />
+    <ClInclude Include="src\include\RemoveDuplicatesFromSortedList.h" />
+    <ClInclude Include="src\include\RemoveDuplicatesFromSortedList2.h" />
+    <ClInclude Include="src\include\RemoveNthNodeFromEndOfList.h" />
+    <ClInclude Include="src\include\ReverseInteger.h" />
+    <ClInclude Include="src\include\SearchA2DMatrix.h" />
+    <ClInclude Include="src\include\SearchForARange.h" />
+    <ClInclude Include="src\include\SearchInRotatedSortedArray.h" />
+    <ClInclude Include="src\include\SearchInRotatedSortedArray2.h" />
+    <ClInclude Include="src\include\SearchInsertPosition.h" />
+    <ClInclude Include="src\include\SingleNumber.h" />
+    <ClInclude Include="src\include\SingleNumber2.h" />
+    <ClInclude Include="src\include\SortColors.h" />
+    <ClInclude Include="src\include\Sqrt.h" />
+    <ClInclude Include="src\include\StringToInteger.h" />
+    <ClInclude Include="src\include\TreePrinter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\double_array_data.txt" />
+    <Text Include="data\int_array_data.txt">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+    </Text>
+    <Text Include="data\string_array_data.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,170 @@
+From 27bee0a19c6938f20e2bdaca7681a33cc5d27b3e Mon Sep 17 00:00:00 2001
+From: YAN Zengjia <zengjia.yan@shell.com>
+Date: Wed, 17 Feb 2016 17:31:41 -0600
+Subject: [PATCH] update locker distance
+
+---
+ LeetCodeTest/src/Main.cpp                        | 23 +++-----
+ LeetCodeTest/src/include/Amazon/LockerDistance.h | 72 +++++++++++++++++-------
+ 2 files changed, 60 insertions(+), 35 deletions(-)
+
+diff --git a/LeetCodeTest/src/Main.cpp b/LeetCodeTest/src/Main.cpp
+index 62d0efd..84197d9 100644
+--- a/LeetCodeTest/src/Main.cpp
++++ b/LeetCodeTest/src/Main.cpp
+@@ -1,5 +1,6 @@
+ // LeetCodeTest.cpp : Defines the entry point for the console application.
+ //
++#include <chrono>
+ #include <Common.h>
+ #include <LC.h>
+ #include <Yama.h>
+@@ -7,21 +8,13 @@
+ 
+ using namespace std;
+ 
+-void Test()
+-{
+-  auto result = CommonUtils::getIntVector();
+-  for (auto& line : result)
+-  {
+-    for (auto num : line)
+-    {
+-      cout << num << " ";
+-    }
+-    cout << endl;
+-  }
+-}
+-
+ int main(int argc, char* argv[])
+ {
+-  Test();
+-	return 0;
++  auto begin = chrono::high_resolution_clock::now();
++
++  // code to benchmark
++  LockerDistance::Test();
++
++  std::cout << "Total time lapsed: " << chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - begin).count() << "ms" << std::endl;
++  return 0;
+ }
+\ No newline at end of file
+diff --git a/LeetCodeTest/src/include/Amazon/LockerDistance.h b/LeetCodeTest/src/include/Amazon/LockerDistance.h
+index de39453..3bd7363 100644
+--- a/LeetCodeTest/src/include/Amazon/LockerDistance.h
++++ b/LeetCodeTest/src/include/Amazon/LockerDistance.h
+@@ -2,7 +2,7 @@
+ /*
+ A city is represented as a 2D grid. Amazon could put lockers on cross points of the grid.
+ 
+-You're given the city scale: int cityLength, int cityWidth. Both range from 1 to 9;
++You're given the city scale: int cityLength, int cityWidth, both range [1 ~ 9];
+ Also given vector<int> lockerXCoordinates, vector<int> lockerYCoordinates to represent the locker locations (coordinate). Coordinates are 1 based, not 0.
+ 
+ For each cross point, find the distance to the nearest locker.
+@@ -22,6 +22,7 @@ For example, if it's a city of 3 * 5; and locker location is [1, 1], you should
+ #include <memory>
+ #include <fstream>
+ #include <queue>
++#include <map>
+ #include <unordered_map>
+ #include <unordered_set>
+ #include <cassert>
+@@ -31,35 +32,65 @@ using namespace std;
+ 
+ namespace LockerDistance
+ {
++  // as given, the maximum possible length/width are blow
++  static const int MAX_I_SIZE = 9;
++  static const int MAX_J_SIZE = 9;
++
++  // direction 0 - i++; 1 - j++; 2 - i--; 3 - j--; others error
++  void move(int& i, int& j, int direction)
++  {
++    if (direction == 0) i++;
++    else if (direction == 1) j++;
++    else if (direction == 2) i--;
++    else if (direction == 3) j--;
++    else assert(false);
++  }
++
+   // should have used depth first method to find the distance for grid[i][j]
+   // but I just forgot how to do it in graph
+-  int findDistance(int blockI, int blockJ, vector<vector<int>>& grid)
++  void findDistance(int blockI, int blockJ, vector<vector<int>>& grid)
+   {
+-    int maxI = grid.size();
+-    int maxJ = grid[0].size();
+-    int minDist = INT_MAX;
+-    for (int i = 0; i < maxI; i++)
++    const int maxI = grid.size();
++    const int maxJ = grid[0].size();
++
++    assert(blockI < maxI);
++    assert(blockJ < maxJ);
++
++    // for breadth first search, save whether a block is visited
++    int visited[MAX_I_SIZE][MAX_J_SIZE] = { 0 };
++
++    queue<pair<int, int>> blockQueue;
++
++    blockQueue.emplace(blockI, blockJ);
++    visited[blockI][blockJ] = 1;
++
++    int distance = 0;
++    // BFS to find the minimum distance
++    while (!blockQueue.empty())
+     {
+-      auto distI = abs(i - blockI);
+-      for (int j = 0; j < maxJ; j++)
++      auto curI = blockQueue.front().first;
++      auto curJ = blockQueue.front().second;
++      blockQueue.pop();
++      if (grid[curI][curJ] == 1)
+       {
+-        // this is a locker
+-        if (grid[i][j] == 0)
+-        {
+-          auto distJ = abs(j - blockJ);
+-          minDist = min(minDist, distI + distJ);
+-        }
++        visited[blockI][blockJ]
+       }
++      
+     }
+-    return minDist;
++
++    // no locker found
++    assert(false);
++
++    return INT_MAX;
+   }
+ 
+   vector<vector<int>> getLockerDistanceGrid(int cityLength, int cityWidth, vector<int> lockerXCoordinates, vector<int> lockerYCoordinates)
+   {
+-    // length along x, width along y direction
+-    vector<vector<int>> grid(cityLength, vector<int>(cityWidth, INT_MAX));
++    // length along x, width along y direction.
++    // the initial value -1 means the distance is not identified; 0 means a locker is right there.
++    vector<vector<int>> grid(cityLength, vector<int>(cityWidth, -1));
+     // xy coord should match
+-    if (lockerXCoordinates.size() != lockerYCoordinates.size()) return grid;
++    assert(lockerXCoordinates.size() == lockerYCoordinates.size());
+     // set locker location, index starting at 0. if lock is located at i,j, then grid[i][j] = 0
+     for (int iLocker = 0; iLocker < (int)lockerXCoordinates.size(); iLocker++)
+     {
+@@ -85,8 +116,9 @@ namespace LockerDistance
+     */
+     int len = 3;
+     int wid = 5;
+-    auto result = getLockerDistanceGrid(len, wid, vector<int> { 1 }, vector<int> { 1 });
+-
++    auto lockerX = vector<int> { 1 };
++    auto lockerY = vector<int> { 1 };
++    auto result = getLockerDistanceGrid(len, wid, lockerX, lockerY);
+ 
+     for (auto j = 0; j < wid; j++)
+     {
+-- 
+1.9.5.msysgit.1
+
