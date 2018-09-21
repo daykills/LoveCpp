@@ -13,43 +13,56 @@ You may assume that the maximum length of S is 1000, and there exists one unique
 
 namespace LongestPalindromicSubstring
 {
-  string Test(const string& s) {
-    int len = s.length();    
-    if (len == 0) return s;
+  string longestPalindromeDp(const string& s) {
+    int n = s.length();
+    if (n < 2) return s;
 
-    // d[i][j] represents whether s[j : i] is palindromic
-    //vector<vector<bool>> d(len, vector<bool>(len, false));
-    bool d[1000][1000] = { false };
-    // diagonal line is always true (single char)
-    for (int i = 0; i < len; i++)
-      d[i][i] = true;
-    
-    // set d[0][0] as initial
-    int maxLen = 1;
-    int leftOfMaxSubstring = 0;
+    // dp[i][j] means whether the substring of i to j is alindromic
+    const int MAX_LEN = 1000;
+    bool dp[MAX_LEN][MAX_LEN] = { false };
 
-    for (int i = 1; i < len; i++)
+    // set diagonal to be true as single letter is always palindromic
+    for (auto i = 0; i < n; i++)
     {
-      for (int j = 0; j < i; j++)
+      dp[i][i] = true;
+    }
+
+    // calculate dp with dynamic programming
+    for (auto j = 0; j < n; j++)
+    {
+      for (auto i = 0; i < j; i++)
       {
-        // when j == i - 1, we only need i and j equal.
-        if (s[i] == s[j] && (j == i - 1 || d[i - 1][j + 1]))
+        // compare two ends, if not identical, dp[i][j] = false
+        if (s[i] != s[j]) continue;
+
+        // when chars of ends are the same and dp[i + 1][j - 1] is true
+        // all dp[x][j - 1] are already calculated in previous loop
+        // in case i = j - 1, we only need to compare two ends.
+        dp[i][j] = (i == j - 1 || dp[i + 1][j - 1]);
+      }
+    }
+    // find the longest substring
+    int start = 0;
+    int maxLength = 1;
+    for (auto j = 0; j < n; j++)
+    {
+      for (auto i = 0; i < j; i++)
+      {
+        if (dp[i][j])
         {
-          d[i][j] = true;
-          int lenTemp = i - j + 1;
-          if (lenTemp > maxLen)
+          if (j - i + 1 > maxLength)
           {
-            leftOfMaxSubstring = j;
-            maxLen = lenTemp;
+            start = i;
+            maxLength = j - i + 1;
           }
         }
       }
     }
-    return s.substr(leftOfMaxSubstring, maxLen);
+    return s.substr(start, maxLength);
   }
 
   // ordinary method: loop each element, start searching for both sides of that element
-  string Test1(const string& s) {
+  string longestPalindrome(const string& s) {
     int len = s.length();
     int maxLen = 0;
     int leftOfMaxSubstring = 0;
@@ -86,7 +99,7 @@ namespace LongestPalindromicSubstring
   static int Test()
   {
     string str("abbaccacccb");
-    auto result = Test(str);
+    auto result = longestPalindrome(str);
     cout << str << ": " << result << endl;
     return 0;
   }

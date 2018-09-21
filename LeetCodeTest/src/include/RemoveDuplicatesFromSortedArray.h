@@ -19,13 +19,14 @@ namespace RemoveDuplicatesFromSortedArray
   static int Test(vector<int>& nums)
   {
     int n = nums.size();
-    if (n <= 1) return n;
-    int index = 0, i = 0;
-    while (i < n)
+    int slow = 0;
+    for (auto fast = 0; fast < n; slow++, fast++)
     {
-      while (i < n - 1 && nums[i] == nums[i + 1]) i++;
-      nums[index++] = nums[i++];
+      // move number from fast to slow
+      nums[slow] = nums[fast];
+      // move fast to the next different number
+      while (fast < n - 1 && nums[fast + 1] == nums[fast]) fast++;
     }
-    return index;
+    return slow;
   }
 }

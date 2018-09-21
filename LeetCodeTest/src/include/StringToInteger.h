@@ -31,57 +31,55 @@ namespace StringToInteger
 {
   int myAtoi(string str)
   {
-    vector<int> nums;
-    bool signDetected = false;
+    long long result = 0;
     int sign = 1;
+    bool signFound = false;
     for (auto ch : str)
     {
       if (ch == ' ')
       {
-        if (nums.empty())
-          continue;
-        else
-          break;
+        if (signFound) return (int)result;
+        else continue;
       }
 
-      // check for sign
-      if (!signDetected && (ch == '-' || ch == '+'))
+      // to detect the sign
+      if (ch == '-' || ch == '+')
       {
-        sign = (ch == '-') ? - 1 : 1;
-        signDetected = true;
+        // duplicate sign detected
+        if (signFound) return 0;
+        sign = (ch == '+') ? 1 : -1;
+        signFound = true;
         continue;
       }
-      
-      int val = ch - '0';
-      if ((val < 0 || val > 9))
-        break;
-      
-      // stop detecting signs after first valid number
-      signDetected = true;
-      nums.emplace_back(val);
-    }
+      // check whether it's a number, or number started with 0
+      int num = (int)(ch - '0');
+      if (num < 0 || num > 9)
+      {
+        return (int)result;
+      }
 
-    // start from high digits
-    int n = nums.size();
-    if (n == 0) return 0;
-    int result = 0;
-    for (int i = 0; i < n; i++)
-    {
-      // check whether it overflows. must check negative first
-      if (sign == - 1 && (INT_MIN + nums[i]) / -10 <= result)
+      // set signFound whenever a number is detected
+      signFound = true;
+
+      // calculate result
+      result = result * 10 + num * sign;
+      // check overflow
+      if (sign == 1 && result > INT_MAX)
+      {
+        return INT_MAX;
+      }
+      else if (sign == -1 && result < INT_MIN)
+      {
         return INT_MIN;
-      else if ((INT_MAX - nums[i]) / 10 <= result)
-        return INT_MAX * sign;
-      else 
-      result = result * 10 + nums[i];
+      }
     }
-    return result * sign;
+    return (int)result;
   }
+
+
   
-  static int Test()
+  static void Test()
   {
-    return myAtoi("-2147483647");
-    //return myAtoi("2147395599");
-    //return myAtoi("010");
+    cout << "result is " << myAtoi("   +0 123") << endl;
   }
 }

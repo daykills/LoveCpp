@@ -15,12 +15,13 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LeetCodeTest</RootNamespace>
     <ProjectName>CPP</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -53,7 +54,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>src\include;src\include\Academic;src\include\LC;src\include\Amazon;$(INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\include;src\include\Academic;src\include\LC;src\include\Amazon;src\include\hackerrank;$(INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,13 +87,18 @@
     <ClInclude Include="src\include\3Sum.h" />
     <ClInclude Include="src\include\3SumClosest.h" />
     <ClInclude Include="src\include\Academic\Academic.h" />
+    <ClInclude Include="src\include\Academic\Graph.h" />
+    <ClInclude Include="src\include\Academic\MonotonicQueue.h" />
     <ClInclude Include="src\include\Academic\PriorityQueue.h" />
     <ClInclude Include="src\include\Academic\MergeSort.h" />
     <ClInclude Include="src\include\Academic\QuickSort.h" />
     <ClInclude Include="src\include\AddBinary.h" />
     <ClInclude Include="src\include\AddTwoNumbers.h" />
     <ClInclude Include="src\include\Amazon\CourseRatings.h" />
-    <ClInclude Include="src\include\Amazon\Yama.h" />
+    <ClInclude Include="src\include\Amazon\CruiseControl.h" />
+    <ClInclude Include="src\include\Amazon\FamilyTreePrint.h" />
+    <ClInclude Include="src\include\Amazon\GoodUser.h" />
+    <ClInclude Include="src\include\Amazon\Real.h" />
     <ClInclude Include="src\include\amazon\2SumWithCount.h" />
     <ClInclude Include="src\include\Amazon\ArrayIntersections.h" />
     <ClInclude Include="src\include\Amazon\FindDuplicateInMatrix.h" />
@@ -124,23 +130,102 @@
     <ClInclude Include="src\include\FileReader.h" />
     <ClInclude Include="src\include\FirstMissingPositive.h" />
     <ClInclude Include="src\include\GrayCode.h" />
+    <ClInclude Include="src\include\Hackerrank\ArithmeticSequence.h" />
+    <ClInclude Include="src\include\Hackerrank\CharPairTransfer.h" />
+    <ClInclude Include="src\include\Hackerrank\Encircular.h" />
+    <ClInclude Include="src\include\Hackerrank\FindSquares.h" />
+    <ClInclude Include="src\include\Hackerrank\StringToNumberIterator.h" />
+    <ClInclude Include="src\include\Hackerrank\LongestBiValueSubSequence.h" />
+    <ClInclude Include="src\include\Hackerrank\PalindromicNumbers.h" />
+    <ClInclude Include="src\include\Hackerrank\PhoneNumberCombination.h" />
+    <ClInclude Include="src\include\Hackerrank\CircleCity.h" />
+    <ClInclude Include="src\include\Hackerrank\PointsWithinRadiusR.h" />
+    <ClInclude Include="src\include\Hackerrank\StudentScores.h" />
+    <ClInclude Include="src\include\Hackerrank\TestOnly.h" />
     <ClInclude Include="src\include\InsertInterval.h" />
     <ClInclude Include="src\include\InsertionSortList.h" />
     <ClInclude Include="src\include\IntegerToRoman.h" />
     <ClInclude Include="src\include\InterleavingString.h" />
     <ClInclude Include="src\include\IOTemplate.h" />
     <ClInclude Include="src\include\LC.h" />
+    <ClInclude Include="src\include\LC\4Sum.h" />
+    <ClInclude Include="src\include\LC\AlienDictionary.h" />
     <ClInclude Include="src\include\LC\BestTimeToBuyAndSellStock2.h" />
     <ClInclude Include="src\include\LC\BestTimeToBuyAndSellStock4.h" />
+    <ClInclude Include="src\include\LC\BestTimeToBuyAndSellStockWithCooldown.h" />
+    <ClInclude Include="src\include\LC\BinaryTreeMaximumPathSum.h" />
     <ClInclude Include="src\include\LC\Candy.h" />
+    <ClInclude Include="src\include\LC\CloneGraph.h" />
+    <ClInclude Include="src\include\LC\CoinChange.h" />
+    <ClInclude Include="src\include\LC\Combinations.h" />
+    <ClInclude Include="src\include\LC\CombinationSum.h" />
+    <ClInclude Include="src\include\LC\CombinationSum2.h" />
+    <ClInclude Include="src\include\LC\ConstructBinaryTreeFromInorderAndPostorderTraversal.h" />
+    <ClInclude Include="src\include\LC\ConvertSortedListToBinarySearchTreeConstructBinaryTreeFromPreorderAndInorderTraversal.h" />
+    <ClInclude Include="src\include\LC\ContainerWithMostWater.h" />
+    <ClInclude Include="src\include\LC\CountAndSay.h" />
     <ClInclude Include="src\include\LC\FindKClosestElements.h" />
     <ClInclude Include="src\include\LC\FindMedianFromDataStream.h" />
+    <ClInclude Include="src\include\LC\GenerateParentheses.h" />
+    <ClInclude Include="src\include\LC\GroupAnagrams.h" />
+    <ClInclude Include="src\include\LC\ImplementTrie.h" />
+    <ClInclude Include="src\include\LC\InvertBinaryTree.h" />
+    <ClInclude Include="src\include\LC\JumpGame.h" />
+    <ClInclude Include="src\include\LC\JumpGame2.h" />
+    <ClInclude Include="src\include\LC\LetterCombinationsOfAPhoneNumber.h" />
+    <ClInclude Include="src\include\LC\LongestCommonPrefix.h" />
+    <ClInclude Include="src\include\LC\LongestCommonSubsequence.h" />
+    <ClInclude Include="src\include\LC\LongestValidParentheses.h" />
+    <ClInclude Include="src\include\LC\LowestCommonAncestorOfABinaryTree.h" />
+    <ClInclude Include="src\include\LC\LsuCache.h" />
+    <ClInclude Include="src\include\LC\MinimumDepthOfBinaryTree.h" />
+    <ClInclude Include="src\include\LC\MinimumWindowSubstring.h" />
+    <ClInclude Include="src\include\LC\MissingNumber.h" />
+    <ClInclude Include="src\include\LC\NQueens.h" />
+    <ClInclude Include="src\include\LC\NQueens2.h" />
+    <ClInclude Include="src\include\LC\PalindromePartitioning.h" />
+    <ClInclude Include="src\include\LC\PalindromePartitioning2.h" />
+    <ClInclude Include="src\include\LC\PathSum2.h" />
+    <ClInclude Include="src\include\LC\Permutations.h" />
+    <ClInclude Include="src\include\LC\Permutations2.h" />
+    <ClInclude Include="src\include\LC\PopulatingNextRightPointersInEachNode2.h" />
+    <ClInclude Include="src\include\LC\RestoreIPAddresses.h" />
     <ClInclude Include="src\include\LC\ReverseLinkedList.h" />
     <ClInclude Include="src\include\LC\ReverseLinkedList2.h" />
+    <ClInclude Include="src\include\LC\ReverseNodesInKGroup.h" />
     <ClInclude Include="src\include\LC\RotateImage.h" />
+    <ClInclude Include="src\include\LC\RotateList.h" />
     <ClInclude Include="src\include\LC\SearchA2DMatrix2.h" />
+    <ClInclude Include="src\include\LC\SerializeAndDeserializeBinaryTree.h" />
+    <ClInclude Include="src\include\LC\SetMatrixZeroes.h" />
+    <ClInclude Include="src\include\LC\SimplifyPath.h" />
     <ClInclude Include="src\include\LC\SlidingWindowMaximum.h" />
+    <ClInclude Include="src\include\LC\SpiralMatrix.h" />
+    <ClInclude Include="src\include\LC\SpiralMatrix2.h" />
+    <ClInclude Include="src\include\LC\Subsets.h" />
+    <ClInclude Include="src\include\LC\Subsets2.h" />
+    <ClInclude Include="src\include\LC\SubstringWithConcatenationOfAllWords.h" />
+    <ClInclude Include="src\include\LC\SudokuSolver.h" />
+    <ClInclude Include="src\include\LC\SumRootToLeafNumbers.h" />
+    <ClInclude Include="src\include\LC\SurroundedRegions.h" />
+    <ClInclude Include="src\include\LC\SwapNodesInPairs.h" />
+    <ClInclude Include="src\include\LC\TextJustification.h" />
+    <ClInclude Include="src\include\LC\TrappingRainWater.h" />
+    <ClInclude Include="src\include\LC\Triangle.h" />
+    <ClInclude Include="src\include\LC\PascalsTriangle2.h" />
+    <ClInclude Include="src\include\LC\UniqueBinarySearchTrees2.h" />
+    <ClInclude Include="src\include\LC\ValidateBinarySearchTree.h" />
+    <ClInclude Include="src\include\LC\ValidNumber.h" />
+    <ClInclude Include="src\include\LC\ValidPalindrome.h" />
     <ClInclude Include="src\include\LC\ValidParentheses.h" />
+    <ClInclude Include="src\include\LC\ValidSudoku.h" />
+    <ClInclude Include="src\include\LC\WildcardMatching.h" />
+    <ClInclude Include="src\include\LC\WordBreak.h" />
+    <ClInclude Include="src\include\LC\WordBreak2.h" />
+    <ClInclude Include="src\include\LC\WordLadder.h" />
+    <ClInclude Include="src\include\LC\WordLadder2.h" />
+    <ClInclude Include="src\include\LC\WordSearch.h" />
+    <ClInclude Include="src\include\LC\ZigZagConversion.h" />
     <ClInclude Include="src\include\LinkedListCycle.h" />
     <ClInclude Include="src\include\LinkedListCycle2.h" />
     <ClInclude Include="src\include\LongestConsecutiveSequence.h" />

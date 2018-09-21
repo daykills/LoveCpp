@@ -22,30 +22,39 @@ namespace MergeIntervals
     Interval(int s, int e) : start(s), end(e) {}
   };
 
-  static bool cmp(const Interval &interval1, const Interval &interval2)
+  static bool CompareInterval(const Interval& int1, const Interval& int2)
   {
-    return interval1.start < interval2.start;
+    return int1.start < int2.start;
   }
-  
-  vector<Interval> merge(vector<Interval>& intervals)
-  {
-    vector<Interval> result;
+
+  vector<Interval> merge(vector<Interval>& intervals) {
     int n = intervals.size();
-    if (n == 0) return move(result);
-    sort(intervals.begin(), intervals.end(), cmp);
-    for (int i = 0; i < n; i++)
+    if (n <= 1) return intervals;
+
+    // sort the intervals by start
+    sort(intervals.begin(), intervals.end(), CompareInterval);
+
+    vector<Interval> result(1, intervals[0]);
+    // go through all intervals, merge one by one
+    for (auto i = 1; i < n; i++)
     {
-      auto start = intervals[i].start;
-      auto end = intervals[i].end;
-      while (i < n - 1 && end >= intervals[i + 1].start)
+      auto& curInt = result.back();
+      auto& mergingInt = intervals[i];
+      // curInt.start is guaranteed to be smaller than mergingInt.start
+      if (mergingInt.start <= curInt.end)
       {
-        if (intervals[i + 1].end > end)
-          end = intervals[i + 1].end;
-        i++;
+        // mergingInt is fully contained
+        if (mergingInt.end <= curInt.end) continue;
+        // extend curInt.end
+        curInt.end = mergingInt.end;
       }
-      result.emplace_back(start, end);
+      else
+      {
+        // no overlapping, add directly
+        result.emplace_back(mergingInt);
+      }
     }
-    return move(result);
+    return result;
   }
 
   int Test(vector<pair<int, int>> intPairs)

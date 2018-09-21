@@ -16,26 +16,46 @@ namespace DivideTwoIntegers
   {
     if (divisor == 0) return INT_MAX;
     if (dividend == 0) return 0;
-    int sign = (dividend > 0) ^ (divisor > 0) ? 1 : -1;
-    auto residual = llabs(dividend);
-    auto dvs = llabs(divisor);
-    int result = 0;
-    // residul = old residul - dvs multiplied by 2's power
-    while (residual >= dvs)
+    // INT_MIN / -1 will be overflow
+    if (dividend == INT_MIN && divisor == -1) return INT_MAX;
+    // find the sign
+    bool negSign = (dividend > 0) ^ (divisor > 0);
+    // convert both numbers to long long to avoid overflow (e.g. INT_MIN -> INT_MAX)
+    long long lDividend = llabs(dividend);
+    long long lDivisor = llabs(divisor);
+
+    long long result = 0;
+    long long remainder = lDividend;
+    while (true)
     {
-      long long tempDvs = dvs;
-      int multiple = 1;
-      // as long as we can do another multiplication
-      while (residual >= (tempDvs << 1))
+      // addtion is 2^N. multiDivisor = addtion * lDivisor.
+      long long addtion = 1;
+      long long multiDivisor = lDivisor;
+      while (multiDivisor < remainder)
       {
-        tempDvs <<= 1;
-        multiple <<= 1;
+        multiDivisor = multiDivisor << 1;
+        addtion = addtion << 1;
       }
-      residual -= tempDvs;
-      result += multiple;
+
+      // lDivisor * addtion == remainder, result is found
+      if (multiDivisor == remainder)
+      {
+        result += addtion;
+        break;
+      }
+      // multiDivisor is too much, then roll back one to make multiDivisor smaller than remainder
+      addtion = addtion >> 1;
+      multiDivisor = multiDivisor >> 1;
+      // in case no addtion is needed, then result is already reached
+      if (addtion == 0) break;
+      // update remainder and result
+      remainder -= multiDivisor;
+      result += addtion;
     }
-    return sign ? result : -result;
+    result = negSign ? -result : result;
+    return (int)result;
   }
+
   int Test()
   {
     int num1 = 2147483647;

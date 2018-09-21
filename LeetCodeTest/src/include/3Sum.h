@@ -19,46 +19,50 @@ A solution set is:
 
 namespace ThreeSum
 {
-  // find all unique triplets in the nums with index >= start_index
-  void search(const vector<int>& sortedNums, int start_index, int target, vector<vector<int>>& result)
+  // from start to end of sorted nums, find two sum for target.
+  void search(const vector<int>& sortedNums, int start, int target, vector<vector<int>>& result)
   {
-    int high = sortedNums.size() - 1;
-    int low = start_index;
-    while (high > low)
+    int n = sortedNums.size();
+    int lo = start, hi = n - 1;
+    while (lo < hi)
     {
-      auto lowVal = sortedNums[low];
-      auto highVal = sortedNums[high];
-      auto sum = lowVal + highVal;
-      if (sum > target)
+      auto sum = sortedNums[lo] + sortedNums[hi] + target;
+      if (sum == 0)
       {
-        while (high > low && highVal == sortedNums[high - 1]) high--;
-        high--;
+        result.emplace_back(vector<int>{ target, sortedNums[lo], sortedNums[hi]});
+        while (lo < hi && sortedNums[lo + 1] == sortedNums[lo]) lo++;
+        while (lo < hi && sortedNums[hi - 1] == sortedNums[hi]) hi--;
+        lo++, hi--;
+      }
+      else if (sum < 0)
+      {
+        while (lo < hi && sortedNums[lo + 1] == sortedNums[lo]) lo++;
+        lo++;
       }
       else
       {
-        if (sum == target)
-        {
-          result.emplace_back(vector<int> { -target, lowVal, highVal });
-        }
-        while (high > low && lowVal == sortedNums[low + 1]) low++;
-        low++;
+        while (lo < hi && sortedNums[hi - 1] == sortedNums[hi]) hi--;
+        hi--;
       }
     }
   }
+
   vector<vector<int>> threeSum(vector<int>& nums)
   {
-    vector<vector<int>> results;
+    vector<vector<int>> result;
     int n = nums.size();
-    if (n == 0) return results;
+    if (n == 0) return result;
+    // sort nums
     sort(nums.begin(), nums.end());
-    // target is set as -num[i].
-    for(auto i = 0; i < n - 2; i++)
+
+    for (auto i = 0; i < n - 2; i++)
     {
-      search(nums, i + 1, -nums[i], results);
-      // find next element that's not equal to nums[i]; nextI cann't be n - 2 or bigger.
-      while (i < n - 2 && nums[i] == nums[i + 1]) i++;
+      // for each i, find the other two numbers
+      search(nums, i + 1, nums[i], result);
+      // move to next different number
+      while (i < n - 2 && nums[i + 1] == nums[i]) i++;
     }
-    return results;
+    return result;
   }
 
   int Test(vector<int>& nums)

@@ -22,7 +22,7 @@ namespace LongestConsecutiveSequence
     return n / base % 10 + 9;
   }
 
-  //按照个位(base=1)、十位(base=10)排序
+  // count sort
   void countSort(vector<int> &num, int base)
   {
     using namespace std;
@@ -77,70 +77,65 @@ namespace LongestConsecutiveSequence
     return std::max(max, len);
   }
   //////////////////////////////////////////////////////////////////
-  int TestOwn2(vector<int>& nums)
+  int longestConsecutive(vector<int>& nums)
   {
-    int result = 0;
-    unordered_set<int> map(nums.begin(), nums.end());
-    while (!map.empty())
-    {
-      // every number that's inspected is no longer needed
-      int num = *map.begin();
-      map.erase(map.begin());
-      int len = 1;
-      // find the down-side length
-      int nextNum = num;
-      while (true)
-      {
-        auto iter = map.find(--nextNum);
-        if (iter == map.end()) break;
-        map.erase(iter);
-        len++;
-      }
-      // find the up-side length
-      nextNum = num;
-      while (true)
-      {
-        auto iter = map.find(++nextNum);
-        if (iter == map.end()) break;
-        map.erase(iter);
-        len++;
-      }
-      result = max(result, len);
-    }
-    return result;
-  }
+	  unordered_set<int> table(nums.begin(), nums.end());
 
-  int TestMyOwnMethod(vector<int>& nums)
+	  int maxLen = 0;
+	  // pick one element, and count its length; remove elements by the way
+	  while (!table.empty())
+	  {
+		  auto cur = *(table.begin());
+		  table.erase(table.begin());
+		  int count = 1;
+
+		  // check the down side
+		  int num = cur - 1;
+		  for (auto it = table.find(num); it != table.end(); )
+		  {
+			  table.erase(it);
+			  it = table.find(--num);
+			  count++;
+		  }
+
+		  // check the upper side
+		  num = cur + 1;
+		  for (auto it = table.find(num); it != table.end();)
+		  {
+			  table.erase(it);
+			  it = table.find(++num);
+			  count++;
+		  }
+		  maxLen = max(maxLen, count);
+	  }
+	  return maxLen;
+  }
+  /////////////////////////////////////////////
+  int longestConsecutive2(vector<int>& nums)
   {
-    if (0 == nums.size()) return 0;
-    // longest length starts with 1
-    int longestLen = 1;
-    // key is the number, value is the length of consecutive up to this number
-    unordered_map<int, int> map;
-    for (auto num : nums)
-    {
-      map.emplace(num, 1);
-    }
-    for (auto num : nums)
-    {
-      // there is number prior to his
-      if (map.find(num - 1) != map.end())
-      {
-        map[num] = map[num - 1] + 1;
-        if (map[num] > longestLen) longestLen = map[num];
-      }
-      else
-      {
-        // update counts of numbers after num
-        int numNext = num;
-        while (map.end() != map.find(numNext + 1))
-        {
-          numNext++;
-          map[numNext] = map[numNext - 1] + 1;
-        }        
-        if (numNext != num && map[numNext] > longestLen) longestLen = map[numNext];
-      }
-    }
-    return longestLen;
+	  // hash table to save number and its index in the continous sub-sequence
+	  unordered_map<int, int> table;
+	  for (auto num : nums)
+	  {
+		  // update the order of num
+		  table[num]++;
+		  // update order of upper nums of num
+		  int upper = num + 1;
+		  while (table.find(upper) != table.end())
+		  {
+			  table[upper++]++;
+		  }
+	  }
+	  int maxLen = 0;
+	  for (auto& pair : table)
+	  {
+		  maxLen = max(maxLen, pair.second);
+	  }
+	  return maxLen;
+  }
+  void Test()
+  {
+	  vector<int> nums{ 1,0,-1 };
+	  cout << "result: " << longestConsecutive(nums) << endl;
   }
 }

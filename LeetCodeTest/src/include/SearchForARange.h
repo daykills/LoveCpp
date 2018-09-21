@@ -55,25 +55,90 @@ namespace SearchForARange
     return (nums[lo] <= target) ? lo : lo - 1;  // return could be -1
   }
 
-  vector<int> searchRange(vector<int>& nums, int target) {
-    vector<int> result(2, -1);
-    auto left = findFirstNotLessThanTarget(nums, target);
-    if (left == nums.size() || nums[left] != target) return result;
-    auto right = findLastNotGreaterThanTarget(nums, target);
-    result[0] = left;
-    result[1] = right;
-    return result;
+  vector<int> searchRange(vector<int>& nums, int target)
+  {
+    int n = nums.size();
+    if (n == 0) return vector<int> {-1, -1};
+
+    // binary search to find the target
+    int lo = 0, hi = n - 1;
+    while (lo < hi)
+    {
+      auto mid = (lo + hi) / 2;
+      if (nums[mid] == target)
+      {
+        lo = hi = mid;
+        break;
+      }
+      else if (nums[mid] < target)
+      {
+        lo = mid + 1;
+      }
+      else
+      {
+        hi = mid;
+      }
+    }
+    int iTarget = (nums[lo] == target) ? lo : -1;
+    if (iTarget == -1) return vector<int> {-1, -1};
+
+    // binary search for high end
+    lo = 0, hi = iTarget;
+    // make sure there is always a target
+    while (lo < hi)
+    {
+      auto mid = (lo + hi) / 2;
+      if (nums[mid] < target && nums[mid + 1] == target)
+      {
+        lo = hi = mid + 1;
+        break;
+      }
+
+      if (nums[mid] < target)
+      {
+        lo = mid + 1;
+      }
+      else // meaning nums[mid] == target
+      {
+        hi = mid;
+      }
+    }
+    int lowEnd = lo;
+
+    // binary search for high end
+    lo = iTarget, hi = n - 1;
+    while (lo < hi)
+    {
+      auto mid = (lo + hi + 1) / 2;
+      if (nums[mid] == target && nums[mid + 1] > target)
+      {
+        lo = hi = mid;
+        break;
+      }
+      else if (nums[mid] > target)
+      {
+        hi = mid - 1;
+      }
+      else // meaning nums[mid] == target
+      {
+        lo = mid;
+      }
+    }
+    int highEnd = lo;
+
+    return vector<int> {lowEnd, highEnd};
   }
 
-  int Test(vector<int>& nums)
+  int Test()
   {
+    vector<int> nums{ 2, 2 };
     for (auto num : nums)
     {
       cout << num << " ";
     }
     cout << endl;
 
-    auto result = searchRange(nums, 0);
+    auto result = searchRange(nums, 1);
     for (auto num : result)
     {
       cout << num << " ";

@@ -78,32 +78,28 @@ namespace BinaryTreeInorderTraversal
   ////////////////////////////////////////////////////////////////////////////////////
   vector<int> inorderTraversalStack(TreeNode* root)
   {
-    vector<int> result;
-    stack<TreeNode*> stack;
-    auto cur = root;
-    while (cur != nullptr || !stack.empty())
-    {
-      // when cur is null, 
-      if (cur == nullptr)
-      {
-        cur = stack.top();
-        stack.pop();
-        result.emplace_back(cur->val);
-        cur = cur->right;
-      }
-      else if (cur->left == nullptr)
-      {
-        result.emplace_back(cur->val);
-        cur = cur->right;
-      }
-      else
-      {
-        stack.emplace(cur);
-        cur = cur->left;
-      }
-    }   
-    
-    return move(result);
+	  vector<int> result;
+	  if (root == nullptr) return result;
+	  stack<TreeNode*> stack;
+	  auto cur = root;
+	  while (!stack.empty() || cur != nullptr)
+	  {
+		  if (cur)
+		  {
+			  stack.push(cur);
+			  cur = cur->left;
+		  }
+		  else
+		  {
+			  if (stack.empty()) break;
+			  auto top = stack.top();
+			  stack.pop();
+
+			  result.emplace_back(top->val);
+			  cur = top->right;
+		  }
+	  }
+	  return result;
   }
   ////////////////////////////////////////////////////////////////////////////////////
   // recursive

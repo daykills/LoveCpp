@@ -26,15 +26,17 @@ namespace PalindromeNumber
     // Palindrome by definition is defined as something that looks exactly identical read from either side. Negative numbers are all non-palindromes because of the negative sign.
     if (x < 0) return false;
     int copyX = x;
-    int reverse = 0;
+    // reverse should be long to avoid overflow
+    long long reverse = 0;
     int base = 10;
     while (x)
     {
       // rever takes the last digist
       reverse = reverse * base + x % base;
+      if (reverse > INT_MAX) return false;
       x = x / base;
     }
-    return (reverse == copyX);
+    return ((int)reverse == copyX);
   }
   static bool Test()
   {

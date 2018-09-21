@@ -18,65 +18,52 @@ A solution set is:
 
 namespace ThreeSumClosest
 {
-  int closestToTarget(vector<int>& sortedNums, int startIndex, int target)
-  {
-    int low = startIndex;
-    int high = sortedNums.size() - 1;
-    int smallestDiff = INT_MAX;
-    while (low < high)
-    {
-      auto diff = sortedNums[low] + sortedNums[high] - target;
-      // perfect match
-      if (diff == 0) return target;
-      // if abs(diff) increases, then last diff is the closest
-      if (abs(diff) < abs(smallestDiff))
-      {
-        smallestDiff = diff;
-      }
-      
-      // go to the direction that makes abs(diff) smaller; skip duplicate numbers
-      if (diff > 0)
-      {
-        while (high > low && sortedNums[high] == sortedNums[high - 1]) high--;
-        high--;
-      }
-      else
-      {
-        while (high > low && sortedNums[low] == sortedNums[low + 1]) low++;
-        low++;
-      }
-    }
-    return smallestDiff + target;
-  }
-
   int threeSumClosest(vector<int>& nums, int target)
   {
     int n = nums.size();
-    if (n == 0) return 0;
-    int diff = INT_MAX;
-    int closest = 0;
+    // sort the array
     sort(nums.begin(), nums.end());
-    for (int i = 0; i < n - 2; i++)
+    // the result, cloest; minimum distance, abs(closest)
+    int closestSum, minDist = INT_MAX;
+    // the first number at i, find the other two (after i) to match (target - nums[i])
+    for (auto i = 0; i < n - 2; i++)
     {
-      int targetTemp = target - nums[i];
-      auto newClosest = closestToTarget(nums, i + 1, targetTemp);
-      auto newDiff = abs(newClosest - targetTemp);
-      if (newDiff < diff)
+      // search for good pair between lo and hi
+      int lo = i + 1, hi = n - 1;
+      while (lo < hi)
       {
-        diff = newDiff;
-        closest = newClosest + nums[i];
+        auto sum = nums[i] + nums[lo] + nums[hi];
+        auto dist = abs(sum - target);
+        // find closer sum, update
+        if (dist < minDist)
+        {
+          closestSum = sum, minDist = dist;
+        }
+        if (sum == target)
+        {
+          return target;
+        }
+        else if (sum > target)
+        {
+          // decrease by move hi to low
+          hi--;
+        }
+        else
+        {
+          // increase by move lo to high
+          lo++;
+        }
       }
-      // skip duplicate numbers
-      while (i < n - 2 && nums[i] == nums[i + 1]) i++;
     }
-    return closest;
+    return closestSum;
   }
 
-  int Test(vector<int>& nums)
+  int Test()
   {
+    vector<int> nums{ 23, 33, 12, 3, 14, 6 };
     for (auto i : nums)
       cout << " " << i;
     cout << endl;
-    return threeSumClosest(nums, -289);
+    return threeSumClosest(nums, 22);
   }
 }

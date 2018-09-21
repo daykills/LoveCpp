@@ -15,22 +15,38 @@ namespace LongestSubstringWithoutRepeatingCharacters
 {
   int lengthOfLongestSubstring(string s)
   {
-    // keep the index of last char occurance
-    unordered_map<char, int> charHist;
-    // start is last repeated char
-    int start = -1;
+    int n = s.length();
+    if (n <= 1) return n;
+
+    // map for a letter's last appearance, key is the letter, value is the last seen position
+    unordered_map<char, int> lastSeen;
+    // max length
     int maxLen = 0;
-    for (int i = 0; i < (int)s.size(); i++)
+    // record the start of the sub string
+    int startSubStr = 0;
+    for (int i = 0; i < n; i++)
     {
-      char ch = s[i];
-      auto iter = charHist.find(ch);
-      if (iter != charHist.end())
+      // check whether the current char is seen
+      auto got = lastSeen.find(s[i]);
+      if (got == lastSeen.end())
       {
-        start = max(start, iter->second);
+        // current char is new, add to the map
+        lastSeen.emplace(s[i], i);
+        continue;
       }
-      charHist[ch] = i;
-      maxLen = max(maxLen, i - start);
+
+      // if the repeated char is after the start of sub string
+      if (got->second >= startSubStr)
+      {
+        maxLen = max(maxLen, i - startSubStr);
+        // move the start index to the next of the repeated letter
+        startSubStr = got->second + 1;
+      }
+      // update the last seen position
+      got->second = i;
     }
+    // check the last sub string
+    maxLen = max(maxLen, n - startSubStr);
     return maxLen;
   }
 

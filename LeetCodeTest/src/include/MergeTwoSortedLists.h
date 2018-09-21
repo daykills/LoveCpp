@@ -16,22 +16,23 @@ namespace MergeTwoSortedLists
   ListNode* mergeTwoLists(ListNode* l1, ListNode* l2)
   {
     ListNode dummy(-1);
-    ListNode* preNode = &dummy;
+    auto head = &dummy;
+    // pick nodes from l1 and l2 one by one
     while (l1 && l2)
     {
       if (l1->val < l2->val)
       {
-        preNode->next = l1;
+        head->next = l1;
         l1 = l1->next;
       }
       else
       {
-        preNode->next = l2;
+        head->next = l2;
         l2 = l2->next;
       }
-      preNode = preNode->next;
+      head = head->next;
     }
-    preNode->next = l1 == nullptr ? l2 : l1;
+    head->next = (l1 == nullptr) ? l2 : l1;
     return dummy.next;
   }
 

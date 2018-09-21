@@ -31,7 +31,7 @@ namespace KClosestPoints
     int index;
   };
   //Overload the < operator.
-  bool operator < (const Distance& d1, const Distance &d2)
+  static bool operator < (const Distance& d1, const Distance &d2)
   {
     return d1.distance < d2.distance;
   }
@@ -39,7 +39,7 @@ namespace KClosestPoints
   vector<Point> kClosestPoints(vector<Point>& points, int k)
   {
     // use a maximum heap to keep the smallest distances
-    priority_queue<Distance> distances;
+	priority_queue<Distance> distances;
     for (int i = 0; i < (int)points.size(); i++)
     {
       int distance = points[i].x * points[i].x + points[i].y * points[i].y;

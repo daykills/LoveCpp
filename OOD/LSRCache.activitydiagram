@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<activityRootModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm10="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm11="http://schemas.microsoft.com/dsltools/UseCaseModel" xmlns:dm12="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" xmlns:dm13="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner" dslVersion="1.0.0.0" Id="07f1122f-e55f-41e6-a30b-26b893335eb6" name="LSRCache" linkedPackageId="06857a8b-0662-4a10-8279-b88803f194e8" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ActivityDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="173c3311-f33e-4268-889c-a6f7441bd889">
+      <profileInstance Id="94b64a2c-98ff-41d7-a595-2cb961f6054d" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="53b87ac9-9140-4abb-9d85-8807d997b341">
+      <profileInstance Id="eeda9e65-c467-4e6a-a56f-3a2ac9905a43" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <activityRootModelHasActivity>
+      <activity Id="fdea0e2a-9514-4ca8-8212-5c61313f2fe6" name="LSRCache" isAbstract="false" isLeaf="false" isActiveClass="false" isReentrant="false" isReadOnly="false" isSingleExecution="false">
+        <elementDefinition Id="0be2abd7-5885-48b6-9543-fb5751e6afe8" />
+        <nodes>
+          <initialNode Id="4145e8bb-0292-4f9c-addf-f4bcd54d4dd7" name="Initial1" isLeaf="false">
+            <elementDefinition Id="e7c68091-977e-41e9-8d06-c46996a5a528" />
+          </initialNode>
+          <activityParameterNode Id="41c2f74f-15e0-48bf-9917-21892d67a16f" name="ActivityParameter1" isLeaf="false" ordering="Unordered" isControlType="false">
+            <elementDefinition Id="751df86b-39c7-494f-a57e-5c40b0729209" />
+            <upperBound>
+              <literalInteger Id="bfed0c34-1ac1-4e96-9843-714659e637d5" name="2147483647" value="2147483647">
+                <elementDefinition Id="e2d3c63b-c90b-4a3c-b1fb-c5af417a8a0d" />
+              </literalInteger>
+            </upperBound>
+          </activityParameterNode>
+        </nodes>
+      </activity>
+    </activityRootModelHasActivity>
+  </packagedElements>
+  <package Id="06857a8b-0662-4a10-8279-b88803f194e8" name="ParkingLot">
+    <elementDefinition Id="5dc6fac5-0552-40e9-a80d-5da5d378ddee" />
+  </package>
+</activityRootModel>

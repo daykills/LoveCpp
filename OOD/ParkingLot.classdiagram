@@ -1,0 +1,534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/UseCaseModel" dslVersion="1.0.0.0" Id="b505bc9d-4023-4ff9-b3e2-380556c949f2" name="ParkingLot" linkedPackageId="9cc6b966-af6a-4359-8874-233bbd054b48" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="c66e7e69-9d4b-444c-b040-dfc0ddaaaf81">
+      <profileInstance Id="9d642ad0-4b96-408c-af9e-b313055624fc" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="888640ac-fac2-463a-a56e-209738e60340">
+      <profileInstance Id="8993c03a-fdb6-404a-baa3-1012232767ec" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="6b9dad6a-8ad2-46f6-8fcf-b604ca436f70" name="Parking Lot" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="c486b09c-cf2d-47ba-8564-ce52812597e7" />
+        <suppliersInternal>
+          <dependency Id="e8953c11-d7fa-4d42-91c7-c2a65ff37e34">
+            <classMoniker Id="a1f61f3f-c34a-463e-b3c5-8d003ddf3c0b" LastKnownName="SubRegionInfo" />
+            <elementDefinition Id="a5dc1404-560f-467a-8d36-0911b3c5c432" />
+          </dependency>
+        </suppliersInternal>
+        <targetEnds>
+          <association Id="3204b641-946c-4ef4-ac76-267343b209e8" isDerived="false" sourceEndRoleName="Parking Lot" targetEndRoleName="SubRegion" isLeaf="false" isAbstract="false">
+            <classMoniker Id="7cac4a02-3e49-4ed1-8456-08388b61e212" LastKnownName="SubRegion" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="903392bd-5660-4fd8-b955-8ff51faaf941" name="Parking Lot" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Composite" isComposite="false" isNavigableOwned="false">
+                  <lowerValueInternal>
+                    <literalString Id="821b7879-24ff-476b-a910-ce10aad52f30" name="Lower" value="1">
+                      <elementDefinition Id="cdf7b184-0d9e-4b43-bffb-51bf03d240c1" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="b76b43ba-76b5-442b-ade6-da81d4291021" name="Upper" value="1">
+                      <elementDefinition Id="a4533264-7dc2-422f-a874-da8fb79437ef" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="c2a6714f-5e90-4928-9f2a-d2d3a9bebf63" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="1cd46c02-9a38-43ea-9d18-7345d224ae4a" name="SubRegion" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="true">
+                  <lowerValueInternal>
+                    <literalString Id="a06f58f3-ae4b-4229-8fee-fceda76788fd" name="Lower" value="n">
+                      <elementDefinition Id="9f3bb0d5-7ed7-4fa2-8ce2-a9ee9e4ef380" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="b21ca16d-7bdd-4c2e-8f3f-b4fc5fa3dfde" name="Upper" value="n">
+                      <elementDefinition Id="ca78e0dc-33c5-4103-8666-cc12e3527354" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="983feff4-2f78-40e8-bed6-5bde4022e150" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="b9ee2e38-43f3-49e7-85e8-d6a82c6a5431" />
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property Id="9a5806c9-c3ad-4932-8aa4-0aeac44d39be" name="subRegions" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="162d39ba-0806-4a1d-afa9-8051a9c5fa9b" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="4972e3a0-abaa-4f81-a28e-1bf919fac71e" LastKnownName="list&lt;SubRegion&gt;" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="dee2590b-2fae-4ab7-8bbf-f1b24637ed76" name="GetSubRegionInfo" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="80ca9565-ccfb-45ae-ada1-e1bd735f024d" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="cecd5550-ecb8-4cce-b82b-c70ccd7a87bd" direction="Return" isUnique="false">
+                  <elementDefinition Id="a50a09c8-bd1e-453d-b4aa-709c5de0d797" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="31a4bc28-e909-4836-a215-855af0da5f15" LastKnownName="list&lt;SubRegionInfo&gt;" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="79b34d26-351e-419a-b6f7-8587e0560114" name="Park" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="2c323000-2369-4e4d-8771-c379cfee6b86" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="3fd3294c-eae6-4175-85b4-de22c9d96064" name="Vehicle vehicle" direction="In" isUnique="false">
+                  <elementDefinition Id="bdcceaa0-f5cc-48fe-8567-290107c833f4" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="5e141a3e-e50c-4320-bf81-07c2f1a2e4fc" name="SubRegion subRegion" direction="In" isUnique="false">
+                  <elementDefinition Id="c0a9ba14-e345-48a8-bd7d-73d56356cf50" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="01b3801c-d794-456e-90dd-b0edfef72a82" direction="Return" isUnique="false">
+                  <elementDefinition Id="3d5af499-18c6-485f-af8d-dcbde8dd0d34" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="4f92a132-c127-474a-a2b4-efda46cf67bf" LastKnownName="bool" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="1dda72e6-c162-4d63-9221-fac6697b77ac" name="Depart" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="30f7b665-06e0-491d-ad49-1c120951c942" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="04e99b92-9fb6-44f0-ba69-89ca8b06e4cc" name="Vehicle vehicle" direction="In" isUnique="false">
+                  <elementDefinition Id="878221aa-b779-4d1c-b682-c803fc5eae7d" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="d397cef6-de77-43c5-a76d-43067a72f548" direction="Return" isUnique="false">
+                  <elementDefinition Id="65e43143-b75f-4b6e-b93b-6d194c8c7ec5" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="4972e3a0-abaa-4f81-a28e-1bf919fac71e" name="list&lt;SubRegion&gt;" isAbstract="false" isLeaf="false" cachedFullName="list&lt;SubRegion&gt;">
+        <elementDefinition Id="c903f0c2-0b95-4b5a-a104-0ef09b05b41a" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="31a4bc28-e909-4836-a215-855af0da5f15" name="list&lt;SubRegionInfo&gt;" isAbstract="false" isLeaf="false" cachedFullName="list&lt;SubRegionInfo&gt;">
+        <elementDefinition Id="ff59e2a8-3cee-40c5-85d8-b59057e9614a" />
+      </referencedType>
+    </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="7cac4a02-3e49-4ed1-8456-08388b61e212" name="SubRegion" isAbstract="true" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="0e3b7a55-3c51-43b5-9792-32142d26f414" />
+        <suppliersInternal>
+          <dependency Id="f413048d-9e5b-4914-bf3d-4f5a94c96008">
+            <classMoniker Id="a1f61f3f-c34a-463e-b3c5-8d003ddf3c0b" LastKnownName="SubRegionInfo" />
+            <elementDefinition Id="abdab3d7-c7f2-48cb-93c0-9decd4e705ce" />
+          </dependency>
+          <dependency Id="24af04d3-686d-4301-8b6a-3bfbcd82126d">
+            <enumerationMoniker Id="d90a4bbc-29be-449f-9c6f-ccea7b50ffe4" LastKnownName="SubRegionType" />
+            <elementDefinition Id="1a304ebb-aeb8-4770-97f9-ab8dcec4dede" />
+          </dependency>
+        </suppliersInternal>
+        <targetEnds>
+          <association Id="224b3adb-84dc-4686-aee2-4e291e8a4db1" isDerived="false" sourceEndRoleName="SubRegion" targetEndRoleName="ParkingSpot" isLeaf="false" isAbstract="false">
+            <classMoniker Id="5f018122-647b-4ebc-9a8b-193044f06140" LastKnownName="ParkingSpot" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="fe079794-9694-4613-8dfb-c5ee5ed7fd5a" name="SubRegion" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Composite" isComposite="false" isNavigableOwned="false">
+                  <lowerValueInternal>
+                    <literalString Id="27c90bf6-38c8-4dbd-8e5a-0670cd0ae2d6" name="Lower" value="1">
+                      <elementDefinition Id="1624acfa-4fcd-46ef-92a1-fa3e9f4d16d9" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="7f34116f-c6cc-4e59-b393-a4c8a82add85" name="Upper" value="1">
+                      <elementDefinition Id="b5347fbc-d2d7-4d44-9aee-1246e38e856c" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="bfe68ff3-3eb4-42cb-9c00-e023ad185f18" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="5914addb-cde6-496e-b2d9-946b2955037c" name="ParkingSpot" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="true">
+                  <lowerValueInternal>
+                    <literalString Id="4ce6780c-aa1f-4fbc-b795-d1cf0dd80e64" name="Lower" value="n">
+                      <elementDefinition Id="736e5412-e0c8-415e-ac5f-24bf15c24332" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="afb114d8-d447-4600-9a4d-94c4e2dbc6f5" name="Upper" value="n">
+                      <elementDefinition Id="a4a3e515-a3e3-403a-8ca6-da61f0624006" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="ef3b881b-59d0-4004-a630-a62dfb0d0e3d" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="cdd464a4-9408-49cc-90e8-6a613274211f" />
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property Id="5b5d9e2d-dd10-4891-be3e-b48a3e72ee5f" name="parkingSpots" visibility="Protected" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="ad2fa69c-06cf-49a8-8643-fd02f7ea6ece" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="debf90c0-3b2b-4d5d-99d2-d249aba9628b" LastKnownName="map&lt;ParkingSpotType, ParkingSpot&gt;" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="87461298-19b4-472f-b940-386cfc1aec7c" name="GetSubRegionInfo" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8a44f9a0-f939-44d4-b5c8-b368d9f51b04" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="7e9f5303-df47-4486-bfd6-b1f9835d4cc8" direction="Return">
+                  <elementDefinition Id="ed30e240-0913-4892-9dfb-e0f2d89206ab" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="ff4fb582-3afc-451c-9352-0cb5d55cd896" LastKnownName="SubRegionInfo" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="6af5972b-d89e-422f-bb8a-926fbeff0431" name="Park" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b6e0b4ca-0ceb-4c08-a399-6b5ca2407acd" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="a6ca1959-52df-490e-8cc3-6a8896c4f816" name="Vehicle vehicle" direction="In" isUnique="false">
+                  <elementDefinition Id="bca2ad6d-b74f-4710-b616-ab555f52026c" />
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="c4751e8e-4bd5-4017-8e2f-245e2a4ca085" direction="Return" isUnique="false">
+                  <elementDefinition Id="c99b31c4-45fa-459a-a8bb-5962a9f0d5de" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="4f92a132-c127-474a-a2b4-efda46cf67bf" LastKnownName="bool" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="f3cea302-a494-4892-92f4-ad8c92151266" name="Depart" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="7cb7c010-8c0f-4659-83c0-d9101ff71405" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="9c86ea1e-6da3-4126-b405-4d46bfbaaf71" name="Vehicle vehicle" direction="In" isUnique="false">
+                  <elementDefinition Id="26adb336-7c39-452c-bf38-714e4ca8de0d" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="debf90c0-3b2b-4d5d-99d2-d249aba9628b" name="map&lt;ParkingSpotType, ParkingSpot&gt;" isAbstract="false" isLeaf="false" cachedFullName="map&lt;ParkingSpotType, ParkingSpot&gt;">
+        <elementDefinition Id="8e17932c-e74c-4ba5-9dcc-375eb56f6d76" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="ff4fb582-3afc-451c-9352-0cb5d55cd896" name="SubRegionInfo" isAbstract="false" isLeaf="false" cachedFullName="SubRegionInfo">
+        <elementDefinition Id="4c5bbcde-d2b2-4d15-8d64-dc73899988e6" />
+      </referencedType>
+    </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="a1f61f3f-c34a-463e-b3c5-8d003ddf3c0b" name="SubRegionInfo" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="bebdc96c-c797-4d51-bc27-724e35442d48" />
+        <suppliersInternal>
+          <dependency Id="41e756ab-c31f-4459-b534-0bb36f31ee01">
+            <enumerationMoniker Id="058f8e73-bbdb-417d-b10e-9534a1a78f41" LastKnownName="ParkingSpotType" />
+            <elementDefinition Id="634f57e1-5d62-4ddc-8f20-6f51d6669db0" />
+          </dependency>
+        </suppliersInternal>
+        <targetEnds>
+          <association Id="d0ff47bf-55ac-4e5c-bd28-0388af912c43" isDerived="false" sourceEndRoleName="SubRegionInfo" targetEndRoleName="SubRegionType" isLeaf="false" isAbstract="false">
+            <enumerationMoniker Id="d90a4bbc-29be-449f-9c6f-ccea7b50ffe4" LastKnownName="SubRegionType" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="a549bdfa-047d-40a1-8105-4b1c4e137c9e" name="SubRegionInfo" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="3a744c3f-b9ec-446e-bd4d-d37bcee8ba34" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="c541f66e-c095-4dae-bd68-6fb66104ae62" name="SubRegionType" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="4861cae3-f4dd-4b01-8964-896ea8eabc05" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="0af6c19c-da99-4d3a-919d-f19e2ea0aa94" />
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property Id="af72a853-b89d-4a97-9bb9-373c1b7b6082" name="Type" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="d9d84f2c-1ee7-4879-b09f-b388e792c957" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f1e72f90-1884-4788-ba27-0fe33cda08b5" LastKnownName="SubRegionType" />
+            </type_NamedElement>
+          </property>
+          <property Id="35de8116-1bf4-46a7-8a8a-13b9e8571c19" name="Size" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="1ff82592-769a-4f9d-a8ca-ad1414449520" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="61548fe0-6b95-4627-b798-1a645b8b3771" LastKnownName="map&lt;ParkingSpotType, int&gt;" />
+            </type_NamedElement>
+          </property>
+          <property Id="54b38a48-5e70-471d-968f-90b0e629fe57" name="FreeSpots" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="cf8d5e10-e4f8-46f1-a744-6af705344762" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="e29904de-dae1-4036-abd0-aa66a0c29670" LastKnownName="map&lt;ParkingSpotType, int&gt;" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="4f92a132-c127-474a-a2b4-efda46cf67bf" name="bool" isAbstract="false" isLeaf="false" cachedFullName="bool">
+        <elementDefinition Id="25bed690-57d2-46cd-b390-29925da6ccee" />
+      </referencedType>
+    </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <enumeration Id="d90a4bbc-29be-449f-9c6f-ccea7b50ffe4" name="SubRegionType" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="a8a9616e-118f-47d6-ba9a-9c69e9190526" />
+        <ownedLiterals>
+          <enumerationLiteral Id="2e45b595-778f-4892-aef6-d4f6c5de88d2" name="Level">
+            <elementDefinition Id="23e8c9fa-a6b1-47af-b983-ff525a8ef157" />
+          </enumerationLiteral>
+          <enumerationLiteral Id="b4f7f085-5165-4fdd-b479-92e1b66e8774" name="Area">
+            <elementDefinition Id="a0f1e8c6-8295-4c15-a5a5-9f5b7f0e1e02" />
+          </enumerationLiteral>
+          <enumerationLiteral Id="42f85a4a-03d7-456a-95b2-99fe0bf81b0f" name="Valet">
+            <elementDefinition Id="8702eef1-3cba-4a00-998a-866ceaa33300" />
+          </enumerationLiteral>
+        </ownedLiterals>
+      </enumeration>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="f1e72f90-1884-4788-ba27-0fe33cda08b5" name="SubRegionType" isAbstract="false" isLeaf="false" cachedFullName="ParkingLot::SubRegionType">
+        <elementDefinition Id="a8a9616e-118f-47d6-ba9a-9c69e9190526" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="61548fe0-6b95-4627-b798-1a645b8b3771" name="map&lt;ParkingSpotType, int&gt;" isAbstract="false" isLeaf="false" cachedFullName="map&lt;ParkingSpotType, int&gt;">
+        <elementDefinition Id="eaa55211-d0d7-42f3-a206-f30c2816b50e" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="e29904de-dae1-4036-abd0-aa66a0c29670" name="map&lt;ParkingSpotType, int&gt;" isAbstract="false" isLeaf="false" cachedFullName="map&lt;ParkingSpotType, int&gt;">
+        <elementDefinition Id="eaa55211-d0d7-42f3-a206-f30c2816b50e" />
+      </referencedType>
+    </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="93890d7d-441f-4956-8943-60a1b6dae0f1" name="Vehicle" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="5a6e0b4a-ecd6-45fc-855b-26a4561ca2b3" />
+        <suppliersInternal>
+          <dependency Id="2789bfc7-873e-4bdd-948a-c32cab670222">
+            <enumerationMoniker Id="058f8e73-bbdb-417d-b10e-9534a1a78f41" LastKnownName="ParkingSpotType" />
+            <elementDefinition Id="8f4d1868-c9df-44fd-9190-d10b29e79ff7" />
+          </dependency>
+        </suppliersInternal>
+        <targetEnds>
+          <association Id="861c107d-b8f1-4811-be03-3388ffcb946a" isDerived="false" sourceEndRoleName="Vehicle" targetEndRoleName="VehicleType" isLeaf="false" isAbstract="false">
+            <enumerationMoniker Id="1ec2a9a9-35a8-42ee-96ec-a102a069de3e" LastKnownName="VehicleType" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="b1ea1e6e-a61a-4448-b0cf-f95c14be361b" name="Vehicle" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="780be5a8-1d42-4572-abfe-10b4fb79d120" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9ca07c41-eab9-44b9-a5b3-609824b185a2" name="VehicleType" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="cf33e683-2ad3-4f80-a11e-b8d2f308478d" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="4848ebc4-4e16-4aa3-bb7b-68abd573c332" />
+          </association>
+          <association Id="ac4ca783-e72a-431d-800b-176c3556b2b0" isDerived="false" sourceEndRoleName="Vehicle" targetEndRoleName="SubRegionInfo" isLeaf="false" isAbstract="false">
+            <classMoniker Id="a1f61f3f-c34a-463e-b3c5-8d003ddf3c0b" LastKnownName="SubRegionInfo" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="fec636e1-94e0-4a6d-95ed-af5b841df893" name="Vehicle" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Shared" isComposite="false" isNavigableOwned="false">
+                  <lowerValueInternal>
+                    <literalString Id="1b5b8a52-c81d-4fae-af59-1c1ab7975e88" name="Lower" value="n">
+                      <elementDefinition Id="34151aa3-fa02-4250-ad24-50e952eaca67" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="e46f60bd-fcee-4bf9-b8b5-d1afb0d9a1a3" name="Upper" value="n">
+                      <elementDefinition Id="971c346d-3dd8-4516-8408-1fae8a7ec541" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="a701ce8e-3a66-47b9-aef0-21eb2b41a43b" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="4b37d75f-092d-49a9-bf46-94a1bea7ecbe" name="SubRegionInfo" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="3d4d9681-ad45-49f2-bf24-827c9008b9e7" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="4bd96c49-d82a-4407-9ded-a5ea0acc0e50" />
+          </association>
+        </targetEnds>
+        <ownedAttributes>
+          <property Id="10148277-1601-4b56-9249-2613a82381d1" name="PlateId" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="77cf307a-8df3-40cb-bf74-2a50b02dc1e8" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="7f201e2c-20bc-454d-8690-94480c69a0f5" LastKnownName="int" />
+            </type_NamedElement>
+          </property>
+          <property Id="a9e9795c-cb1c-4f8e-a63d-9480e1cf3270" name="Type" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="d4a55bd6-d41f-4626-8ccc-30810c459bd7" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="241db818-268e-44ff-a2bd-bf136ce9ae7d" LastKnownName="Type:VehicleType" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributes>
+        <ownedOperations>
+          <operation Id="475f5573-c747-4337-a248-fbefdd0f5e44" name="GetSuitableParkingSpotType" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="52f4bec9-0a63-4c9e-a174-22fdbe1198c4" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="e46bd836-d9cb-47a8-b4ad-d569953279ed" direction="Return">
+                  <elementDefinition Id="ae56f498-a774-4c84-9185-e1328e65758d" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="d86b3ff4-8e98-4715-aaaf-412d0437924d" LastKnownName="list&lt;ParkingSpotType&gt;" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <enumeration Id="1ec2a9a9-35a8-42ee-96ec-a102a069de3e" name="VehicleType" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="80babf2b-7f60-4a1c-8659-93b1de99cbea" />
+        <ownedLiterals>
+          <enumerationLiteral Id="b1a1f4e1-aadd-48c5-b7c7-a9a89ac60e75" name="Car">
+            <elementDefinition Id="09179a32-8def-44a1-9b1a-548b1b54c200" />
+          </enumerationLiteral>
+          <enumerationLiteral Id="4d253abd-c37e-4564-9672-cacb2bfce915" name="Truck">
+            <elementDefinition Id="4491ebb8-c617-4ec9-bd20-d88950ae6921" />
+          </enumerationLiteral>
+          <enumerationLiteral Id="6c2693c1-11f0-4072-9bbc-134feb4af713" name="MotoCycle">
+            <elementDefinition Id="6cae3337-56f1-48cc-a6d6-da700c993a9b" />
+          </enumerationLiteral>
+        </ownedLiterals>
+      </enumeration>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="241db818-268e-44ff-a2bd-bf136ce9ae7d" name="Type:VehicleType" isAbstract="false" isLeaf="false" cachedFullName="Type:VehicleType">
+        <elementDefinition Id="4b3c9377-c415-41b0-829c-6de72658a2fc" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="7f201e2c-20bc-454d-8690-94480c69a0f5" name="int" isAbstract="false" isLeaf="false" cachedFullName="int">
+        <elementDefinition Id="3af14b4a-fc00-4ef5-983e-7636d7936f4a" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="d86b3ff4-8e98-4715-aaaf-412d0437924d" name="list&lt;ParkingSpotType&gt;" isAbstract="false" isLeaf="false" cachedFullName="list&lt;ParkingSpotType&gt;">
+        <elementDefinition Id="fba9ac70-3f2a-4c16-8ad4-fa4d040c844e" />
+      </referencedType>
+    </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <enumeration Id="058f8e73-bbdb-417d-b10e-9534a1a78f41" name="ParkingSpotType" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="9e36e14f-5164-429d-b0b8-3c5e25aeff80" />
+        <ownedLiterals>
+          <enumerationLiteral Id="b2630910-3e11-48dc-aff7-4b6546498570" name="Medium">
+            <elementDefinition Id="0c58d7e1-4818-448f-9f21-ce3b73a74ebc" />
+          </enumerationLiteral>
+          <enumerationLiteral Id="297b6feb-0273-435a-975a-e5a4bbaf2b8b" name="Small">
+            <elementDefinition Id="da484f0f-d8b4-4a76-b89d-54d3b6eeb560" />
+          </enumerationLiteral>
+          <enumerationLiteral Id="f2c8fa98-e4cf-4cc0-bbbc-764979e6142e" name="Large">
+            <elementDefinition Id="2652a501-8d38-46f2-a782-a64e1137f419" />
+          </enumerationLiteral>
+        </ownedLiterals>
+      </enumeration>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="5f018122-647b-4ebc-9a8b-193044f06140" name="ParkingSpot" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="c06606ed-6d30-4032-a5af-944853c1e0e8" />
+        <targetEnds>
+          <association Id="c3b4e6ff-5ba0-4116-822e-f4449763bdc0" isDerived="false" sourceEndRoleName="ParkingSpot" targetEndRoleName="ParkingSpotType" isLeaf="false" isAbstract="false">
+            <enumerationMoniker Id="058f8e73-bbdb-417d-b10e-9534a1a78f41" LastKnownName="ParkingSpotType" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="92b46ec5-8023-44fd-a185-a7e6e698804e" name="ParkingSpot" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="f70d2f98-ca78-4dce-b59c-2e68a2a1abd8" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="66d1bcfa-6ed1-4ff9-ace7-db3c2e881602" name="ParkingSpotType" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="641ff3ec-0c0b-486d-a9e5-9675730532b8" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="c5494f86-f08e-4a8a-9f72-2e7016ebb01d" />
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property Id="27b7d411-4966-4ff6-8b41-75957883982d" name="ParkingSpotType" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="6d345d03-edbf-47f1-9ec7-6cd94960e9fe" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="11a33c77-3b81-436c-ba56-6bf0439f2d59" LastKnownName="ParkingSpotType" />
+            </type_NamedElement>
+          </property>
+          <property Id="d110114e-69d8-40b8-ac67-c6240932a659" name="Vehicle" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="dfc05552-30df-408e-8fa6-4abe1bdc24e9" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="214fca6c-5f2b-42f0-804c-07b552337c49" LastKnownName="Vehicle" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="27e9337c-e871-434c-8d42-0a3c751725d2" name="IsFree" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="a7119c67-867e-4b57-a0da-147a35174539" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="fd39b536-a1f1-494c-b992-0eb9263feabd" direction="Return" isUnique="false">
+                  <elementDefinition Id="3cf3d576-fbc6-4376-a470-93860bd2c70f" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="4f92a132-c127-474a-a2b4-efda46cf67bf" LastKnownName="bool" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="11a33c77-3b81-436c-ba56-6bf0439f2d59" name="ParkingSpotType" isAbstract="false" isLeaf="false" cachedFullName="ParkingLot::ParkingSpotType">
+        <elementDefinition Id="9e36e14f-5164-429d-b0b8-3c5e25aeff80" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="214fca6c-5f2b-42f0-804c-07b552337c49" name="Vehicle" isAbstract="false" isLeaf="false" cachedFullName="ParkingLot::Vehicle">
+        <elementDefinition Id="5a6e0b4a-ecd6-45fc-855b-26a4561ca2b3" />
+      </referencedType>
+    </packageHasNamedElement>
+  </packagedElements>
+  <package Id="9cc6b966-af6a-4359-8874-233bbd054b48" name="ParkingLot">
+    <elementDefinition Id="5dc6fac5-0552-40e9-a80d-5da5d378ddee" />
+  </package>
+</logicalClassDesignerModel>

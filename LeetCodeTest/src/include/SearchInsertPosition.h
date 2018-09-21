@@ -17,30 +17,28 @@ Here are few examples.
 
 namespace SearchInsertPosition
 {
-  int searchInsert(vector<int>& nums, int target)
+  int findFirstNoLessThanTarget(vector<int>& nums, int target)
   {
-    int lo = 0;
-    int hi = nums.size() - 1; // median is calculated as (hi + lo) >> 1, so hi will never be taken as median
+    int n = nums.size();
+    if (n == 0) return 0;
+
+    int lo = 0, hi = n - 1;
+
     while (lo < hi)
     {
-      int n = hi - lo + 1;
-      int iMedian = (hi + lo) >> 1;    // range from lo to hi-1  
-      if (nums[iMedian] < target)
-      {
-        lo = iMedian + 1;
-      }
-      else if (nums[iMedian] > target)
-      {
-        hi = iMedian; // should not "-1"
-      }
-      else
-      {
-        return iMedian;
-      }
+      auto mid = (lo + hi) / 2;
+      if (nums[mid] == target) return mid;
+      if (nums[mid] < target) lo = mid + 1;
+      else hi = mid;
     }
-    // need a final judge for lo
-    return (target <= nums[lo]) ? lo : lo + 1;
+    return nums[lo] >= target ? lo : lo + 1;
   }
+
+  int searchInsert(vector<int>& nums, int target) {
+    // find the first location of the first no less than target number
+    return findFirstNoLessThanTarget(nums, target);
+  }
+
   static int Test(vector<int>& nums)
   {
     for (auto num : nums)

@@ -28,25 +28,28 @@ namespace RemoveNthNodeFromEndOfList
 
   ListNode* removeNthFromEnd(ListNode* head, int n)
   {
-    if (n <= 0 || head == nullptr) return head;
-    auto fast = head;
-    for (int i = 0; i < n; i++)
-    {
-      if (fast == nullptr)
-        return head;
-      fast = fast->next;
-    }
     ListNode dummy(-1);
     dummy.next = head;
-    auto preNode = &dummy;    
-    while (fast)
+    auto fast = &dummy;
+    int steps = 0;
+    while (steps < n && fast->next)
     {
       fast = fast->next;
-      preNode = preNode->next;
+      steps++;
     }
-    auto tmpNode = preNode->next;
-    preNode->next = preNode->next->next;
-    delete tmpNode;
+    // if list is shorter than n nodes
+    if (steps < n) return head;
+    auto slow = &dummy;
+    // move both slow and high
+    while (fast->next)
+    {
+      fast = fast->next;
+      slow = slow->next;
+    }
+    // slow points to the parent of the nth node from end, remove its next node
+    auto tempNode = slow->next;
+    slow->next = slow->next->next;
+    delete tempNode;
     return dummy.next;
   }
 

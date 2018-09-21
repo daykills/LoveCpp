@@ -19,13 +19,13 @@ namespace TwoSum
 {
   struct Node
   {
-    int num;
     int index;
+    int value;
   };
 
-  static bool cmp(const Node &node1, const Node &node2)
+  static bool cmp(const Node& node1, const Node& node2)
   {
-    return node1.num < node2.num;
+    return node1.value < node2.value;
   }
 
   vector<int> twoSum(vector<int>& nums, int target)
@@ -33,30 +33,23 @@ namespace TwoSum
     int n = nums.size();
     if (n == 0) return vector<int>();
 
-    // IMPORTANT: Please reset any member data you declared, as
-    // the same Solution instance will be reused for each test case.
-    vector<Node> list;
-    for (int i = 0; i < n; i++)
+    vector<Node> nodes(n);
+    for (auto i = 0; i < n; i++)
     {
-      Node oneNode;
-      oneNode.num = nums[i];
-      oneNode.index = i + 1;
-      list.push_back(oneNode);
+      nodes[i].index = i;
+      nodes[i].value = nums[i];
     }
 
-    sort(list.begin(), list.end(), cmp);
+    sort(nodes.begin(), nodes.end(), cmp);
 
-    auto low = 0;
-    auto high = n - 1;
-    while (low < high)
+    int high = n - 1, low = 0;
+
+    while (high > low)
     {
-      auto sum = list[low].num + list[high].num;
+      auto sum = nodes[low].value + nodes[high].value;
       if (sum == target)
       {
-        vector<int> result(2);
-        result[0] = list[low].index;
-        result[1] = list[high].index;
-        return result;
+        return vector<int> { nodes[low].index, nodes[high].index };
       }
       else if (sum > target)
       {
@@ -67,6 +60,7 @@ namespace TwoSum
         low++;
       }
     }
+
     return vector<int>();
   }
 

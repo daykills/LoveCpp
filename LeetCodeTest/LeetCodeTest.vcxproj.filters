@@ -46,12 +46,6 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{4b62e32e-96c5-4d71-b1f4-7e93ed4fd524}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Yama">
-      <UniqueIdentifier>{ff9022ce-f90c-49ac-aed2-6caa48a29c5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Yama\HackerRank">
-      <UniqueIdentifier>{dcf04229-ab53-467f-a796-4b99357b8131}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Academic">
       <UniqueIdentifier>{8c6bb2b6-fd7d-4ba0-83b1-2d1112fddd24}</UniqueIdentifier>
     </Filter>
@@ -66,6 +60,30 @@
     </Filter>
     <Filter Include="Header Files\Academic\DataStructure">
       <UniqueIdentifier>{d173fcda-60c3-4a22-92b3-6cdaddfa0ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\LC\Combination">
+      <UniqueIdentifier>{b5fcb0d0-cffd-416b-93cf-0d6c42d0cbb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\LC\Recursive">
+      <UniqueIdentifier>{f894fdf2-f890-44d2-9b61-3b91890787a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Hackerrank">
+      <UniqueIdentifier>{2e13dc94-acd7-41e7-a374-5fa7ffd6b38d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Real">
+      <UniqueIdentifier>{ff9022ce-f90c-49ac-aed2-6caa48a29c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Real\Amazon">
+      <UniqueIdentifier>{2ad801bc-1ddc-45a2-8f03-35c4f658e3ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Real\Airbnb">
+      <UniqueIdentifier>{a19ed768-0dc0-4461-b186-cda69410377e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Real\HackerRank">
+      <UniqueIdentifier>{dcf04229-ab53-467f-a796-4b99357b8131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Real\Yelp">
+      <UniqueIdentifier>{ce0e07ce-64f5-4491-ac8d-98b65f8981d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -260,38 +278,14 @@
     <ClInclude Include="src\include\LC\SearchA2DMatrix2.h">
       <Filter>Header Files\LC\Search</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\amazon\2SumWithCount.h">
-      <Filter>Header Files\Yama</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\Amazon\GreyCodeTest.h">
-      <Filter>Header Files\Yama</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\Amazon\RemoveVowel.h">
-      <Filter>Header Files\Yama</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\Amazon\RightRotation.h">
-      <Filter>Header Files\Yama</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\Amazon\WindowSum.h">
-      <Filter>Header Files\Yama</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\LC\ReverseLinkedList.h">
       <Filter>Header Files\LC\LinkedNodes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\Amazon\ReverseHalfLinkedList.h">
-      <Filter>Header Files\Yama</Filter>
     </ClInclude>
     <ClInclude Include="src\include\LC\ValidParentheses.h">
       <Filter>Header Files\LC\String</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\Amazon\SubtreeTest.h">
-      <Filter>Header Files\Yama</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\LC\ReverseLinkedList2.h">
       <Filter>Header Files\LC\LinkedNodes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\Amazon\KClosestPoints.h">
-      <Filter>Header Files\Yama</Filter>
     </ClInclude>
     <ClInclude Include="src\include\LC\FindKClosestElements.h">
       <Filter>Header Files\LC\LintCode</Filter>
@@ -302,9 +296,6 @@
     <ClInclude Include="src\include\LC\FindMedianFromDataStream.h">
       <Filter>Header Files\LC\Sort</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\Amazon\ArrayIntersections.h">
-      <Filter>Header Files\Yama</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\LongestSubstringWithoutRepeatingCharacters.h">
       <Filter>Header Files\LC\Search</Filter>
     </ClInclude>
@@ -312,13 +303,13 @@
       <Filter>Header Files\LC\Others</Filter>
     </ClInclude>
     <ClInclude Include="src\include\Amazon\FindDuplicateInMatrix.h">
-      <Filter>Header Files\Yama\HackerRank</Filter>
+      <Filter>Header Files\Real\HackerRank</Filter>
     </ClInclude>
     <ClInclude Include="src\include\Amazon\SocialNetwork.h">
-      <Filter>Header Files\Yama\HackerRank</Filter>
+      <Filter>Header Files\Real\HackerRank</Filter>
     </ClInclude>
     <ClInclude Include="src\include\Amazon\LockerDistance.h">
-      <Filter>Header Files\Yama\HackerRank</Filter>
+      <Filter>Header Files\Real\HackerRank</Filter>
     </ClInclude>
     <ClInclude Include="src\include\Common.h">
       <Filter>Header Files\Common</Filter>
@@ -332,11 +323,8 @@
     <ClInclude Include="src\include\TreePrinter.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\Amazon\Yama.h">
-      <Filter>Header Files\Yama</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\Amazon\CourseRatings.h">
-      <Filter>Header Files\Yama\HackerRank</Filter>
+      <Filter>Header Files\Real\HackerRank</Filter>
     </ClInclude>
     <ClInclude Include="src\include\Academic\Academic.h">
       <Filter>Header Files\Academic</Filter>
@@ -358,6 +346,288 @@
     </ClInclude>
     <ClInclude Include="src\include\Academic\PriorityQueue.h">
       <Filter>Header Files\Academic\DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Academic\MonotonicQueue.h">
+      <Filter>Header Files\Academic\DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ZigZagConversion.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ContainerWithMostWater.h">
+      <Filter>Header Files\LC\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\LongestCommonPrefix.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\LetterCombinationsOfAPhoneNumber.h">
+      <Filter>Header Files\LC\Combination</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\4Sum.h">
+      <Filter>Header Files\LC\Sort</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\GenerateParentheses.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SwapNodesInPairs.h">
+      <Filter>Header Files\LC\LinkedNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ReverseNodesInKGroup.h">
+      <Filter>Header Files\LC\LinkedNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\GroupAnagrams.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SubstringWithConcatenationOfAllWords.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\LongestValidParentheses.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ValidSudoku.h">
+      <Filter>Header Files\LC\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SudokuSolver.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\CountAndSay.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\CombinationSum.h">
+      <Filter>Header Files\LC\Combination</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\CombinationSum2.h">
+      <Filter>Header Files\LC\Combination</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\Permutations.h">
+      <Filter>Header Files\LC\Combination</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ValidNumber.h">
+      <Filter>Header Files\LC\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SpiralMatrix.h">
+      <Filter>Header Files\LC\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\JumpGame.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\WordLadder.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ValidPalindrome.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ValidateBinarySearchTree.h">
+      <Filter>Header Files\LC\BinaryTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SetMatrixZeroes.h">
+      <Filter>Header Files\LC\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\PalindromePartitioning.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SumRootToLeafNumbers.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\WordSearch.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\Subsets.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\Combinations.h">
+      <Filter>Header Files\LC\Combination</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\PalindromePartitioning2.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SurroundedRegions.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ConstructBinaryTreeFromInorderAndPostorderTraversal.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\PathSum2.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ConvertSortedListToBinarySearchTreeConstructBinaryTreeFromPreorderAndInorderTraversal.h">
+      <Filter>Header Files\LC\LinkedNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\RestoreIPAddresses.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\BinaryTreeMaximumPathSum.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\PopulatingNextRightPointersInEachNode2.h">
+      <Filter>Header Files\LC\BinaryTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\LsuCache.h">
+      <Filter>Header Files\LC\LinkedNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\JumpGame2.h">
+      <Filter>Header Files\LC\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\WordBreak.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\WordBreak2.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\WordLadder2.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\NQueens2.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\NQueens.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\Subsets2.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\MinimumWindowSubstring.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\RotateList.h">
+      <Filter>Header Files\LC\LinkedNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SpiralMatrix2.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\BestTimeToBuyAndSellStockWithCooldown.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\CloneGraph.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SimplifyPath.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\Triangle.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\UniqueBinarySearchTrees2.h">
+      <Filter>Header Files\LC\BinaryTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\MinimumDepthOfBinaryTree.h">
+      <Filter>Header Files\LC\BinaryTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\PascalsTriangle2.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\ImplementTrie.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\Permutations2.h">
+      <Filter>Header Files\LC\Combination</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\SerializeAndDeserializeBinaryTree.h">
+      <Filter>Header Files\LC\BinaryTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\MissingNumber.h">
+      <Filter>Header Files\LC\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\CoinChange.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\LowestCommonAncestorOfABinaryTree.h">
+      <Filter>Header Files\LC\BinaryTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\InvertBinaryTree.h">
+      <Filter>Header Files\LC\BinaryTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\WildcardMatching.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\TrappingRainWater.h">
+      <Filter>Header Files\LC\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\LongestCommonSubsequence.h">
+      <Filter>Header Files\LC\DynamicProgramming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\TextJustification.h">
+      <Filter>Header Files\LC\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\LC\AlienDictionary.h">
+      <Filter>Header Files\LC\Recursive</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Academic\Graph.h">
+      <Filter>Header Files\Academic\DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\amazon\2SumWithCount.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\ArrayIntersections.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\GreyCodeTest.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\KClosestPoints.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\RemoveVowel.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\ReverseHalfLinkedList.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\RightRotation.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\SubtreeTest.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\WindowSum.h">
+      <Filter>Header Files\Real\Amazon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\Real.h">
+      <Filter>Header Files\Real</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\CruiseControl.h">
+      <Filter>Header Files\Real\Airbnb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\ArithmeticSequence.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\CharPairTransfer.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\CircleCity.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\Encircular.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\FindSquares.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\LongestBiValueSubSequence.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\PalindromicNumbers.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\PhoneNumberCombination.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\PointsWithinRadiusR.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\StudentScores.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\StringToNumberIterator.h">
+      <Filter>Header Files\Real\HackerRank</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Hackerrank\TestOnly.h">
+      <Filter>Header Files\Real</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\GoodUser.h">
+      <Filter>Header Files\Real\Airbnb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Amazon\FamilyTreePrint.h">
+      <Filter>Header Files\Real\Yelp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,46 +12,63 @@ namespace MergeKSortedLists
     ListNode(int x) : val(x), next(nullptr) {}
   };
 
-  ListNode* mergeTwoLists(ListNode* l1, ListNode* l2)
+  // function to merge two sorted lists
+  ListNode* mergeLists(ListNode* list1, ListNode* list2)
   {
+    if (list1 == nullptr) return list2;
+
     ListNode dummy(-1);
     ListNode* preNode = &dummy;
-    while (l1 && l2)
+
+    while (list1 != nullptr && list2 != nullptr)
     {
-      if (l1->val < l2->val)
+      // pick nodes from the smaller ones
+      if (list1->val <= list2->val)
       {
-        preNode->next = l1;
-        l1 = l1->next;
+        preNode->next = list1;
+        list1 = list1->next;
       }
       else
       {
-        preNode->next = l2;
-        l2 = l2->next;
+        preNode->next = list2;
+        list2 = list2->next;
       }
       preNode = preNode->next;
     }
-    preNode->next = l1 == nullptr ? l2 : l1;
+    preNode->next = (list1 == nullptr) ? list2 : list1;
     return dummy.next;
   }
-
   ListNode* mergeKLists(vector<ListNode*>& lists)
   {
+    // when n <= 1
     int n = lists.size();
-
     if (n == 0) return nullptr;
+    if (n == 1) return lists[0];
 
-    for (int step = 1; step < n; step = step << 1)
+    // job queue
+    queue<ListNode*> jobQ;
+    // add all lists to the job queue
+    for (auto list : lists)
     {
-      for (int i = 0; i < n; i += step << 1)
+      jobQ.push(list);
+    }
+    while (true)
+    {
+      auto list1 = jobQ.front();
+      jobQ.pop();
+      auto list2 = jobQ.front();
+      jobQ.pop();
+      auto merged = mergeLists(list1, list2);
+      if (jobQ.empty())
       {
-        if (i + step < n)
-        {
-          lists[i] = mergeTwoLists(lists[i], lists[i + step]);
-        }
+        return merged;
+      }
+      else
+      {
+        // add the job to the back of the queue, so that we don't have one too-long list
+        jobQ.push(merged);
       }
     }
-    
-    return lists[0];
   }
 
   static ListNode* Test()

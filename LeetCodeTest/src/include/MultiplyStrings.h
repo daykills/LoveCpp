@@ -12,12 +12,12 @@ Note: The numbers can be arbitrarily large and are non-negative.
 
 namespace MultiplyStrings
 {
-  string multiply(string num1, string num2)
+  string multiply1(string num1, string num2)
   {
     // make sure num1 is shorter
     const int n1 = num1.length();
     const int n2 = num2.length();
-    if (n1 > n2) return multiply(num2, num1);
+    if (n1 > n2) return multiply1(num2, num1);
     int n = n1 + n2 - 1;
     if (n == 0) return "";
 
@@ -49,8 +49,40 @@ namespace MultiplyStrings
     return resultStr;
   }
 
-  static string Test()
+  // add result with num * 10^offset, result is long enough
+  void add(string& result, int num, int offset)
   {
-    return multiply("9", "9");
+	  int pos = result.length() - offset - 1;
+	  int carry = num;
+	  while (carry != 0)
+	  {
+		  auto sum = (carry + result[pos] - '0');
+		  result[pos] = sum % 10 + '0';
+		  carry = sum / 10;
+		  pos--;
+	  }
+  }
+  string multiply(string num1, string num2)
+  {
+	  int n1 = num1.length();
+	  int n2 = num2.length();
+	  string result(n1 + n2, '0');
+	  for (int i = 0; i < n1; i++)
+	  {
+		  for (int j = 0; j < n2; j++)
+		  {
+			  int num = (num1[i] - '0') * (num2[j] - '0');
+			  int offset = n1 + n2 - 2 - i - j;
+			  add(result, num, offset);
+		  }
+	  }
+	  int pos = 0;
+	  while (pos < n1 + n2 - 1 && result[pos] == '0') pos++;
+	  return result.substr(pos, n1 + n2 - pos);
+  }
+
+  static void Test()
+  {
+    cout << multiply("9", "9");
   }
 }

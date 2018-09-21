@@ -10,56 +10,47 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
 
 namespace DecodeWays
 {
-  static int Test(const string& s)
+  int numDecodings(string s)
   {
-    if (s.empty()) return 0;
-
     int n = s.length();
-    
+    if (n == 0) return n;
+    // if first letter is 0, return 0 as not valid for decoding
     if (s[0] == '0') return 0;
 
-    // ways[i] means with the first i numbers, how many ways of decoding
-    // i started with 2
-    int ways = 1;
-    int waysIMinus2 = 1;    // i - 2
-    int waysIMinus1 = 1; // i - 1
-    for (int i = 2; i <= n; i++)
+    // 1 way to decode when there are first 0 letters
+    int prePre = 1;
+    // for first one letter, 1 way to decode
+    int pre = 1;
+    // dynamic programming, use previous two results
+    // ways[i] = ways[i - 1] + ways[i - 2] if last two letters are smaller than 26
+    int result = pre;
+    for (auto i = 2; i <= n; i++)
     {
-      const auto& lastNumber = s[i - 2];
-      const auto& curNumber = s[i - 1];
+      // now handle ith number. i = 2 ~ n.
 
-      if (lastNumber == '1')
-      {
-        if (curNumber == '0')
-        {
-          ways = waysIMinus2;
-        }
-        else
-        {
-          ways = waysIMinus1 + waysIMinus2;
-        }
-      }
-      else if (lastNumber == '2')
-      {
-        if (curNumber == '0')
-        {
-          ways = waysIMinus2;
-        }
-        else if (curNumber <= '6')
-        {
-          ways = waysIMinus1 + waysIMinus2;
-        }
-      }
-      else
-      {
-        // invalid cases like 100, 30
-        if (curNumber == '0')
-          return 0;
-        ways = waysIMinus1;
-      }
-      waysIMinus2 = waysIMinus1;
-      waysIMinus1 = ways;      
+      // check whether last two letters are smaller than 26
+      int preNum = s[i - 2] - '0';
+      int curNum = s[i - 1] - '0';
+      int number = preNum * 10 + curNum;
+
+      // if it's '00', cannot decode
+      if (number == 0) return 0;
+
+      // ways[i] is at least ways[i - 1] if curNum is not 0
+      result = (curNum == 0) ? 0 : pre;
+
+      // ways[i] = ways[i - 1] + ways[i - 2] if number is valid (10 ~ 26)
+      if (number <= 26 && number >= 10) result += prePre;
+
+      prePre = pre;
+      pre = result;
     }
-    return ways;
+    return result;
+  }
+
+  static int Test()
+  {
+    string input("12034");
+    cout << input << " can have: " << numDecodings(input) << endl;
   }
 }

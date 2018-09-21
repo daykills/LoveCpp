@@ -40,6 +40,8 @@ namespace ReverseInteger
   }
   static int Test()
   {
-    return reverse(1534236469);
+    //2147483647
+
+    return reverse(-1);
   }
 }

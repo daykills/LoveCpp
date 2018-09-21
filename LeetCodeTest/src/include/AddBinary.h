@@ -15,62 +15,23 @@ Return "100".
 
 namespace AddBinary
 {
-  string addBinary(string a, string b)
-  {
-    auto& longNum = a.size() > b.size() ? a : b;
-    auto& shortNum = a.size() > b.size() ? b : a;
-    int m = longNum.size();
-    int n = shortNum.size();
+	string addBinary(string a, string b)
+	{
+		string& longStr = a.length() > b.length() ? a : b;
+		string& shortStr = a.length() <= b.length() ? a : b;
+		int lenLong = longStr.length();
+		int lenShort = shortStr.length();
+		int carry = 0;
+		for (auto i = 0; i < lenLong; i++)
+		{
+			int sum = longStr[lenLong - i - 1] - '0' + carry;
+			if (i < lenShort) sum += shortStr[lenShort - i - 1] - '0';
 
-    int plus = 0;
-    for (int i = m - 1; i >= 0; i--)
-    {
-      auto result = plus;
-      if (longNum[i] == '1') result++;
-      auto iShort = i + n - m;
-      if (iShort >= 0 && shortNum[iShort] == '1') result++;
-      longNum[i] = (result % 2) ? '1' : '0';
-      plus = result / 2;
-    }
-    if (plus)
-      longNum.insert(longNum.begin(), '1');
-
-    return longNum;
-  }
-
-  string intToBin(unsigned int num)
-  {
-    string bin;
-    while (num)
-    {
-      bin = ((num & 0x1) ? "1" : "0") + bin;
-      num = num >> 1;
-    }
-    return bin;
-  }
-
-  unsigned int stringToInt(string& str)
-  {
-    unsigned int num = 0;
-    for (auto ch : str)
-    {
-      num = num << 1;
-      if (ch == '1')
-        num = num | 0x1;
-    }
-    return num;
-  }
-
-  // failed to handle big numbers
-  string addBinary1(string a, string b)
-  {
-    return intToBin(stringToInt(a) + stringToInt(b));
-  }
-  static string Test()
-  {
-    string num1 = "11";
-    string num2 = "1";
-    cout << num1 << " + " << num2 << endl;
-    return addBinary(num1, num2);
-  }
+			longStr[lenLong - i - 1] = sum % 2 + '0';
+			carry = sum / 2;
+		}
+		if (carry == 1)
+			return "1" + longStr;
+		return longStr;
+	}
 }

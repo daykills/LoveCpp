@@ -17,29 +17,25 @@ namespace ValidParentheses
   {
     unordered_map<char, char> mapping
     {
-      { '{', '}' }, { '[', ']' }, { '(', ')' }
+      { '(', ')' },
+      { '[', ']' },
+      { '{', '}' }
     };
-
-    if (s.empty()) return true;
-    // must have even number of chars
-    if (s.length() & 0x1) return false;
-    stack<char> stack;
+    std::stack<char> history;
     for (auto ch : s)
     {
-      // char is one of the keys "{(["
-      if (mapping.find(ch) != mapping.end())
+      auto it = mapping.find(ch);
+      // if ch is a key
+      if (it != mapping.end())
       {
-        stack.emplace(ch);
+        history.push(ch);
         continue;
       }
-      // ch must be one of "}])", then stack top must be key
-      if (stack.empty()) return false;
-      
-      auto iter = mapping.find(stack.top());
-      if (iter->second != ch) return false;
-      stack.pop();
+      // ch must match with stack top
+      if (history.empty() || mapping[history.top()] != ch) return false;
+      history.pop();
     }
-    return stack.empty();
+    return history.empty();
   }
 
   int Test()

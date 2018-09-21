@@ -40,7 +40,7 @@ namespace ConvertSortedListToBinarySearchTree
     return result;
   }
 
-  TreeNode *sortedListToBST(ListNode *head)
+  TreeNode *sortedListToBSTOld(ListNode *head)
   {
     if (head == nullptr) return nullptr;
     
@@ -90,9 +90,56 @@ namespace ConvertSortedListToBinarySearchTree
 
     return sortedArrayToBST(sortedArray, 0, n - 1);
   }
+  ///////////////////////////////////////////////////////////////////////////////////////
+  // list is always like this: [left-sub-tree, mid-node, right-sub-tree]
+  // keep the head rolling. build the tree from bottom
+  // use start and end to mark the position - whether we are in a sub-tree
+  TreeNode* buildTree(ListNode*& head, int start, int end)
+  {
+	  // at the end of list, or at the end of this sub-tree; list still needs to roll
+	  if (head == nullptr || start > end) return nullptr;
+
+	  if (start == end)
+	  {
+		  auto root = new TreeNode(head->val);
+		  head = head->next;
+		  return root;
+	  }
+	  // empth root
+	  auto root = new TreeNode(-1);
+	  int mid = (start + end) / 2;
+	  // get left sub-tree
+	  root->left = buildTree(head, start, mid - 1);
+	  // fill root value
+	  root->val = head->val;
+	  head = head->next;
+	  // get right sub-tree
+	  root->right = buildTree(head, mid + 1, end);
+	  return root;
+  }
+  TreeNode* sortedListToBST(ListNode* head)
+  {
+	  int n = 0;
+	  auto headTemp = head;
+	  while (head)
+	  {
+		  head = head->next;
+		  n++;
+	  }
+	  return buildTree(headTemp, 0, n - 1);
+  }
 
   static int Test()
   {
-    return 0;
+	  int n = 2;
+	  vector<ListNode*> nodes(2);
+	  for (int i = 0; i < 2; i++)
+	  {
+		  nodes[n - i - 1] = new ListNode(n - i - 1);
+		  if (i != 0) nodes[n - i - 1]->next = nodes[n - i];
+	  }
+
+	  sortedListToBST(nodes[0]);
+	  return 0;
   }
 }

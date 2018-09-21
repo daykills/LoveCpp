@@ -59,17 +59,17 @@ namespace InsertInterval
     return result;
   }
 
-  static bool cmp(const Interval &interval1, const Interval &interval2)
-  {
-    return interval1.start < interval2.start;
-  }
+  //static bool cmp(const Interval &interval1, const Interval &interval2)
+  //{
+  //  return interval1.start < interval2.start;
+  //}
 
   vector<Interval> merge(vector<Interval>& intervals)
   {
     vector<Interval> result;
     int n = intervals.size();
     if (n == 0) return move(result);
-    sort(intervals.begin(), intervals.end(), cmp);
+	sort(intervals.begin(), intervals.end(), [](const Interval& int1, const Interval& int2) { return int1.start < int2.start; });
     for (int i = 0; i < n; i++)
     {
       auto start = intervals[i].start;
