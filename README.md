@@ -1,1 +1,1 @@
-# LoveCpp
+# Go Away
