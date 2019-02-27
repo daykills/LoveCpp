@@ -14,6 +14,7 @@ Data format is as below:
 #include <memory>
 #include <cassert>
 #include <algorithm>
+#include <unordered_set>
 #include "Common.h"
 
 namespace FindDuplicateInMatrix
