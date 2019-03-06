@@ -42,6 +42,6 @@ namespace ReverseInteger
   {
     //2147483647
 
-    return reverse(-1);
+    return reverse(2147483647);
   }
 }

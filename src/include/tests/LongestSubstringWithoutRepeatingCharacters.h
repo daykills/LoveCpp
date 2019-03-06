@@ -1,10 +1,23 @@
 /*
-3. Longest Substring Without Repeating Characters My Submissions Question
-Total Accepted: 126029 Total Submissions: 587741 Difficulty: Medium
-Given a string, find the length of the longest substring without repeating characters.
-For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3.
-For "bbbbb" the longest substring is "b", with the length of 1.
-*/
+ Given a string, find the length of the longest substring without repeating characters.
+ 
+ Example 1:
+ 
+ Input: "abcabcbb"
+ Output: 3
+ Explanation: The answer is "abc", with the length of 3.
+ Example 2:
+ 
+ Input: "bbbbb"
+ Output: 1
+ Explanation: The answer is "b", with the length of 1.
+ Example 3:
+ 
+ Input: "pwwkew"
+ Output: 3
+ Explanation: The answer is "wke", with the length of 3.
+ Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+ */
 
 #include <iostream>
 #include <algorithm>
@@ -13,46 +26,37 @@ For "bbbbb" the longest substring is "b", with the length of 1.
 
 namespace LongestSubstringWithoutRepeatingCharacters
 {
-  int lengthOfLongestSubstring(string s)
-  {
-    int n = s.length();
-    if (n <= 1) return n;
-
-    // map for a letter's last appearance, key is the letter, value is the last seen position
-    unordered_map<char, int> lastSeen;
-    // max length
-    int maxLen = 0;
-    // record the start of the sub string
-    int startSubStr = 0;
-    for (int i = 0; i < n; i++)
-    {
-      // check whether the current char is seen
-      auto got = lastSeen.find(s[i]);
-      if (got == lastSeen.end())
-      {
-        // current char is new, add to the map
-        lastSeen.emplace(s[i], i);
-        continue;
-      }
-
-      // if the repeated char is after the start of sub string
-      if (got->second >= startSubStr)
-      {
-        maxLen = max(maxLen, i - startSubStr);
-        // move the start index to the next of the repeated letter
-        startSubStr = got->second + 1;
-      }
-      // update the last seen position
-      got->second = i;
+    int lengthOfLongestSubstring(string s) {
+        auto len = s.size();
+        if (len < 2)
+            return len;
+        auto start = 0;
+        auto maxLen = 1;
+        // store the last seen position
+        std::unordered_map<char, int> lastPosMap { { s[0], 0 } };
+        for (auto end = start + 1; end < len; end++) {
+            auto it = lastPosMap.find(s[end]);
+            if (it == lastPosMap.end()) {
+                lastPosMap[s[end]] = end;
+                continue;
+            }
+            // if a char is seen before, update maxLen
+            auto lastPos = it->second;
+            // only consider if lastPos is within the substr
+            if (lastPos >= start) {
+                maxLen = max(maxLen, end - start);
+                start = lastPos + 1;
+            }
+            lastPosMap[s[end]] = end;
+        }
+        maxLen = max(maxLen, (int)len - start);
+        return maxLen;
     }
-    // check the last sub string
-    maxLen = max(maxLen, n - startSubStr);
-    return maxLen;
-  }
-
-  void Test()
-  {
-    string s("abba");
-    cout << s << ": " << lengthOfLongestSubstring(s) << endl;
-  }
+    
+    void Test()
+    {
+        string s("abcbca");
+        cout << s << ": " << lengthOfLongestSubstring(s) << endl;
+    }
 }
+
