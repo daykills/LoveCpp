@@ -1,24 +1,24 @@
 /*
-127. Word Ladder My Submissions Question
-Total Accepted: 69547 Total Submissions: 355132 Difficulty: Medium
-Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
-
-Only one letter can be changed at a time
-Each intermediate word must exist in the word list
-For example,
-
-Given:
-beginWord = "hit"
-endWord = "cog"
-wordList = ["hot","dot","dog","lot","log"]
-As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
-return its length 5.
-
-Note:
-Return 0 if there is no such transformation sequence.
-All words have the same length.
-All words contain only lowercase alphabetic characters.
-*/
+ 127. Word Ladder My Submissions Question
+ Total Accepted: 69547 Total Submissions: 355132 Difficulty: Medium
+ Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
+ 
+ Only one letter can be changed at a time
+ Each intermediate word must exist in the word list
+ For example,
+ 
+ Given:
+ beginWord = "hit"
+ endWord = "cog"
+ wordList = ["hot","dot","dog","lot","log"]
+ As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+ return its length 5.
+ 
+ Note:
+ Return 0 if there is no such transformation sequence.
+ All words have the same length.
+ All words contain only lowercase alphabetic characters.
+ */
 
 #include <iostream>
 #include <queue>
@@ -30,101 +30,113 @@ All words contain only lowercase alphabetic characters.
 
 namespace WordLadder
 {
-  void updateToVisit(string& word, int newDepth, unordered_set<string>& wordList, queue<pair<string, int>>& toVisit)
-  {
-    // change character one by one to see whether there is a match in wordList
-    int wordLen = word.length();
-    for (auto i = 0; i < wordLen; i++)
-    {
-      const auto curChar = word[i];
-      for (auto j = 0; j < 26; j++)
-      {
-        word[i] = j + 'a';
-        if (wordList.find(word) != wordList.end())
-        {
-          toVisit.emplace(word, newDepth);
-          // if others can reach word X earlier, we don't need to reach X again as the other path is shorter.
-          wordList.erase(word);
+    // create a connection map
+    std::vector<std::vector<int>> createConnectionMap(vector<string>& wordList) {
+        std::vector<std::vector<int>> connection(wordList.size());
+        for (auto i = 0; i < wordList.size(); i++) {
+            auto& map = connection[i];
+            auto& str1 = wordList[i];
+            for (auto j = i + 1; j < wordList.size(); j++) {
+                auto& str2 = wordList[j];
+                auto diff = 0;
+                for (auto len = 0; len < str1.size(); len++) {
+                    if (str1[len] != str2[len])
+                        diff++;
+                    if (diff > 1)
+                        break;
+                }
+                if (diff == 1) {
+                    // add two-way connection
+                    map.emplace_back(j);
+                    connection[j].emplace_back(i);
+                }
+            }
         }
-      }
-      // set the word back to original
-      word[i] = curChar;
+        return connection;
     }
-  }
-
-  int ladderLength2(string beginWord, string endWord, unordered_set<string>& wordList)
-  {
-    // add endWord, remove beginWord from wordList
-    wordList.erase(beginWord);
-    wordList.emplace(endWord);
-
-    // bfs search for shortest path
-    // queue to keep the word to be visited and its depth
-    queue<pair<string, int>> toVisit;
-    toVisit.emplace(beginWord, 1);
-    while (!toVisit.empty())
-    {
-      auto curWord = toVisit.front().first;
-      auto depth = toVisit.front().second;
-      if (curWord == endWord) return depth;
-      toVisit.pop();
-      updateToVisit(curWord, depth + 1, wordList, toVisit);
+    
+    // build a graph before bfs
+    int ladderLengthGraph(string beginWord, string endWord, vector<string>& wordList) {
+        auto itForEnd = std::find(wordList.begin(), wordList.end(), endWord);
+        auto iEnd = static_cast<int>(std::distance(wordList.begin(), itForEnd));
+        if (iEnd >= wordList.size())
+            return 0;
+        wordList.emplace_back(beginWord);
+        auto connectionMap = createConnectionMap(wordList);
+        auto iBegin = wordList.size() - 1;
+        // add the begin word into visited
+        std::unordered_set<int> visited;
+        // queue to store the words to be visited, and its depth
+        std::queue<std::pair<int, int>> q;
+        q.emplace(iBegin, 0);
+        while (!q.empty()) {
+            // visit top
+            auto iTop = q.front().first;
+            visited.emplace(iTop);
+            auto depth = q.front().second;
+            if (iTop == iEnd)
+                return depth;
+            q.pop();
+            // add unvisited children to queue
+            for (auto child : connectionMap[iTop]) {
+                if (visited.find(child) == visited.end()) {
+                    q.emplace(child, depth + 1);
+                }
+            }
+        }
+        return 0;
     }
-    // failed to find a path
-    return 0;
-  }
-
-  /////////////////////////////////////////
-  void addNextWords(string word, unordered_set<string>& wordDict, queue<string>& toVisit)
-  {
-	  // remove word since if we have reached word here, at the shortest distance, no point to revisit word any more
-	  wordDict.erase(word);
-	  for (int p = 0; p < (int)word.length(); p++) {
-		  char letter = word[p];
-		  for (int k = 0; k < 26; k++) {
-			  word[p] = 'a' + k;
-			  if (wordDict.find(word) != wordDict.end()) {
-				  toVisit.push(word);
-				  wordDict.erase(word);
-			  }
-		  }
-		  word[p] = letter;
-	  }
-  }
-
-  int ladderLength(string beginWord, string endWord, unordered_set<string>& wordDict) {
-	  wordDict.insert(endWord);
-	  queue<string> toVisit;
-	  addNextWords(beginWord, wordDict, toVisit);
-	  int dist = 2;
-	  while (!toVisit.empty()) {
-		  int num = toVisit.size();
-		  for (int i = 0; i < num; i++) {
-			  string word = toVisit.front();
-			  toVisit.pop();
-			  if (word == endWord) return dist;
-			  addNextWords(word, wordDict, toVisit);
-		  }
-		  dist++;
-	  }
-	  return 0;
-  }
-  /////////////////////////////////////////
-
-  void Test()
-  {
-    string beginWord("hit"), endWord("cog");
-    unordered_set<string> wordList
-    {
-      "hot", "dot", "dog", "lot", "log"
-    };
-
-    cout << "begin: " << beginWord << " end: " << endWord << endl;
-    cout << "words: ";
-    for (auto& word : wordList)
-    {
-      cout << word << " ";
+    
+    /////////////////////////////////////////
+    // create a bi-directional graph and the bfs
+    // but actually, we will never use one node twice (never repeat the same node in your path)
+    // so we don't have to create a graph. we can get the neighbors on the fly
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        if (std::find(wordList.begin(), wordList.end(), endWord) == wordList.end())
+            return 0;
+        // no need to check visited as we can remove the node from all after enqueue
+        std::unordered_set<std::string> all(wordList.begin(), wordList.end());
+        // queue to store the words to be visited, and its depth
+        std::queue<std::pair<std::string, int>> q;
+        q.emplace(beginWord, 1);
+        while (!q.empty()) {
+            // visit top
+            auto top = q.front().first;
+            auto depth = q.front().second;
+            if (top == endWord)
+                return depth;
+            q.pop();
+            for (auto len = 0; len < top.size(); len++) {
+                auto tmp = top[len];
+                for (auto c = 'a'; c <= 'z'; c++) {
+                    if (c == tmp)
+                        continue;
+                    top[len] = c;
+                    if (all.find(top) != all.end()) {
+                        q.emplace(top, depth + 1);
+                        all.erase(top);
+                    }
+                }
+                top[len] = tmp;
+            }
+        }
+        return 0;
     }
-    cout << endl << "result: " << ladderLength(beginWord, endWord, wordList) << endl;
-  }
+    void Test()
+    {
+        string beginWord("hit"), endWord("cog");
+        vector<string> wordList
+        {
+            "hot", "dot", "dog", "lot", "log", "cog"
+        };
+        
+        cout << "begin: " << beginWord << " end: " << endWord << endl;
+        cout << "words: ";
+        for (auto& word : wordList)
+        {
+            cout << word << " ";
+        }
+        cout << endl << "result: " << ladderLength(beginWord, endWord, wordList) << endl;
+    }
 }
+
