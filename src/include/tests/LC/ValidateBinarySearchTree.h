@@ -34,27 +34,21 @@
 
 namespace ValidateBinarySearchTree
 {
-    // Definition for a binary tree node.
-    struct TreeNode {
-        int val;
-        TreeNode* left;
-        TreeNode* right;
-        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-    };
-    
     //////////////////////////////////////////////////////
     // check if a tree is valid; also return max and min
     bool isValidTree(const TreeNode& root, int& max, int& min) {
         int leftMax = root.val;
         int leftMin = root.val;
-        bool leftTreeValid = root.left ? isValidTree(*root.left, leftMax, leftMin) : true;
-        if (!leftTreeValid || (root.left && leftMax >= root.val))
-            return false;
+        if (root.left) {
+            if (!isValidTree(*root.left, leftMax, leftMin) || leftMax >= root.val)
+                return false;
+        }
         int rightMin = root.val;
         int rightMax = root.val;
-        bool rightTreeValid = root.right ? isValidTree(*root.right, rightMax, rightMin) : true;
-        if (!rightTreeValid || (root.right && rightMin <= root.val))
-            return false;
+        if (root.right) {
+            if (!isValidTree(*root.right, rightMax, rightMin) || rightMin <= root.val)
+                return false;
+        }
         max = rightMax;
         min = leftMin;
         return true;
@@ -68,23 +62,13 @@ namespace ValidateBinarySearchTree
     ////////////////////////////////////////////////////////////////////////////////////
     bool Test()
     {
-        //[1, 2, 2, 3, 3, null, null, 4, 4]
-        int NULLINT = 32132;
-        vector<int> values{ 2, 1, 3 };
-        const int n = values.size();
-        vector<TreeNode*> nodes(n);
-        for (int i = 0; i < n; i++)
-        {
-            nodes[i] = (values[i] == NULLINT) ? nullptr : new TreeNode(values[i]);
-        }
-        nodes[0]->left = nodes[1];
-        nodes[0]->right = nodes[2];
+        auto tree = makeTree({ 5, 1, 4, null, null, 3, 6 });
         
         TreePrinter::Printer<TreeNode> treePrinter;
-        treePrinter.printPretty(nodes[0], 1, 1, cout);
+        treePrinter.printPretty(tree, 1, 1, cout);
         
-        
-        cout << "result: " << isValidBST(nodes[0]) << endl;
+        cout << "result: " << isValidBST(tree) << endl;
+        delTree(tree);
         return true;
     }
 }
