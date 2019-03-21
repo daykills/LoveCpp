@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		380F6E67222683BC00EDE402 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 380F6E64222683BC00EDE402 /* Common.cpp */; };
 		382A033E2154CC0300EE1F2B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 382A033D2154CC0300EE1F2B /* main.cpp */; };
 		382A033F2154D2B400EE1F2B /* Resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = 38138EFC2154C214007CDE05 /* Resources */; };
+		388EF28A2243F0F60014FF1E /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 388EF27E2243F0F60014FF1E /* Common.cpp */; };
+		388EF28D2243F0F60014FF1E /* binary-tree-visualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 388EF2852243F0F60014FF1E /* binary-tree-visualizer.cpp */; };
+		388EF28E2243F0F60014FF1E /* linked-list-visualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 388EF2872243F0F60014FF1E /* linked-list-visualizer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,12 +29,17 @@
 
 /* Begin PBXFileReference section */
 		380F6E62222683A500EDE402 /* tests */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tests; path = include/tests; sourceTree = "<group>"; };
-		380F6E64222683BC00EDE402 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
-		380F6E65222683BC00EDE402 /* TreePrinter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreePrinter.h; sourceTree = "<group>"; };
-		380F6E66222683BC00EDE402 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		38138EF02154C148007CDE05 /* zi */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = zi; sourceTree = BUILT_PRODUCTS_DIR; };
 		38138EFC2154C214007CDE05 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 		382A033D2154CC0300EE1F2B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		388EF27E2243F0F60014FF1E /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
+		388EF27F2243F0F60014FF1E /* TreePrinter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreePrinter.h; sourceTree = "<group>"; };
+		388EF2822243F0F60014FF1E /* binarytree.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = binarytree.hpp; sourceTree = "<group>"; };
+		388EF2832243F0F60014FF1E /* demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = demo.cpp; sourceTree = "<group>"; };
+		388EF2852243F0F60014FF1E /* binary-tree-visualizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "binary-tree-visualizer.cpp"; sourceTree = "<group>"; };
+		388EF2872243F0F60014FF1E /* linked-list-visualizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "linked-list-visualizer.cpp"; sourceTree = "<group>"; };
+		388EF2882243F0F60014FF1E /* linkedlist.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linkedlist.hpp; sourceTree = "<group>"; };
+		388EF2892243F0F60014FF1E /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,17 +53,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		380F6E63222683BC00EDE402 /* utils */ = {
-			isa = PBXGroup;
-			children = (
-				380F6E64222683BC00EDE402 /* Common.cpp */,
-				380F6E65222683BC00EDE402 /* TreePrinter.h */,
-				380F6E66222683BC00EDE402 /* Common.h */,
-			);
-			name = utils;
-			path = include/utils;
-			sourceTree = "<group>";
-		};
 		38138EE72154C148007CDE05 = {
 			isa = PBXGroup;
 			children = (
@@ -77,11 +73,34 @@
 		382A027F2154CB7900EE1F2B /* src */ = {
 			isa = PBXGroup;
 			children = (
-				380F6E63222683BC00EDE402 /* utils */,
+				388EF27D2243F0F60014FF1E /* utils */,
 				380F6E62222683A500EDE402 /* tests */,
 				382A033D2154CC0300EE1F2B /* main.cpp */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		388EF27D2243F0F60014FF1E /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				388EF2892243F0F60014FF1E /* Common.h */,
+				388EF27E2243F0F60014FF1E /* Common.cpp */,
+				388EF27F2243F0F60014FF1E /* TreePrinter.h */,
+				388EF2802243F0F60014FF1E /* binary-tree-visualizer */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		388EF2802243F0F60014FF1E /* binary-tree-visualizer */ = {
+			isa = PBXGroup;
+			children = (
+				388EF2882243F0F60014FF1E /* linkedlist.hpp */,
+				388EF2872243F0F60014FF1E /* linked-list-visualizer.cpp */,
+				388EF2822243F0F60014FF1E /* binarytree.hpp */,
+				388EF2852243F0F60014FF1E /* binary-tree-visualizer.cpp */,
+				388EF2832243F0F60014FF1E /* demo.cpp */,
+			);
+			path = "binary-tree-visualizer";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,7 +159,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				380F6E67222683BC00EDE402 /* Common.cpp in Sources */,
+				388EF28D2243F0F60014FF1E /* binary-tree-visualizer.cpp in Sources */,
+				388EF28A2243F0F60014FF1E /* Common.cpp in Sources */,
+				388EF28E2243F0F60014FF1E /* linked-list-visualizer.cpp in Sources */,
 				382A033E2154CC0300EE1F2B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +273,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
+					$SRCROOT/src,
 					$SRCROOT/src/include,
 					$SRCROOT/src/include/utils,
 					$SRCROOT/src/include/tests,
@@ -264,6 +286,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
+					$SRCROOT/src,
 					$SRCROOT/src/include,
 					$SRCROOT/src/include/utils,
 					$SRCROOT/src/include/tests,

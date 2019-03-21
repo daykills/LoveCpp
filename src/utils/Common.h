@@ -11,6 +11,8 @@
 #include <stack>
 
 #include "TreePrinter.h"
+#include "binarytree.hpp"
+#include "linkedlist.hpp"
 
 using namespace std;
 
