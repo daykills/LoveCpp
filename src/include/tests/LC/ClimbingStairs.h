@@ -10,23 +10,20 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
 
 namespace ClimbingStairs
 {
-  static int Test(int n)
-  {
-    if (n == 0) return 0;
-    else if (n == 1) return 1;
-    else if (n == 2) return 2;
-    
-    // ways_i is how many ways when we have i steps in total
-    // start with i = 3
-    int waysIMinus1 = 2;  
-    int waysIMinus2 = 1;
-    int totalWays = 3;
-    for (int i = 3; i <= n; i++)
+    static int Test(int n)
     {
-      totalWays = waysIMinus1 + waysIMinus2;
-      waysIMinus2 = waysIMinus1;
-      waysIMinus1 = totalWays;
+        int climbStairs(int n) {
+            if (n <= 2) return n;
+            // for how many distinct ways to reach i - 1, i - 2
+            // init for step 1 and 2
+            auto iMinus2 = 1;
+            auto iMinus1 = 2;
+            for (auto i = 2; i < n; i++) {
+                auto steps = iMinus2 + iMinus1;
+                iMinus2 = iMinus1;
+                iMinus1 = steps;
+            }
+            return iMinus1;
+        }
     }
-    return totalWays;
-  }
 }
