@@ -10,25 +10,23 @@ Implement pow(x, n).
 
 namespace Pow
 {
-  double myPow(double x, int n)
-  {
-    if (x == 0) return 0;
-    if (n == 0 || x == 1.0) return 1;
-    if (x == -1.0) return (n & 0x1) ? -1 : 1;
-    if (n < 0) return 1 / myPow(x, -n);    
-    
-    double half = myPow(x, n >> 1);
-    if (n & 0x1)
-    {
-      return half * half * x;
+    double myPow(double x, int n) {
+        if (n < 0) {
+            // handle INT_MIN
+            return 1 / (myPow(x, -1 * (n + 1)) * x);
+        }
+        if (n == 1) return x;
+        if (n == 0) return 1;
+        
+        assert(n > 1);
+        
+        auto half = n / 2;
+        auto res = n % 2;
+        auto halfPow = myPow(x, half);
+        return myPow(x, res) * halfPow * halfPow;
     }
-    else
+    static double Test()
     {
-      return half * half;
+        return myPow(-1, 2222);
     }
-  }
-  static double Test()
-  {
-    return myPow(-1, 2222);
-  }
 }
