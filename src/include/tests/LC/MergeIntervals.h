@@ -14,63 +14,48 @@ return [1,6],[8,10],[15,18].
 
 namespace MergeIntervals
 {
-  // Definition for an interval.
-  struct Interval {
-    int start;
-    int end;
-    Interval() : start(0), end(0) {}
-    Interval(int s, int e) : start(s), end(e) {}
-  };
-
-  static bool CompareInterval(const Interval& int1, const Interval& int2)
-  {
-    return int1.start < int2.start;
-  }
-
-  vector<Interval> merge(vector<Interval>& intervals) {
-    int n = intervals.size();
-    if (n <= 1) return intervals;
-
-    // sort the intervals by start
-    sort(intervals.begin(), intervals.end(), CompareInterval);
-
-    vector<Interval> result(1, intervals[0]);
-    // go through all intervals, merge one by one
-    for (auto i = 1; i < n; i++)
-    {
-      auto& curInt = result.back();
-      auto& mergingInt = intervals[i];
-      // curInt.start is guaranteed to be smaller than mergingInt.start
-      if (mergingInt.start <= curInt.end)
-      {
-        // mergingInt is fully contained
-        if (mergingInt.end <= curInt.end) continue;
-        // extend curInt.end
-        curInt.end = mergingInt.end;
-      }
-      else
-      {
-        // no overlapping, add directly
-        result.emplace_back(mergingInt);
-      }
+    // Definition for an interval.
+    struct Interval {
+        int start;
+        int end;
+        Interval() : start(0), end(0) {}
+        Interval(int s, int e) : start(s), end(e) {}
+    };
+    
+    vector<Interval> merge(vector<Interval>& intervals) {
+        if (intervals.size() <= 1) return intervals;
+        
+        auto lesser = [](const Interval& first, const Interval& second) {
+            return first.start < second.start;
+        };
+        std::sort(intervals.begin(), intervals.end(), lesser);
+        vector<Interval> result { intervals[0] };
+        for (auto& cur : intervals) {
+            auto& last = result.back();
+            assert(last.start <= cur.start);
+            if (last.end < cur.start) {
+                result.push_back(cur);
+            } else {
+                last.end = max(last.end, cur.end);
+            }
+        }
+        return result;
     }
-    return result;
-  }
-
-  int Test(vector<pair<int, int>> intPairs)
-  {
-    vector<Interval> intervals;
-    for (const auto& pair : intPairs)
+    
+    int Test(vector<pair<int, int>> intPairs)
     {
-      cout << "[" << pair.first << "," << pair.second << "] ";
-      intervals.emplace_back(pair.first, pair.second);
+        vector<Interval> intervals;
+        for (const auto& pair : intPairs)
+        {
+            cout << "[" << pair.first << "," << pair.second << "] ";
+            intervals.emplace_back(pair.first, pair.second);
+        }
+        cout << endl;
+        auto result = merge(intervals);
+        for (const auto& interval : result)
+        {
+            cout << "[" << interval.start << "," << interval.end << "] ";
+        }
+        return 0;
     }
-    cout << endl;
-    auto result = merge(intervals);
-    for (const auto& interval : result)
-    {
-      cout << "[" << interval.start << "," << interval.end << "] ";
-    }
-    return 0;
-  }
 }

@@ -64,23 +64,22 @@ namespace InsertInterval
     //  return interval1.start < interval2.start;
     //}
     
-    vector<Interval> merge(vector<Interval>& intervals)
-    {
-        vector<Interval> result;
-        int n = intervals.size();
-        if (n == 0) return result;
-        sort(intervals.begin(), intervals.end(), [](const Interval& int1, const Interval& int2) { return int1.start < int2.start; });
-        for (int i = 0; i < n; i++)
-        {
-            auto start = intervals[i].start;
-            auto end = intervals[i].end;
-            while (i < n - 1 && end >= intervals[i + 1].start)
-            {
-                if (intervals[i + 1].end > end)
-                    end = intervals[i + 1].end;
-                i++;
+    vector<Interval> merge(vector<Interval>& intervals) {
+        if (intervals.size() <= 1) return intervals;
+        
+        auto lesser = [](const Interval& first, const Interval& second) {
+            return first.start < second.start;
+        };
+        std::sort(intervals.begin(), intervals.end(), lesser);
+        vector<Interval> result { intervals[0] };
+        for (auto& cur : intervals) {
+            auto& last = result.back();
+            assert(last.start <= cur.start);
+            if (last.end < cur.start) {
+                result.push_back(cur);
+            } else {
+                last.end = max(last.end, cur.end);
             }
-            result.emplace_back(start, end);
         }
         return result;
     }
