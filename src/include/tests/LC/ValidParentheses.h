@@ -13,36 +13,29 @@ The brackets must close in the correct order, "()" and "()[]{}" are all valid bu
 
 namespace ValidParentheses
 {
-  bool isValid(string& s)
-  {
-    unordered_map<char, char> mapping
-    {
-      { '(', ')' },
-      { '[', ']' },
-      { '{', '}' }
-    };
-    std::stack<char> history;
-    for (auto ch : s)
-    {
-      auto it = mapping.find(ch);
-      // if ch is a key
-      if (it != mapping.end())
-      {
-        history.push(ch);
-        continue;
-      }
-      // ch must match with stack top
-      if (history.empty() || mapping[history.top()] != ch) return false;
-      history.pop();
+    bool isValid(string s) {
+        static const std::unordered_map<char, char> endToStartMap = { { '}', '{' }, { ']', '[' }, { ')', '(' } };
+        std::stack<char> hist;
+        for (auto ch : s) {
+            auto it = endToStartMap.find(ch);
+            if (it == endToStartMap.end()) {
+                // new start
+                hist.push(ch);
+            } else {
+                // ending, match with top of hist
+                if (hist.empty() || hist.top() != it->second)
+                    return false;
+                hist.pop();
+            }
+        }
+        return hist.empty();
     }
-    return history.empty();
-  }
-
-  int Test()
-  {
-    string str("()[{}()]{}ab");
-
-    cout << str << ": " << isValid(str) << endl;
-    return 0;
-  }
+    
+    int Test()
+    {
+        string str("()[{}()]{}ab");
+        
+        cout << str << ": " << isValid(str) << endl;
+        return 0;
+    }
 }
