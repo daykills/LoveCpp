@@ -48,7 +48,7 @@ namespace ThreeSum
         }
     }
     
-    vector<vector<int>> threeSum(vector<int>& nums)
+    vector<vector<int>> threeSumOld(vector<int>& nums)
     {
         vector<vector<int>> result;
         int n = static_cast<int>(nums.size());
@@ -66,8 +66,39 @@ namespace ThreeSum
         return result;
     }
     
-    int Test(vector<int>& nums)
+    vector<vector<int>> threeSum(vector<int>& nums)
     {
+        if (nums.size() < 3)
+            return vector<vector<int>>();
+        // make sure nums is sorted
+        std::sort(nums.begin(), nums.end());
+        vector<vector<int>> result;
+        auto lo = nums.begin();
+        auto hi = nums.end();
+        auto count = 0;
+        // search for (hi, mid, lo) that qualifies
+        while (std::distance(lo, hi) >= 3) {
+            auto expected = -(*lo + *(hi - 1));
+            auto it = std::lower_bound(lo + 1, hi - 1, expected);
+            if (it != hi - 1) {
+                result.emplace_back(vector<int> {
+                    static_cast<int>(std::distance(nums.begin(), lo)),
+                    static_cast<int>(std::distance(nums.begin(), it)),
+                    static_cast<int>(std::distance(nums.begin(), hi - 1))
+                });
+            }
+            if (count++ % 2) {
+                lo++;
+            } else {
+                hi--;
+            }
+        }
+        return result;
+    }
+    
+    int Test()
+    {
+        vector<int> nums = { -1, 0, 1, 2, -1, -1, -4 };
         for (auto i : nums)
             cout << " " << i;
         cout << endl;
