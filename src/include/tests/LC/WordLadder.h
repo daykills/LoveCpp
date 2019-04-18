@@ -100,24 +100,24 @@ namespace WordLadder
         std::queue<std::pair<std::string, int>> q;
         q.emplace(beginWord, 1);
         while (!q.empty()) {
-            // visit top
-            auto top = q.front().first;
+            // visit cur
+            auto cur = q.front().first;
             auto depth = q.front().second;
-            if (top == endWord)
+            if (cur == endWord)
                 return depth;
             q.pop();
-            for (auto len = 0; len < top.size(); len++) {
-                auto tmp = top[len];
+            for (auto len = 0; len < cur.size(); len++) {
+                auto tmp = cur[len];
                 for (auto c = 'a'; c <= 'z'; c++) {
                     if (c == tmp)
                         continue;
-                    top[len] = c;
-                    if (all.find(top) != all.end()) {
-                        q.emplace(top, depth + 1);
-                        all.erase(top);
+                    cur[len] = c;
+                    if (all.find(cur) != all.end()) {
+                        q.emplace(cur, depth + 1);
+                        all.erase(cur);
                     }
                 }
-                top[len] = tmp;
+                cur[len] = tmp;
             }
         }
         return 0;

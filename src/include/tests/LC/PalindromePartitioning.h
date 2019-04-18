@@ -25,56 +25,103 @@ Return
 
 namespace PalindromePartitioning
 {
-  bool isPalindrome(const string& str)
-  {
-    int n = str.length();
-    if (n == 0) return true;
-    int lo = 0, hi = n - 1;
-    while (lo < hi)
+    std::vector<std::vector<bool>> getPalindromeMat(const std::string& s)
     {
-      if (str[lo] != str[hi]) return false;
-      lo++, hi--;
+        std::vector<std::vector<bool>> mat(s.size(), std::vector<bool>(s.size(), false));
+        // starting with each single char or duplex, and expand
+        for (auto i = 0; i < s.size(); i++) {
+            // coreLen is 1 or 2 as the starting point of search
+            for (auto coreLen = 1; coreLen <= 2; coreLen++) {
+                // start expanding palindrome search from lo/hi to both directions
+                auto lo = i - 1;
+                auto hi = i + coreLen;
+                if (coreLen == 1) {
+                    mat[i][i] = true;
+                } else {
+                    if (i == s.size() - 1)
+                        continue;
+                    if (s[i] != s[i + 1])
+                        continue;
+                    mat[i][i + 1] = mat[i + 1][i] = true;
+                }
+                while (lo >= 0 && hi < s.size() && s[lo] == s[hi]) {
+                    mat[lo][hi] = mat[hi][lo] = true;
+                    lo--;
+                    hi++;
+                }
+            }
+            
+        }
+        return mat;
     }
-    return true;
-  }
-
-  void dfsSearch(const string& s, int start, vector<string>& path, vector<vector<string>>& partition)
-  {
-    int n = s.length();
-    // reached end of the string, return.
-    if (start == n)
+    
+    void dfs(vector<vector<string>>& result, const string& s, const std::vector<std::vector<bool>>& palindromeMat, int pos, vector<string>& palindromes)
     {
-      partition.emplace_back(path);
-      return;
+        // base condition when reaching end of string
+        if (pos == s.size()) {
+            result.emplace_back(palindromes);
+            return;
+        }
+        // look for possible palindromes between pos and end
+        for (auto end = pos; end < s.size(); end++) {
+            if (palindromeMat[pos][end]) {
+                palindromes.emplace_back(s.substr(pos, end - pos + 1));
+                dfs(result, s, palindromeMat, end + 1, palindromes);
+                palindromes.pop_back();
+            }
+        }
     }
-
-    // take substring from start to start+step
-    for (auto step = 1; step <= n - start; step++)
+    
+    vector<vector<string>> partitionDP(string s) {
+        auto mat = getPalindromeMat(s);
+        vector<vector<string>> ret;
+        vector<string> palindromes;
+        dfs(ret, s, mat, 0, palindromes);
+        return ret;
+    }
+    
+    bool isPalindrome(const string& str, int lo, int hi)
     {
-      auto substring = s.substr(start, step);
-      // if substring is a palindrome, we add it into path
-      if (!isPalindrome(substring)) continue;
-      path.emplace_back(move(substring));
-      // try to find good combination
-      dfsSearch(s, start + step, path, partition);
-      path.pop_back();
+        if (hi >= str.size() || lo < 0 || lo > hi)
+            return false;
+        
+        while(lo < hi)
+        {
+            if(str[lo] != str[hi]) return false;
+            lo++, hi--;
+        }
+        return true;
     }
-  }
-
-  vector<vector<string>> partition(string s)
-  {
-    vector<string> path;
-    vector<vector<string>> result;
-    // DFS search for different combinations
-    dfsSearch(s, 0, path, result);
-    return result;
-  }
+    
+    void dfs(vector<vector<string>>& result, const string& s, int pos, vector<string>& palindromes)
+    {
+        // base condition when reaching end of string
+        if (pos == s.size()) {
+            result.emplace_back(palindromes);
+            return;
+        }
+        // look for possible palindromes between pos and end
+        for (auto end = pos; end < s.size(); end++) {
+            if (isPalindrome(s, pos, end)) {
+                palindromes.emplace_back(s.substr(pos, end - pos + 1));
+                dfs(result, s, end + 1, palindromes);
+                palindromes.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ret;
+        vector<string> palindromes;
+        dfs(ret, s, 0, palindromes);
+        return ret;
+    }
 
   void Test()
   {
     string input("aabbaba");    
     cout << "input: " << input << endl;
-    auto result = partition(input);
+    auto result = partitionDP(input);
     for (auto& combination : result)
     {
       for (auto& palindrome : combination)

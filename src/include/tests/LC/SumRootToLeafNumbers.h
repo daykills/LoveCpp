@@ -25,61 +25,51 @@ Return the sum = 12 + 13 = 25.
 
 namespace SumRootToLeafNumbers
 {
-  // Definition for a binary tree node.
-  struct TreeNode {
-    int val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-  };
-
-  // for each root to leaf path, we build number
-  void dfsTraverse(TreeNode* root, int number, int& sum)
-  {
-    // base condition: when it's a empty node, do nothing
-    if (root == nullptr) return;
-
-    // update number
-    number = number * 10 + root->val;
-
-    // base condition: when it's a leaf
-    if (root->left == nullptr && root->right == nullptr)
-    {
-      sum += number;
-      return;
+    // Definition for a binary tree node.
+    struct TreeNode {
+        int val;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+    
+    void dfs(TreeNode* root, int preNum, int& total) {
+        if (!root)
+            return;
+        auto newNum = preNum * 10 + root->val;
+        // leaf
+        if (!root->left && !root->right) {
+            total += newNum;
+            return;
+        }
+        dfs(root->left, newNum, total);
+        dfs(root->right, newNum, total);
     }
-
-    // go on traverse on children
-    dfsTraverse(root->left, number, sum);
-    dfsTraverse(root->right, number, sum);
-  }
-
-  int sumNumbers(TreeNode* root)
-  {
-    int sum = 0;
-    dfsTraverse(root, 0, sum);
-    return sum;
-  }
-  ////////////////////////////////////////////////////////////////////////////////////
-  static void Test()
-  {
-    //[1, 2, 2, 3, 3, null, null, 4, 4]
-    const int n = 7;
-    TreeNode* nodes[n];
-    for (int i = 0; i < n; i++)
-    {
-      nodes[i] = new TreeNode(i + 1);
+    int sumNumbers(TreeNode* root) {
+        int total = 0;
+        dfs(root, 0, total);
+        return total;
     }
-    nodes[0]->left = nodes[1];
-    nodes[0]->right = nodes[2];
-    nodes[1]->left = nodes[3];
-    nodes[1]->right = nodes[4];
-    nodes[3]->left = nodes[5];
-    nodes[3]->right = nodes[6];
-
-    TreePrinter::Printer<TreeNode> treePrinter;
-    treePrinter.printPretty(nodes[0], 1, 1, cout);
-
-    cout << "result: " << sumNumbers(nodes[0]) << endl;    
-  }
+    ////////////////////////////////////////////////////////////////////////////////////
+    static void Test()
+    {
+        //[1, 2, 2, 3, 3, null, null, 4, 4]
+        const int n = 7;
+        TreeNode* nodes[n];
+        for (int i = 0; i < n; i++)
+        {
+            nodes[i] = new TreeNode(i + 1);
+        }
+        nodes[0]->left = nodes[1];
+        nodes[0]->right = nodes[2];
+        nodes[1]->left = nodes[3];
+        nodes[1]->right = nodes[4];
+        nodes[3]->left = nodes[5];
+        nodes[3]->right = nodes[6];
+        
+        TreePrinter::Printer<TreeNode> treePrinter;
+        treePrinter.printPretty(nodes[0], 1, 1, cout);
+        
+        cout << "result: " << sumNumbers(nodes[0]) << endl;
+    }
 }
