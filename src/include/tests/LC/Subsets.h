@@ -31,34 +31,21 @@ If nums = [1,2,3], a solution is:
 
 namespace Subsets
 {
-  // index means
-  void dfsSearch(const vector<int>& nums, int index, vector<int>& subset, vector<vector<int>>& result)
-  {
-    // add new subset
-    result.emplace_back(subset);
-
-    int n = nums.size();
-    // base condition
-    if (n == index) return;
-
-    // with different step, try dfs search
-    for (auto i = index; i < n; i++)
+    void dfs(const vector<int>& nums, int pos, vector<int>& subset, vector<vector<int>>& subsets)
     {
-      // insert number
-      subset.emplace_back(nums[i]);
-      dfsSearch(nums, i + 1, subset, result);
-      subset.pop_back();
+        for (auto i = pos; i < nums.size(); i++) {
+            subset.emplace_back(nums[i]);
+            dfs(nums, i + 1, subset, subsets);
+            subset.pop_back();
+        }
+        subsets.emplace_back(subset);
     }
-  }
-
-  vector<vector<int>> subsets(vector<int>& nums)
-  {
-    sort(nums.begin(), nums.end());
-    vector<vector<int>> result;
-    vector<int> subset;
-    dfsSearch(nums, 0, subset, result);
-    return result;
-  }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> subsets;
+        vector<int> subset;
+        dfs(nums, 0, subset, subsets);
+        return subsets;
+    }
 
   void Test()
   {

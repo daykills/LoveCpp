@@ -24,33 +24,31 @@ If n = 4 and k = 2, a solution is:
 namespace CombinationSum
 {
   // combination is the result containing first i picks; all numbers in combination are accending; combination stores all results
-  void dfsSearch(int n, int k, vector<int>& combination, vector<vector<int>>& combinations)
-  {
-    int alreadyPicked = combination.size();
-    int lastPicked = (alreadyPicked == 0) ? 0 : combination.back();
-    // base condition: not enough numbers left to fill k slots
-    if (k - alreadyPicked > n - lastPicked) return;
-    // base condition: combination complete, return
-    if (alreadyPicked == k)
-    {
-      combinations.emplace_back(combination);
-      return;
+    void dfs(vector<vector<int>>& combinations, vector<int>& combination, int n, int k) {
+        // base condition
+        auto curLen = combination.size();
+        if (curLen == k) {
+            combinations.emplace_back(combination);
+            return;
+        }
+        auto lastNum = curLen == 0 ? 0 : combination.back();
+        // not enough remaining numbers to get k numbers
+        if (k - curLen + lastNum > n)
+            return;
+        for (auto nextNum = lastNum + 1; nextNum <= n; nextNum++) {
+            combination.emplace_back(nextNum);
+            dfs(combinations, combination, n, k);
+            combination.pop_back();
+        }
     }
-    // try numbers bigger than the last picked number
-    for (auto i = lastPicked + 1; i <= n; i++)
-    {
-      combination.push_back(i);
-      dfsSearch(n, k, combination, combinations);
-      combination.pop_back();
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> combinations;
+        if (k > n)
+            return combinations;
+        vector<int> combination;
+        dfs(combinations, combination, n, k);
+        return combinations;
     }
-  }
-  vector<vector<int>> combine(int n, int k)
-  {
-    vector<vector<int>> combinations;
-    vector<int> combination;
-    dfsSearch(n, k, combination, combinations);
-    return combinations;
-  }
 
   void Test()
   {

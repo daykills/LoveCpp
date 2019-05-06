@@ -28,53 +28,43 @@ word = "ABCB", -> returns false.
 
 namespace WordSearch
 {
-	// row/col is assured to be valid, pos is valid as well
-	bool dfs(vector<vector<char>>& board, const string& word, int pos, int row, int col)
-	{
-		// if ch at pos doesn't match
-		if (board[row][col] != word[pos] || board[row][col] == 0) return false;
-
-		// base condition: when the whole word is found
-		auto newPos = pos + 1;
-		if (newPos == (int)word.length()) return true;
-
-		// all four moves
-		static const vector<pair<int, int>> moves{ { 1, 0 },{ 0, 1 },{ -1, 0 },{ 0, -1 } };
-
-		// mark this char is used
-		board[row][col] = 0;
-
-		auto found = false;
-		for (const auto& move : moves)
-		{
-			auto newRow = move.first + row, newCol = move.second + col;
-			// if row/col is out of bound
-			if (newRow < 0 || newRow >= (int)board.size() || newCol < 0 || newCol >= (int)board[0].size()) continue;
-
-			// search for next steps
-			found = dfs(board, word, newPos, newRow, newCol);
-			if (found) break;
-		}
-		// set the char back
-		board[row][col] = word[pos];
-		return found;
-	}
-
-	bool exist(vector<vector<char>>& board, string word)
-	{
-		int n = word.length();
-		if (n == 0) return true;
-		if (board.size() == 0) return false;
-		for (auto row = 0; row < (int)board.size(); row++)
-		{
-			for (auto col = 0; col < (int)board[0].size(); col++)
-			{
-				// start dfs search from each point
-				if (dfs(board, word, 0, row, col)) return true;
-			}
-		}
-		return false;
-	}
+    bool dfs(vector<vector<char>>& board, const string& word, int matchedLen, int i, int j) {
+        if (i < 0 || i >= board.size() || j < 0 || j >= board[0].size())
+            return false;
+        
+        auto curChar = board[i][j];
+        if (word[matchedLen] != curChar)
+            return false;
+        matchedLen++;
+        if (matchedLen == word.size())
+            return true;
+        
+        board[i][j] = 0;
+        // try next step on four directions
+        bool result = false;
+        result = result || dfs(board, word, matchedLen, i + 1, j);
+        result = result || dfs(board, word, matchedLen, i, j + 1);
+        result = result || dfs(board, word, matchedLen, i, j - 1);
+        result = result || dfs(board, word, matchedLen, i - 1, j);
+        board[i][j] = curChar;
+        return result;
+    }
+    
+    bool exist(vector<vector<char>>& board, string word) {
+        int h = board.size();
+        if (h == 0)
+            return false;
+        int w = board[0].size();
+        if (w == 0)
+            return false;
+        for (auto i = 0; i < h; i++) {
+            for (auto j = 0; j < w; j++) {
+                if (dfs(board, word, 0, i, j))
+                    return true;
+            }
+        }
+        return false;
+    }
 
 	void Test()
 	{

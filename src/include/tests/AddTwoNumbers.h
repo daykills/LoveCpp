@@ -21,84 +21,36 @@ namespace AddTwoNumbers
     {}
   };
 
-  // recursive, 21%
-  static ListNode* addTwoNumbers(ListNode* l1, ListNode* l2, int carry)
-  {
-    //only comes the carry,like 5, 5 = 10, or carry = 0
-    if (l1 == nullptr && l2 == nullptr && carry == 0)
-      return nullptr;
-
-    auto pResult = new ListNode(carry);
-
-    if (l1 != nullptr)
-    {
-      pResult->val += l1->val;
-      l1 = l1->next;
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        int carry = 0;
+        auto result = l1;
+        // assume l1 is the longer list; if not, swap l1 and l2 later
+        do {
+            auto sum = l1->val + carry;
+            if (l2) {
+                sum += l2->val;
+            }
+            // in place update
+            l1->val = sum % 10;
+            carry = sum / 10;
+            // if l1 finishes early, swap it with l2
+            if (l2 && !l1->next) {
+                l1->next = l2->next;
+                l2->next = nullptr;
+            }
+            // end
+            if (l1->next == nullptr) {
+                if (carry)
+                    l1->next = new ListNode(carry);
+                break;
+            }
+            l1 = l1->next;
+            if (l2)
+                l2 = l2->next;
+            
+        } while (true);
+        return result;
     }
-
-    if (l2 != nullptr)
-    {
-      pResult->val += l2->val;
-      l2 = l2->next;
-    }
-
-    carry = pResult->val / 10;
-    pResult->val = pResult->val % 10;
-    pResult->next = addTwoNumbers(l1, l2, carry);
-    
-    return pResult;
-  }
-
-  // recursive
-  static ListNode* addTwoNumbers(ListNode* l1, ListNode* l2)
-  {
-    return addTwoNumbers(l1, l2, 0);
-  }
-
-  // traverse method 69.99%
-  static ListNode* addTwoNumbers1(ListNode* l1, ListNode* l2)
-  {
-    // if one number is null
-    if (l1 == nullptr) return l2;
-    if (l2 == nullptr) return l1;
-
-    ListNode dummy(-1);
-    ListNode* pPre = &dummy;
-    int carry = 0;    
-    do
-    {
-      int sum = l1->val + l2->val + carry;
-
-      carry = sum / 10;
-      sum = sum % 10;
-
-      pPre->next = new ListNode(sum);
-      pPre = pPre->next;
-      l1 = l1->next;
-      l2 = l2->next;
-    }
-    while (l1 != nullptr && l2 != nullptr);
-    // continue with the unfinished list
-    if (l1 == nullptr) pPre->next = l2;
-    else pPre->next = l1;
-    // if carry is not zero
-    if (carry != 0)
-    {
-      while (pPre->next != nullptr)
-      {
-        auto& pCur = pPre->next;
-        int sum = pCur->val + carry;
-        pCur->val = sum % 10;
-        carry = sum / 10;
-        pPre = pCur;
-      }
-      if (carry != 0)
-      {
-        pPre->next = new ListNode(carry);
-      }
-    }
-    return dummy.next;
-  }
 
   static int Test()
   {

@@ -10,43 +10,30 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
 
 namespace DecodeWays
 {
-  int numDecodings(string s)
-  {
-    int n = s.length();
-    if (n == 0) return n;
-    // if first letter is 0, return 0 as not valid for decoding
-    if (s[0] == '0') return 0;
-
-    // 1 way to decode when there are first 0 letters
-    int prePre = 1;
-    // for first one letter, 1 way to decode
-    int pre = 1;
-    // dynamic programming, use previous two results
-    // ways[i] = ways[i - 1] + ways[i - 2] if last two letters are smaller than 26
-    int result = pre;
-    for (auto i = 2; i <= n; i++)
-    {
-      // now handle ith number. i = 2 ~ n.
-
-      // check whether last two letters are smaller than 26
-      int preNum = s[i - 2] - '0';
-      int curNum = s[i - 1] - '0';
-      int number = preNum * 10 + curNum;
-
-      // if it's '00', cannot decode
-      if (number == 0) return 0;
-
-      // ways[i] is at least ways[i - 1] if curNum is not 0
-      result = (curNum == 0) ? 0 : pre;
-
-      // ways[i] = ways[i - 1] + ways[i - 2] if number is valid (10 ~ 26)
-      if (number <= 26 && number >= 10) result += prePre;
-
-      prePre = pre;
-      pre = result;
+    int numDecodings(string s) {
+        auto n = s.size();
+        if (n == 0 || s[0] == '0')
+            return 0;
+        // num of ways when k = [0, n]
+        // num_pre_pre is set as 1 it accounts for one possiblity
+        int num_pre_pre = 1;
+        // num_pre is initialized as 1 as s[0] != '0'
+        int num_pre = 1;
+        for (auto k = 1; k < n; k++) {
+            auto num = 0;
+            auto cur_ch = s[k];
+            if (cur_ch != '0')
+                num += num_pre;
+            
+            auto pre_ch = s[k - 1];
+            if ((pre_ch == '2' && cur_ch <= '6') ||
+                pre_ch == '1')
+                num += num_pre_pre;
+            num_pre_pre = num_pre;
+            num_pre = num;
+        }
+        return num_pre;
     }
-    return result;
-  }
 
   static void Test()
   {

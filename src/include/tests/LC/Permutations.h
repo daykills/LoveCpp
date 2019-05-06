@@ -14,42 +14,30 @@ For example,
 
 namespace Permutations
 {
-  void traverse(const vector<int>& nums, unordered_map<int, int>& path, vector<vector<int>>& permutes)
-  {
-    int n = nums.size();
-    int nPath = path.size();
-    // base condition
-    // move path to permutes
-    if (nPath == n)
-    {
-      vector<int> permute(n);
-      for (auto& pair : path)
-      {
-        permute[pair.second] = nums[pair.first];
-      }
-      permutes.emplace_back(move(permute));
-      return;
+    void dfs(vector<int>& nums, vector<int>& cur, unordered_set<int>& curSet, vector<vector<int>>& result) {
+        if (cur.size() == nums.size()) {
+            result.emplace_back(cur);
+            return;
+        }
+        for (auto i = 0; i < nums.size(); i++) {
+            // don't re-add number to cur
+            auto it = curSet.find(i);
+            if (it != curSet.end())
+                continue;
+            curSet.emplace(i);
+            cur.emplace_back(nums[i]);
+            dfs(nums, cur, curSet, result);
+            cur.pop_back();
+            curSet.erase(i);
+        }
     }
-
-    for (auto i = 0; i < n; i++)
-    {
-      auto got = path.find(i);
-      // number already used
-      if (got != path.end()) continue;
-      // add current number to path, its index in permute is nPath
-      path.emplace(i, nPath);
-      traverse(nums, path, permutes);
-      path.erase(path.find(i));
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> result;
+        unordered_set<int> curSet;
+        vector<int> cur;
+        dfs(nums, cur, curSet, result);
+        return result;
     }
-  }
-  vector<vector<int>> permute(vector<int>& nums)
-  {
-    vector<vector<int>> permutes;
-    // hash map to record the path (included index). key is the index in nums, value is the index in the permute.
-    unordered_map<int, int> path;
-    traverse(nums, path, permutes);
-    return permutes;
-  }
 
   void Test()
   {
