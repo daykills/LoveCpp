@@ -96,15 +96,50 @@ namespace PalindromePartitioning2
 		return minCuts[n];
 	}
 	///////////////////////////////////////////////////////////////////////////////
-	int minCut(string s)
+	int minCut1(string s)
 	{
 		//return bfsSearch(s);
 		return dpSolution(s);
 	}
+    
+    int minCut(string s) {
+        if (s.size() < 2)
+            return 0;
+        // bfs search for minCut
+        // queue to store next cut pos and cut count
+        std::queue<std::pair<int, int>> q;
+        // cut pos means cut is placed before the pos
+        q.emplace(0, 0);
+        while (!q.empty()) {
+            auto& cur = q.front();
+            auto pos = cur.first;
+            auto cutCount = cur.second;
+            q.pop();
+            for (int i = s.size(); i > pos; i--) {
+                // check if substr [pos, i] is palindrome
+                auto lo = pos;
+                auto hi = i - 1;
+                auto isPalindrome = true;
+                while (lo < hi) {
+                    if (s[lo] != s[hi]) {
+                        isPalindrome = false;
+                    }
+                    lo++;
+                    hi--;
+                }
+                if (isPalindrome == false)
+                    continue;
+                if (i == s.size())
+                    return cutCount;
+                q.emplace(i, cutCount + 1);
+            }
+        }
+        return 0;
+    }
 
 	void Test()
 	{
-		string input("aabaa");
+		string input("fifgbeajcacehiicccfecbfhhgfiiecdcjjffbghdidbhbdbfbfjccgbbdcjheccfbhafehieabbdfeigbiaggchaeghaijfbjhi");
 		cout << "input: " << input << endl;
 		cout << "result: " << minCut(input) << endl;
 
