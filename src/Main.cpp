@@ -3,7 +3,7 @@
 
 #include "Common.h"
 
-#include "tests/LC/PalindromePartitioning2.h"
+#include "tests/LC/BinaryTreeZigzagLevelOrderTraversal.h"
 
 #include <iostream>
 #include <memory>
@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	auto begin = chrono::high_resolution_clock::now();
 
 	// code to benchmark
-    PalindromePartitioning2::Test();
+    BinaryTreeZigzagLevelOrderTraversal::Test();
 
     std::cout << "Total time lapsed: " << chrono::duration_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now() - begin).count() * 0.001 << "ms" << std::endl;
 	return 0;
