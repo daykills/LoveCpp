@@ -25,23 +25,23 @@ Test cases had been added to test the overflow behavior.
 
 namespace ReverseInteger
 {
-  int reverse(int x)
-  {
-    const int base = 10;
-    int reverse = 0;
-    while (x)
+    int reverse(int x)
     {
-      if (reverse > INT_MAX / base || reverse < INT_MIN / base)
-        return 0;
-      reverse = reverse * base + x % base;
-      x = x / base;      
+        const int base = 10;
+        int reverse = 0;
+        while (x)
+        {
+          
+          if (reverse > INT_MAX / base || reverse < INT_MIN / base)
+            return 0;
+          reverse = reverse * base + x % base;
+          x = x / base;
+        }
+        return reverse;
     }
-    return reverse;
-  }
-  static int Test()
-  {
-    //2147483647
-
-    return reverse(2147483647);
-  }
+    static void Test()
+    {
+        //2147483647
+        std::cout << "Result: " << reverse(123) << std::endl;
+    }
 }
