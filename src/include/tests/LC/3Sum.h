@@ -20,78 +20,45 @@
 namespace ThreeSum
 {
     // from start to end of sorted nums, find two sum for target.
-    void search(const vector<int>& sortedNums, int start, int target, vector<vector<int>>& result)
+    void search(const vector<int>& sorted, int start, int target, vector<vector<int>>& result)
     {
-        int n = static_cast<int>(sortedNums.size());
+        int n = sorted.size();
         int lo = start, hi = n - 1;
-        while (lo < hi)
+        while(lo < hi)
         {
-            auto sum = sortedNums[lo] + sortedNums[hi] + target;
-            if (sum == 0)
+            auto sum = sorted[lo] + sorted[hi] + target;
+            if(sum == 0)
             {
-                result.emplace_back(vector<int>{ target, sortedNums[lo], sortedNums[hi]});
-                while (lo < hi && sortedNums[lo + 1] == sortedNums[lo]) lo++;
-                while (lo < hi && sortedNums[hi - 1] == sortedNums[hi]) hi--;
-                lo++;
-                hi--;
+                result.emplace_back(vector<int>{ target, sorted[lo] , sorted[hi]});
+                while(lo < hi && sorted[lo + 1] == sorted[lo]) lo++;
+                while(lo < hi && sorted[hi - 1] == sorted[hi]) hi--;
+                lo++, hi--;
             }
-            else if (sum < 0)
+            else if(sum < 0)
             {
-                while (lo < hi && sortedNums[lo + 1] == sortedNums[lo]) lo++;
                 lo++;
             }
             else
             {
-                while (lo < hi && sortedNums[hi - 1] == sortedNums[hi]) hi--;
                 hi--;
             }
         }
     }
-    
-    vector<vector<int>> threeSumOld(vector<int>& nums)
+
+    vector<vector<int>> threeSum(vector<int>& nums)
     {
         vector<vector<int>> result;
-        int n = static_cast<int>(nums.size());
-        if (n == 0) return result;
+        int n = nums.size();
+        if(n == 0) return result;
         // sort nums
         sort(nums.begin(), nums.end());
         
-        for (auto i = 0; i < n - 2; i++)
+        for(auto i = 0; i < n - 2; i++)
         {
             // for each i, find the other two numbers
             search(nums, i + 1, nums[i], result);
             // move to next different number
-            while (i < n - 2 && nums[i + 1] == nums[i]) i++;
-        }
-        return result;
-    }
-    
-    vector<vector<int>> threeSum(vector<int>& nums)
-    {
-        if (nums.size() < 3)
-            return vector<vector<int>>();
-        // make sure nums is sorted
-        std::sort(nums.begin(), nums.end());
-        vector<vector<int>> result;
-        auto lo = nums.begin();
-        auto hi = nums.end();
-        auto count = 0;
-        // search for (hi, mid, lo) that qualifies
-        while (std::distance(lo, hi) >= 3) {
-            auto expected = -(*lo + *(hi - 1));
-            auto it = std::lower_bound(lo + 1, hi - 1, expected);
-            if (it != hi - 1) {
-                result.emplace_back(vector<int> {
-                    static_cast<int>(std::distance(nums.begin(), lo)),
-                    static_cast<int>(std::distance(nums.begin(), it)),
-                    static_cast<int>(std::distance(nums.begin(), hi - 1))
-                });
-            }
-            if (count++ % 2) {
-                lo++;
-            } else {
-                hi--;
-            }
+            while(i < n - 2 && nums[i + 1] == nums[i]) i++;
         }
         return result;
     }
