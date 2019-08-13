@@ -21,100 +21,43 @@ namespace MinimumWindowSubstring
 {
 	string minWindow(string s, string t)
 	{
-		int m = s.length();
-		int n = s.length();
-		if (m == 0 || n == 0) return "";
-
-		// to hold all chars used in window
-		unordered_set<char> inUse;
-		// notUsed to hold all not used chars
-		multiset<char> notUsed(t.begin(), t.end());
-		deque<char> window;
-		string result;
-		int minLenWindow = INT_MAX;
-		bool previousWindowQualified = false;
-		for (auto ch : s)
-		{
-			// always add ch to the back of window
-			window.push_back(ch);
-
-			if (previousWindowQualified)
-			{
-				// if ch == window.front, then current window minus front is also qualified
-				if (ch == window.front())
-				{
-					window.pop_front();
-					//remove front from the window as long as the front is not needed, keep front always needed
-					while (!window.empty())
-					{
-
-						auto front = window.front();
-						// update inUse and notUsed
-						auto itInUse = inUse.find(front);
-						// remove it only when it's not needed at all
-						if (itInUse == inUse.end())
-						{
-							window.pop_front();
-							inUse.erase(itInUse); // must use it here to avoid remove multiple ones
-							notUsed.emplace(front);
-						}
-						else
-						{
-							// stop at useful char
-							break;
-						}
-					}
-				}
-			}
-
-			// update inUse and notUsed
-			auto it = notUsed.find(ch);
-			if (it != notUsed.end())
-			{
-				notUsed.erase(it);
-				inUse.emplace(ch);
-			}
-
-			// if we have the qualified substring
-			if (notUsed.empty())
-			{
-				int lenWindow = window.size();
-				if (lenWindow < minLenWindow)
-				{
-					// update
-					minLenWindow = lenWindow;
-					result = string(window.begin(), window.end());
-				}
-			}
-
-			//remove front from the window as long as the front is not needed, keep front always needed
-			while (!window.empty())
-			{
-
-				auto front = window.front();
-				// update inUse and notUsed
-				auto itInUse = inUse.find(front);
-				// remove it only when it's not needed at all
-				if (itInUse == inUse.end())
-				{
-					window.pop_front();
-					inUse.erase(itInUse); // must use it here to avoid remove multiple ones
-					notUsed.emplace(front);
-				}
-				else
-				{
-					// stop at useful char
-					break;
-				}
-			}
-		}
-		return result;
+        // charCount stores counts of each character in the window
+        // for required characters, count range is [expected, 0], 0 means window has enough such charaters
+        // for un-required characters, count range is [-INT, 0].
+        std::vector<int> charCount(128, 0);
+        for (auto c : t) charCount[c]++;
+        
+        auto requiredCharacterCountInWindow = 0;
+        auto minLen = INT_MAX;
+        string ans = "";
+        auto left = 0;
+        for (auto i = 0; i < s.size(); i++) {
+            // one more required char is included
+            if (--charCount[s[i]] >= 0) requiredCharacterCountInWindow++;
+            // if we have all characters in window, slide left side of the window
+            while (requiredCharacterCountInWindow == t.size()) {
+                // required char count is zero in window 0
+                // non-required is negative
+                if (charCount[s[left]]++ == 0) {
+                    auto len = i - left + 1;
+                    if (len < minLen) {
+                        ans = s.substr(left, len);
+                        minLen = len;
+                    }
+                    left++;
+                    requiredCharacterCountInWindow--;
+                    break;
+                }
+                left++;
+            }
+        }
+        return ans;
 	}
 
 	static void Test()
 	{
-		string s("aadacadc");
-		string t("adc");
+		string s("ADOBECODEBANC");
+		string t("COO");
 		cout << minWindow(s, t) << endl;	// should be 8
 	}
 }
