@@ -97,7 +97,7 @@ namespace AlienDictionary
 		unordered_map<char, unordered_set<char>> m_nodes;
 	};
 
-	string alienOrder(vector<string>& words)
+	string alienOrderOld(vector<string>& words)
 	{
 		int n = words.size();
 		if (n == 0) return "";

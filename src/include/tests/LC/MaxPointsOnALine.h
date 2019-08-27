@@ -7,86 +7,56 @@ Given n points on a 2D plane, find the maximum number of points that lie on the 
 #include <iostream>
 #include <queue>
 #include <algorithm>
+#include <numeric>
 #include "Common.h"
 
 namespace MaxPointsOnALine
-{  
-  // Definition for a point.
-  struct Point {
-    int x;
-    int y;
-    Point() : x(0), y(0) {}
-    Point(int a, int b) : x(a), y(b) {}
-  };
+{
 
-  // definition for Fraction numbers
-  struct Fraction
-  {
-    int numerator;
-    int denominator;
-    Fraction() : numerator(0), denominator(0) {}
-    Fraction(int _numerator, int _denominator) : numerator(_numerator), denominator(_denominator) {}
-    bool operator==(const Fraction &other) const
-    {
-      // 1/0 == 2/0 == -1/0
-      if (denominator == 0 && other.denominator == 0) return true;
-      if (denominator == 0 || other.denominator == 0) return false;
-      return other.numerator * denominator == numerator * other.denominator;
-    }
-  };
-
-  // hash function
-  struct hash_func
-  {
-    size_t operator()(const Fraction &f) const
-    {
-      hash<int> hash;
-      if (f.denominator == 0)
-        return hash(0);
-      return hash(f.numerator / f.denominator);
-    }
-  };
-  
-  int maxPoints(vector<Point>& points)
-  {
-    int n = points.size();
-    if (n <= 2) return n;
-    
-    int result = 0;
-    for (int i = 0; i < n; i++)
-    {
-      unordered_map<Fraction, int, hash_func> fractions;
-      const auto& basePoint = points[i];
-      int dupCnt = 1;
-      for (int j = i + 1; j < n; j++)
-      {
-        if (points[j].y == basePoint.y && points[j].x == basePoint.x)
-        {
-          dupCnt++;
-          continue;
+int maxPoints(vector<vector<int>>& points)
+{
+    int maxCount = 0;
+    auto n = points.size();
+    if (n < 3)
+        return n;
+    for (auto i = 0; i < n; i++) {
+        auto& base = points[i];
+        unordered_map<string, int> counts;
+        int dup = 1;
+        for (auto j = i + 1; j < n; j++) {
+            int dx = points[j][0] - base[0];
+            int dy = points[j][1] - base[1];
+            if (dx == 0 && dy == 0) {
+                dup++;
+                continue;
+            }
+            // normalize horizontal and vertical lines
+            if (dx == 0) {
+                dy = 1;
+            } else if (dy == 0) {
+                dx = 1;
+            }
+            int g = gcd(dx, dy);
+            int normalizedDx = dx / g;
+            int normalizedDy = dy / g;
+            if (normalizedDx < 0) {
+                normalizedDx = -normalizedDx;
+                normalizedDy = -normalizedDy;
+            }
+            counts[to_string(normalizedDx) + '_' + to_string(normalizedDy)]++;
         }
-        Fraction f(points[j].y - basePoint.y, points[j].x - basePoint.x);
-        fractions[f]++;
-      }
-      int max = 0;
-      for (auto& pair : fractions)
-      {
-        if (pair.second > max) max = pair.second;
-      }
-      max += dupCnt;
-      if (max > result) result = max;
+        int maxCountFromBase = 0;
+        for (auto& count : counts) {
+            maxCountFromBase = max(maxCountFromBase, count.second);
+        }
+        maxCountFromBase += dup;
+        maxCount = max(maxCount, maxCountFromBase);
     }
-    return result;
-  }
-  static int Test()
-  {
-    vector<Point> points;
-    points.emplace_back(0, 0);
-    points.emplace_back(1, 1);
-    points.emplace_back(-1, 2);
-    points.emplace_back(0, 0);
-    points.emplace_back(1, 1);
-    points.emplace_back(-1, 2);
-    return maxPoints(points);
-  }
+    return maxCount;
+}
+static void Test()
+{
+    vector<vector<int>> points = { {1,1},{3,2},{5,3},{4,1},{2,3},{1,4} };
+    std::cout << maxPoints(points) << std::endl;
+}
 }
