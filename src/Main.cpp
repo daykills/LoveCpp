@@ -3,7 +3,7 @@
 
 #include "Common.h"
 
-#include "tests/LC/DecodeString.h"
+#include "tests/LC/AllO1DataStructure.h"
 
 #include <iostream>
 #include <memory>
@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	auto begin = chrono::high_resolution_clock::now();
 
 	// code to benchmark
-    DecodeString::Test();
+    AllO1DataStructure::Test();
 
     std::cout << "Total time lapsed: " << chrono::duration_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now() - begin).count() * 0.001 << "ms" << std::endl;
 	return 0;
