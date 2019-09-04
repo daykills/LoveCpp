@@ -52,6 +52,7 @@ private:
     unordered_set<string> m_wordset;
     string m_secret;
 };
+
 int commonCharCount(const string& base, const string& str) {
     assert(base.size() == str.size());
     int cnt = 0;
@@ -61,15 +62,26 @@ int commonCharCount(const string& base, const string& str) {
     }
     return cnt;
 }
+
 void findSecretWord(vector<string>& wordlist, Master& master) {
     unordered_set<string> dropSet;
-    for (auto& word : wordlist) {
+    while (true) {
+        string word = wordlist[rand() % (wordlist.size())];
         if (dropSet.count(word))
             continue;
         dropSet.emplace(word);
         auto match = master.guess(word);
-        if (match == 0) continue;
-        
+        if (match == 0) {
+            // remove all words with at least one hit
+            for (auto& str : wordlist) {
+                if (str == word || dropSet.count(str))
+                    continue;
+                if (commonCharCount(word, str) > 0)
+                    dropSet.emplace(str);
+            }
+            continue;
+        }
+
         assert(match != -1);
         if (match == word.size())
             return;
