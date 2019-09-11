@@ -15,7 +15,6 @@ int main(int argc, char* argv[])
 
 	// code to benchmark
     BasicCalculator2::Test();
-
     std::cout << "Total time lapsed: " << chrono::duration_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now() - begin).count() * 0.001 << "ms" << std::endl;
 	return 0;
 }
