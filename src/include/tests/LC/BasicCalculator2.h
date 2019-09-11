@@ -35,18 +35,20 @@ public:
     int calculate(string s) {
         stringstream ss("+" + s);
         char op;
-        int n, last, ans = 0;
-        while (ss >> op >> n) {
+        int num = 0;
+        int last = 0;
+        int ans = 0;
+        // (last op num)
+        while (ss >> op >> num) {
             if (op == '+' || op == '-') {
-                n = op == '+' ? n : -n;
-                ans += n;
+                num = op == '-' ? -num : num;
+                ans += last;
             } else {
-                n = op == '*' ? last * n : last / n;
-                ans = ans - last + n; // simulate a stack by recovering last values
+                num = op == '*' ? last * num : last / num;
             }
-            last = n;
+            last = num;
         }
-        return ans;
+        return ans + last;
     }
 };
 
