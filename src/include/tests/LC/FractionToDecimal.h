@@ -28,37 +28,40 @@ namespace FractionToDecimal
 class Solution {
 public:
     string fractionToDecimal(int numerator, int denominator) {
-        int s1 = numerator >= 0 ? 1 : -1;
-        int s2 = denominator >= 0 ? 1 : -1;
-        long long num = abs( (long long)numerator );
-        long long den = abs( (long long)denominator );
-        long long out = num / den;
-        long long rem = num % den;
-        unordered_map<long long, int> m;
-        string res = to_string(out);
-        if (s1 * s2 == -1 && (out > 0 || rem > 0)) res = "-" + res;
-        if (rem == 0) return res;
-        res += ".";
-        string s = "";
-        int pos = 0;
-        while (rem != 0) {
-            if (m.find(rem) != m.end()) {
-                s.insert(m[rem], "(");
-                s += ")";
-                return res + s;
+        assert(denominator != 0);
+        int signNum = numerator >= 0 ? 1 : -1;
+        int signDen = denominator >= 0 ? 1 : -1;
+        long absNum = abs((long)numerator);
+        long absDen = abs((long)denominator);
+        string res = ((numerator == 0 || signNum == signDen) ? "" : "-") + to_string(absNum / absDen);
+        long rem = absNum % absDen;
+        if (rem == 0)
+            return res;
+        // if same rem value appears, we know it's repeating
+        unordered_map<long, int> remPos;
+        res = res + ".";
+        string decimal;
+        auto pos = 0;
+        while (rem) {
+            if (remPos.count(rem)) {
+                return res + decimal.substr(0, remPos[rem])
+                    + "(" + decimal.substr(remPos[rem]) + ")";
             }
-            m[rem] = pos;
-            s += to_string((rem * 10) / den);
-            rem = (rem * 10) % den;
-            ++pos;
+            remPos.emplace(rem, pos++);
+            // calculate next digit
+            rem *= 10;
+            auto digit = rem / absDen;
+            decimal.append(1, digit + '0');
+            rem = rem % denominator;
         }
-        return res + s;
+        return res + decimal;
     }
 };
 
 static void Test()
 {
     Solution solution;
+    std::cout << solution.fractionToDecimal(7, -12) << std::endl;
     std::cout << solution.fractionToDecimal(3, 7) << std::endl;
     std::cout << solution.fractionToDecimal(66, 100) << std::endl;
     std::cout << solution.fractionToDecimal(3, 4) << std::endl;
