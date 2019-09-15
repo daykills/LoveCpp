@@ -6,9 +6,12 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <map>
+#include <string>
 #include <set>
 #include <queue>
 #include <stack>
+#include <numeric>
+#include <functional>
 
 #include "TreePrinter.h"
 #include "binarytree.hpp"
