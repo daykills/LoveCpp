@@ -21,31 +21,26 @@ Follow up: Could you improve it to O(n log n) time complexity?
 
 namespace LongestIncreasingSubsequence
 {
-  static int Test(const vector<int>& data)
-  {
-    using namespace std;
-    
-    int sizeOfSeq = data.size();
-    int longestLength = 0;
-    vector<int> lis(sizeOfSeq);
-    for (int i = 0; i < sizeOfSeq; i++)
-    {      
-      lis[i] = 1;
-      // Assume the second last element is at j
-      for (int j = 0; j <= i - 1; j++)
-      {
-        // If data[i] is bigger, the new length is lis[j] + 1
-        if (data[i] > data[j] && lis[i] < lis[j] + 1)
-        {
-          lis[i] = lis[j] + 1;
+int lengthOfLIS(vector<int>& nums) {
+    if (nums.empty()) return 0;
+    // dp[i] is the length of LIS ending at i
+    vector<int> dp(nums.size(), 1);
+    int ans = 0;
+    for (auto i = 0; i < nums.size(); i++) {
+        for (auto j = 0; j < i; j++) {
+            if (nums[j] >= nums[i]) continue;
+            dp[i] = max(dp[i], dp[j] + 1);
         }
-      }
-      if (lis[i] > longestLength)
-      {
-        longestLength = lis[i];
-      }
+        ans = max(ans, dp[i]);
     }
+    return ans;
+}
 
-    return longestLength;
-  }
+
+static void Test()
+{
+    vector<int> nums = {1,3,6,7,9,4,10,5,6};
+    std::cout << lengthOfLIS(nums) << std::endl;
+}
+
 }
