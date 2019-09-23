@@ -21,7 +21,7 @@ Follow up: Could you improve it to O(n log n) time complexity?
 
 namespace LongestIncreasingSubsequence
 {
-int lengthOfLIS(vector<int>& nums) {
+int lengthOfLISDP(vector<int>& nums) {
     if (nums.empty()) return 0;
     // dp[i] is the length of LIS ending at i
     vector<int> dp(nums.size(), 1);
@@ -36,10 +36,21 @@ int lengthOfLIS(vector<int>& nums) {
     return ans;
 }
 
+// https://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
+int lengthOfLIS(vector<int>& nums) {
+    vector<int> res;
+    for(int i=0; i<nums.size(); i++) {
+        auto it = std::lower_bound(res.begin(), res.end(), nums[i]);
+        if(it==res.end())
+            res.push_back(nums[i]);
+        else *it = nums[i];
+    }
+    return res.size();
+}
 
 static void Test()
 {
-    vector<int> nums = {1,3,6,7,9,4,10,5,6};
+    vector<int> nums = {2, 5, 3, 1, 2, 3, 4,};
     std::cout << lengthOfLIS(nums) << std::endl;
 }
 
