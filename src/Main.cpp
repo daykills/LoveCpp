@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME AccountsMerge
+#define TEST_NAME MaxAreaOfIsland
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
