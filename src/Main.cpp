@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME MaxAreaOfIsland
+#define TEST_NAME SolveEquation
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
