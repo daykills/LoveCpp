@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME ReorderList
+#define TEST_NAME CanIWin
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
