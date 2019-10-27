@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME SingleNumber2
+#define TEST_NAME SingleNonDuplicate
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
