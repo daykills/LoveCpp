@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME NumSquares
+#define TEST_NAME MaximalSquare
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
