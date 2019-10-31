@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME IsInterleave
+#define TEST_NAME TotalFruit
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
