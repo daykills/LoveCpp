@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME CountSubstrings
+#define TEST_NAME IsAlienSorted
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
