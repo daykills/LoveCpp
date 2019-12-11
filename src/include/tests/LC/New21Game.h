@@ -66,7 +66,7 @@ double new21Game(int N, int K, int W) {
     double wSum = 1;
     for (auto i = 1; i <= N; i++) {
         // i can be reached from the window
-        dp[i] = wSum / W;
+        dp[i] = wSum / W;ExpressiveWords.h
         // update wSum
         // slide out lower end
         if (i >= W) {

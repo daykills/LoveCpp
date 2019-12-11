@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME New21Game
+#define TEST_NAME ExpressiveWords
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
