@@ -22,7 +22,8 @@ namespace MinimumWindowSubstring
 	string minWindow(string s, string t)
 	{
         // charCount stores counts of each character in the window
-        // for required characters, count range is [expected, 0], 0 means window has enough such charaters
+        // for required characters, count range is [0, expected]
+        // start with expected; 0 means window has enough such charater
         // for un-required characters, count range is [-INT, 0].
         std::vector<int> charCount(128, 0);
         for (auto c : t) charCount[c]++;

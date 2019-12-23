@@ -14,48 +14,40 @@ return [1,6],[8,10],[15,18].
 
 namespace MergeIntervals
 {
-    // Definition for an interval.
-    struct Interval {
-        int start;
-        int end;
-        Interval() : start(0), end(0) {}
-        Interval(int s, int e) : start(s), end(e) {}
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+    if (intervals.size() <= 1) return intervals;
+    
+    auto lesser = [](const vector<int>& lhs, const vector<int>& rhs) {
+        assert(lhs.size() == rhs.size() && lhs.size() == 2);
+        return lhs[0] < rhs[0];
     };
-    
-    vector<Interval> merge(vector<Interval>& intervals) {
-        if (intervals.size() <= 1) return intervals;
-        
-        auto lesser = [](const Interval& first, const Interval& second) {
-            return first.start < second.start;
-        };
-        std::sort(intervals.begin(), intervals.end(), lesser);
-        vector<Interval> result { intervals[0] };
-        for (auto& cur : intervals) {
-            auto& last = result.back();
-            assert(last.start <= cur.start);
-            if (last.end < cur.start) {
-                result.push_back(cur);
-            } else {
-                last.end = max(last.end, cur.end);
-            }
+    std::sort(intervals.begin(), intervals.end(), lesser);
+    vector<vector<int>> result { intervals[0] };
+    for (auto& cur : intervals) {
+        auto& last = result.back();
+        assert(last[0] <= cur[0]);
+        if (last[1] < cur[0]) {
+            result.push_back(cur);
+        } else {
+            last[1] = max(last[1], cur[1]);
         }
-        return result;
     }
+    return result;
+}
     
-    int Test(vector<pair<int, int>> intPairs)
+int Test()
+{
+    vector<vector<int>> intervals = {{1,3},{2,6},{8,10},{15,18}};
+    for (const auto& pair : intervals)
     {
-        vector<Interval> intervals;
-        for (const auto& pair : intPairs)
-        {
-            cout << "[" << pair.first << "," << pair.second << "] ";
-            intervals.emplace_back(pair.first, pair.second);
-        }
-        cout << endl;
-        auto result = merge(intervals);
-        for (const auto& interval : result)
-        {
-            cout << "[" << interval.start << "," << interval.end << "] ";
-        }
-        return 0;
+        cout << "[" << pair[0] << "," << pair[1] << "] ";
     }
+    cout << endl;
+    auto result = merge(intervals);
+    for (const auto& interval : result)
+    {
+        cout << "[" << interval[0] << "," << interval[1] << "] ";
+    }
+    return 0;
+}
 }

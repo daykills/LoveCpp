@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME KSmallestPairs
+#define TEST_NAME MergeIntervals
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
