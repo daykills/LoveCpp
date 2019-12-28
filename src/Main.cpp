@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME MergeIntervals
+#define TEST_NAME SerializeAndDeserializeBinaryTree
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>

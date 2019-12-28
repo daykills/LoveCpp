@@ -37,7 +37,7 @@ namespace SerializeAndDeserializeBinaryTree
 
 		string serialize(TreeNode* root) {
 			ostringstream out;
-			serialize(root, out);
+			serializeIterative(root, out);
 			return out.str();
 		}
 
@@ -48,7 +48,7 @@ namespace SerializeAndDeserializeBinaryTree
 
 	private:
 		// Encodes a tree to a string.
-		void serialize(TreeNode* root, ostringstream& out) {
+		void serializeIterative(TreeNode* root, ostringstream& out) {
 			
 			stack<TreeNode*> hist;
 			auto cur = root;
@@ -71,16 +71,25 @@ namespace SerializeAndDeserializeBinaryTree
 			out << "#";
 		}
 
-		TreeNode* deserialize(istringstream& in) {
-			string val;
-			in >> val;
-			if (val == "#")
-				return nullptr;
-			TreeNode* root = new TreeNode(stoi(val));
-			root->left = deserialize(in);
-			root->right = deserialize(in);
-			return root;
-		}
+        void serializeRecursive(TreeNode* root, ostringstream& os) {
+            if (root == nullptr) os << "# ";
+            else {
+                os << root->val << " ";
+                serializeToStream(root->left, os);
+                serializeToStream(root->right, os);
+            }
+        }
+        
+        TreeNode* deserializeFromStream(istringstream& is) {
+            string read;
+            is >> read;
+            if (read == "#")
+                return nullptr;
+            TreeNode* root = new TreeNode(stoi(read));
+            root->left = deserializeFromStream(is);
+            root->right = deserializeFromStream(is);
+            return root;
+        }
 	};
 
 	void Test()
