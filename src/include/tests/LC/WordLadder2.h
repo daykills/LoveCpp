@@ -31,116 +31,48 @@ All words contain only lowercase alphabetic characters.
 
 namespace WordLadder2
 {
-	void addNextWords(unordered_set<string> &wordList, vector<string>& path,
-		queue<vector<string>>& toVisit)
-	{
-		// use the last word in the path
-		auto word = path.back();
-		int n = word.length();
-		for (auto i = 0; i < n; i++)
-		{
-			string newWord = word;
-			for (auto j = 0; j < 26; j++)
-			{
-				newWord[i] = j + 'a';
-				// validate in wordList
-				if (wordList.count(newWord) == 0) continue;
-				// make sure it's not in pastWords
-				bool addedAlready = false;
-				for (const auto& pastWord : path)
-				{
-					if (pastWord == newWord) {
-						addedAlready = true;
-						break;
-					}
-				}
-				if (addedAlready) continue;
-				// add new pastWord to queue
-				auto newPath = path;
-				newPath.emplace_back(newWord);
-				toVisit.push(newPath);
-			}
-		}
-	}
-
-	vector<vector<string>> findLaddersBFS(string beginWord, string endWord, unordered_set<string> &wordList)
-	{
-		vector<vector<string>> result;
-		if (beginWord.length() == 0) return result;
-
-		// save the so far path(vector) and next word to add
-		queue<vector<string>> toVisit;
-		wordList.erase(beginWord);
-		wordList.emplace(endWord);
-		// fill queue with first words
-		vector<string> firstPath{ beginWord };
-		addNextWords(wordList, firstPath, toVisit);
-		// 2 is the minimum distance
-		int distance = 2;
-
-		while (!toVisit.empty())
-		{
-			int nPaths = toVisit.size();
-			bool found = false;
-			for (auto i = 0; i < nPaths; i++)
-			{
-				auto path = toVisit.front();
-				toVisit.pop();
-				if (path.back() == endWord)
-				{
-					found = true;
-					result.emplace_back(move(path));
-				}
-				// if already found, no need to go further
-				if (!found)
-				{
-					addNextWords(wordList, path, toVisit);
-				}
-			}
-			// found, no need to go further
-			if (found) break;
-		}
-		return result;
-	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 	vector<vector<string>> findLadders(string beginWord, string endWord, unordered_set<string> &wordList)
 	{
-		vector<vector<string>> result;
-		if (beginWord.length() == 0) return result;
-
-		// save the so far path(vector) and next word to add
-		queue<vector<string>> toVisit;
-		wordList.erase(beginWord);
-		wordList.emplace(endWord);
-		// fill queue with first words
-		vector<string> firstPath{ beginWord };
-		addNextWords(wordList, firstPath, toVisit);
-		// 2 is the minimum distance
-		int distance = 2;
-
-		while (!toVisit.empty())
-		{
-			int nPaths = toVisit.size();
-			bool found = false;
-			for (auto i = 0; i < nPaths; i++)
-			{
-				auto path = toVisit.front();
-				toVisit.pop();
-				if (path.back() == endWord)
-				{
-					found = true;
-					result.emplace_back(move(path));
-				}
-				// if already found, no need to go further
-				if (!found)
-				{
-					addNextWords(wordList, path, toVisit);
-				}
-			}
-			// found, no need to go further
-			if (found) break;
-		}
-		return result;
+        vector<vector<string>> res;
+        unordered_set<string> wordSet(wordList.begin(), wordList.end());
+        if (!wordSet.count(endWord)) return res;
+        queue<vector<string>> q({ vector<string>({ beginWord }) });
+        bool found = false;
+        unordered_set<string> wordsToRemove;
+        while (!q.empty() && !found) {
+            // the same word might be reused by other path at the same level
+            // so we can only erase words after iterating whole level
+            for (auto& wordToRemove : wordsToRemove)
+                wordSet.erase(wordToRemove);
+            wordsToRemove.clear();
+            // iterate through current level
+            for (auto k = q.size(); k > 0; k--) {
+                auto curPath = std::move(q.front());
+                q.pop();
+                assert(!curPath.empty());
+                auto word = curPath.back();
+                if (word == endWord) {
+                    res.emplace_back(std::move(curPath));
+                    found = true;
+                }
+                if (found)
+                    continue;
+                for (auto i = 0; i < word.size(); i++) {
+                    string newWord = word;
+                    for (char ch = 'a'; ch <= 'z'; ch++) {
+                        newWord[i] = ch;
+                        if (newWord != word && wordSet.count(newWord)) {
+                            curPath.push_back(newWord);
+                            q.push(curPath);
+                            curPath.pop_back();
+                            // no longer need it in next level
+                            wordsToRemove.emplace(newWord);
+                        }
+                    }
+                }
+            }
+        }
+        return res;
 	}
 
 	void Test()
