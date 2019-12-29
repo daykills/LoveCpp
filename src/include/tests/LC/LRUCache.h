@@ -14,7 +14,7 @@ set(key, value) - Set or insert the value if the key is not already present. Whe
 #include <list>
 #include "Common.h"
 
-namespace LsuCache
+namespace LRUCache
 {
 	class LRUCache {
 	public:
