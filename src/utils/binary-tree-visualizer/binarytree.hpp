@@ -61,3 +61,5 @@ extern void delTree(TreeNode * root) noexcept;
  * @param root The tree to be visualized
  */
 extern void showTree(const TreeNode *root);
+
+extern TreeNode* getNodeOfValue(TreeNode* root, int val);

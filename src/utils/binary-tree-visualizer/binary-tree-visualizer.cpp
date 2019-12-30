@@ -1,4 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include "binarytree.hpp"
 #include <cstdio>
 #include <cstring>
@@ -151,6 +151,14 @@ void delTree(TreeNode * root) noexcept
 	delete root;
 }
 
+TreeNode* getNodeOfValue(TreeNode* root, int val)
+{
+    if (root == nullptr) return nullptr;
+    if (root->val == val) return root;
+    auto rst = getNodeOfValue(root->left, val);
+    if (rst) return rst;
+    return getNodeOfValue(root->right, val);
+}
 
 void showTree(const TreeNode *root)
 {
