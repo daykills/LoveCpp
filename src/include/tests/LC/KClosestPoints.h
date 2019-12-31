@@ -19,23 +19,23 @@ vector<vector<int>> kClosest(vector<vector<int>>& points, int K) {
         return (points[i][0] * points[i][0] + points[i][1] * points[i][1]) <
         (points[j][0] * points[j][0] + points[j][1] * points[j][1]);
     };
-    priority_queue<int, vector<int>, decltype(lessor)> minHeap(lessor);
+    priority_queue<int, vector<int>, decltype(lessor)> maxHeap(lessor);
     for (auto i = 0; i < points.size(); i++) {
-        if (minHeap.size() < K) {
-            minHeap.push(i);
+        if (maxHeap.size() < K) {
+            maxHeap.push(i);
             continue;
         }
         // closer point found
-        if (lessor(i, minHeap.top())) {
-            minHeap.pop();
-            minHeap.push(i);
+        if (lessor(i, maxHeap.top())) {
+            maxHeap.pop();
+            maxHeap.push(i);
         }
     }
     vector<vector<int>> ans;
     ans.reserve(K);
-    while (!minHeap.empty()) {
-        auto top = minHeap.top();
-        minHeap.pop();
+    while (!maxHeap.empty()) {
+        auto top = maxHeap.top();
+        maxHeap.pop();
         ans.push_back(points[top]);
     }
     return ans;
