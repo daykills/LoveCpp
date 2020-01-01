@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME LongestSubstringWithoutRepeatingCharacters
+#define TEST_NAME SlidingWindowMaximum
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>

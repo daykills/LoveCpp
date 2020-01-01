@@ -34,52 +34,46 @@
 
 namespace ValidateBinarySearchTree
 {
-    //////////////////////////////////////////////////////
-    // check if a tree is valid; also return max and min
-    bool isValidTree(const TreeNode& root, int& max, int& min) {
-        int leftMax = root.val;
-        int leftMin = root.val;
-        if (root.left) {
-            if (!isValidTree(*root.left, leftMax, leftMin) || leftMax >= root.val)
-                return false;
-        }
-        int rightMin = root.val;
-        int rightMax = root.val;
-        if (root.right) {
-            if (!isValidTree(*root.right, rightMax, rightMin) || rightMin <= root.val)
-                return false;
-        }
-        max = rightMax;
-        min = leftMin;
-        return true;
+//////////////////////////////////////////////////////
+bool checkBST(TreeNode* root, long min, long max)
+{
+    if(root == nullptr) return true;
+    if(root->val >= max || root->val <= min) return false;
+    return checkBST(root->left, min, root->val) && checkBST(root->right, root->val, max);
+}
+
+bool isValidBST(TreeNode* root) {
+    return checkBST(root, LONG_MIN, LONG_MAX);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+bool inorderTraverse(TreeNode* root, long& lastNum) {
+    if (!root) return true;
+    auto isValid = inorderTraverse(root->left, lastNum);
+    if (!isValid || lastNum >= root->val) {
+        return false;
     }
     
-    bool isValidBST0(TreeNode* root) {
-        int min, max;
-        return root ? isValidTree(*root, max, min) : true;
-    }
+    lastNum = root->val;
+    return inorderTraverse(root->right, lastNum);
+}
+
+bool isValidBST(TreeNode* root) {
+    long lastNum = LONG_MIN;
+    return inorderTraverse(root, lastNum);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
+bool Test()
+{
+    auto tree = makeTree({ 2,1,3 });
     
-    bool checkBST(TreeNode* root, long min, long max)
-    {
-        if(root == nullptr) return true;
-        if(root->val >= max || root->val <= min) return false;
-        return checkBST(root->left, min, root->val) && checkBST(root->right, root->val, max);
-    }
+    TreePrinter::Printer<TreeNode> treePrinter;
+    treePrinter.printPretty(tree, 1, 1, cout);
     
-    bool isValidBST(TreeNode* root) {
-        return checkBST(root, LONG_MIN, LONG_MAX);
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////////////
-    bool Test()
-    {
-        auto tree = makeTree({ 5, 1, 4, null, null, 3, 6 });
-        
-        TreePrinter::Printer<TreeNode> treePrinter;
-        treePrinter.printPretty(tree, 1, 1, cout);
-        
-        cout << "result: " << isValidBST(tree) << endl;
-        delTree(tree);
-        return true;
-    }
+    cout << "result: " << isValidBSTNew(tree) << endl;
+    delTree(tree);
+    return true;
+}
 }
