@@ -26,7 +26,7 @@
 #include <list>
 #include "Common.h"
 
-namespace LeastInterval
+namespace TaskScheduler
 {
 class Solution {
 public:
@@ -38,14 +38,16 @@ public:
             return taskMap[task1] < taskMap[task2];
         };
         // the top is always the task with most backlog
-        priority_queue<char, std::vector<char>, std::function<bool(char, char)>> pq(comp);
+        // tasks in pq are all ready to run, no need to wait for cooling
+        priority_queue<char, std::vector<char>, decltype(comp)> pq(comp);
         // tasks waiting for cooling down
         vector<pair<char, int>> waitList;
+        // tasks cannot be in pq and waitList at the same time
         for (auto& pair : taskMap) {
             waitList.emplace_back(pair.first, 0);
         }
         auto time = 0;
-        for (;!waitList.empty() || !pq.empty(); time++) {
+        for (; !waitList.empty() || !pq.empty(); time++) {
             // move ready tasks into priority queue
             auto oldWaitList = std::move(waitList);
             for (auto& taskAndTime : oldWaitList) {
@@ -69,6 +71,7 @@ public:
         return time;
     }
 };
+
 static void Test()
 {
     Solution solution;
