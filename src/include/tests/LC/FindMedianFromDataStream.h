@@ -29,68 +29,61 @@ findMedian() -> 2
 
 namespace FindMedianFromDataStream
 {
-  class MedianFinder
-  {
-  public:
-    // big and small heaps are each storing half of the numbers, with the middle number(s) as their top
-    // inside big, the top is the negative minimum of the bigger half
-    priority_queue<int> big;
-    // inside small, the top is maxium of the smaller half
-    priority_queue<int> small;
-    // Adds a number into the data structure.
-    void addNum(int num)
-    {
-      // 1st element goes to small; small always has not-less-than big elements
-      if (small.empty() && big.empty())
-      {
-        small.push(num);
-        return;
-      }
-      // small number goes to small heap
-      if (num <= findMedian())
-      {
-        small.push(num);
-      }
-      else
-      {
-        // big keeps negative elements to keep its minimum at top
-        big.push(-num);
-      }
-      // rebalance two heaps if needed
-      if (small.size() < big.size())
-      {
-        auto num = -big.top();
-        big.pop();
-        small.push(num);
-      }
-      else if (small.size() >= big.size() + 2)
-      {
-        auto num = -small.top();
-        small.pop();
-        big.push(num);
-      }
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+    MedianFinder() {
+        
     }
-
-    // Returns the median of current data stream
-    double findMedian()
-    {
-      assert(!big.empty() || !small.empty());
-      // if big is empty, and small not
-      if (big.empty()) return small.top();
-      // if both have values
-      return (small.size() == big.size()) ? 0.5 * (small.top() - big.top()) : small.top();
+    
+    void addNum(int num) {
+        // when both are empty
+        if (m_smallQ.empty() && m_bigQ.empty()) {
+            m_smallQ.push(num);
+            return;
+        }
+        auto median = findMedian();
+        if (num <= median)
+            m_smallQ.push(num);
+        else
+            m_bigQ.push(num);
+        
+        // rebalance two queues
+        if (m_smallQ.size() < m_bigQ.size()) {
+            m_smallQ.push(m_bigQ.top());
+            m_bigQ.pop();
+        } else if (m_smallQ.size() == m_bigQ.size() + 2) {
+            m_bigQ.push(m_smallQ.top());
+            m_smallQ.pop();
+        }
     }
-  };
+    
+    double findMedian() {
+        assert(!m_smallQ.empty());
+        assert(m_smallQ.size() >= m_bigQ.size());
+        if (m_bigQ.size() < m_smallQ.size()) {
+            return m_smallQ.top();
+        } else {
+            return (m_smallQ.top() + m_bigQ.top()) * 0.5;
+        }
+    }
+private:
+    // small queue size >= big queue size
+    priority_queue<int> m_smallQ;
+    // big queue is a min heap
+    priority_queue<int, vector<int>, greater<int>> m_bigQ;
+    
+};
 
-  int Test()
-  {
+int Test()
+{
     MedianFinder mf;
     vector<int> nums{ 3, 1, 7, 5, 10, 12, 13, 3 };
     for (auto num : nums)
     {
-      mf.addNum(num);
-      cout << "add " << num << ", median = " << mf.findMedian() << endl;
+        mf.addNum(num);
+        cout << "add " << num << ", median = " << mf.findMedian() << endl;
     }
     return 0;
-  }
+}
 }

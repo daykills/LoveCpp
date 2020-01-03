@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME TaskScheduler
+#define TEST_NAME MultiplyStrings
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
