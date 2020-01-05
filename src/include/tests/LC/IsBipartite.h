@@ -62,6 +62,8 @@ public:
             if (group.count(i))
                 continue;
             bool fail = false;
+            // randomly assign a node to group A
+            // dfs will traverse all its connected nodes
             group.emplace(i, true);
             dfs(graph, i, group, fail);
             if (fail)
