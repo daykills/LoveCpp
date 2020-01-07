@@ -36,25 +36,29 @@ public:
         stringstream ss("+" + s);
         char op;
         int num = 0;
-        int last = 0;
+        // preOprand: previous number used.
+        // For example, 2-3*4+5, when pos is at 4, ans so far is -1, preOperand is -3
+        // With * as the next operator, ans becomes "-1-(-3)+3*4=14", preOperand is 3*4=12
+        int preOperand = 0;
         int ans = 0;
-        // (last op num)
+        // expected format: (last op num)
         while (ss >> op >> num) {
             if (op == '+' || op == '-') {
-                num = op == '-' ? -num : num;
-                ans += last;
+                preOperand = op == '+' ? num : -num;
+                ans += preOperand;
             } else {
-                num = op == '*' ? last * num : last / num;
+                auto newOperand = op == '*' ? preOperand * num : preOperand / num;
+                ans = ans - preOperand + newOperand;
+                preOperand = newOperand;
             }
-            last = num;
         }
-        return ans + last;
+        return ans;
     }
 };
 
 static void Test()
 {
     Solution solution;
-    std::cout << solution.calculate("3+2*2") << std::endl;
+    std::cout << solution.calculate("2-3*4*5") << std::endl;
 }
 }

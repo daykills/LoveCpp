@@ -114,7 +114,8 @@ int longestConsecutive(vector<int>& nums)
 }
 void Test()
 {
-    vector<int> nums{ 2147483646,-2147483647,0,2,2147483644,-2147483645,2147483645 };
-    cout << "result: " << longestConsecutive2(nums) << endl;
+    //vector<int> nums{ 2147483646,-2147483647,0,2,2147483644,-2147483645,2147483645 };
+    vector<int> nums{ 100, 4, 200, 1, 3, 2 };
+    cout << "result: " << longestConsecutiveRadixSort(nums) << endl;
 }
 }

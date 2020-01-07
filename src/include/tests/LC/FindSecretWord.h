@@ -62,7 +62,6 @@ int commonCharCount(const string& base, const string& str) {
     }
     return cnt;
 }
-
 void findSecretWord(vector<string>& wordlist, Master& master) {
     unordered_set<string> dropSet;
     while (true) {
@@ -71,6 +70,7 @@ void findSecretWord(vector<string>& wordlist, Master& master) {
             continue;
         dropSet.emplace(word);
         auto match = master.guess(word);
+        // with pure negative case, remove words with a hit
         if (match == 0) {
             // remove all words with at least one hit
             for (auto& str : wordlist) {
@@ -81,10 +81,11 @@ void findSecretWord(vector<string>& wordlist, Master& master) {
             }
             continue;
         }
-
+        
         assert(match != -1);
         if (match == word.size())
             return;
+        // remove words with incorrect match number
         for (auto& str : wordlist) {
             if (str == word || dropSet.count(str))
                 continue;

@@ -7,7 +7,7 @@
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME ImplementTrie
+#define TEST_NAME FractionToDecimal
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>

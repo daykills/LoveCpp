@@ -33,18 +33,19 @@ public:
         int signDen = denominator >= 0 ? 1 : -1;
         long absNum = abs((long)numerator);
         long absDen = abs((long)denominator);
-        string res = ((numerator == 0 || signNum == signDen) ? "" : "-") + to_string(absNum / absDen);
+        string signStr = (numerator == 0 || signNum == signDen) ? "" : "-";
+        string integerStr = signStr + to_string(absNum / absDen);
         long rem = absNum % absDen;
         if (rem == 0)
-            return res;
+            return integerStr;
+        integerStr = integerStr + ".";
         // if same rem value appears, we know it's repeating
         unordered_map<long, int> remPos;
-        res = res + ".";
         string decimal;
         auto pos = 0;
         while (rem) {
             if (remPos.count(rem)) {
-                return res + decimal.substr(0, remPos[rem])
+                return integerStr + decimal.substr(0, remPos[rem])
                     + "(" + decimal.substr(remPos[rem]) + ")";
             }
             remPos.emplace(rem, pos++);
@@ -54,13 +55,14 @@ public:
             decimal.append(1, digit + '0');
             rem = rem % denominator;
         }
-        return res + decimal;
+        return integerStr + decimal;
     }
 };
 
 static void Test()
 {
     Solution solution;
+    std::cout << solution.fractionToDecimal(86, 7) << std::endl;
     std::cout << solution.fractionToDecimal(7, -12) << std::endl;
     std::cout << solution.fractionToDecimal(3, 7) << std::endl;
     std::cout << solution.fractionToDecimal(66, 100) << std::endl;
