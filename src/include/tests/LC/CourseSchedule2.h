@@ -32,7 +32,7 @@
 
 namespace CourseSchedule2
 {
-vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+vector<int> findOrderBFS(int numCourses, vector<vector<int>>& prerequisites) {
     // map from course to all courses depend on it
     unordered_map<int, unordered_set<int>> dependantMap;
     // indegree is the number of prerequisites this course depend on
@@ -69,11 +69,54 @@ vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
     return ans;
 }
 
+bool dfs(const unordered_map<int, unordered_set<int>>& dependantMap, int curId, unordered_set<int>& visited, unordered_set<int>& stackHist, vector<int>& ans) {
+    if (visited.count(curId))
+        return true;
+    visited.emplace(curId);
+    stackHist.emplace(curId);
+    
+    auto it = dependantMap.find(curId);
+    if (it != dependantMap.end()) {
+        auto& dependants = it->second;
+        for (auto next : dependants) {
+            // cycle detect
+            if (stackHist.count(next))
+                return false;
+            if (dfs(dependantMap, next, visited, stackHist, ans) == false)
+                return false;
+        }
+    }
+    ans.push_back(curId);
+    stackHist.erase(curId);
+    return true;
+}
+
+vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+    // map from course to all courses depend on it
+    unordered_map<int, unordered_set<int>> dependantMap;
+    for (auto& prerequisite : prerequisites) {
+        dependantMap[prerequisite[1]].emplace(prerequisite[0]);
+    }
+    vector<int> ans;
+    unordered_set<int> visited;
+    for (auto i = 0; i < numCourses; i++) {
+        unordered_set<int> stackHist;
+        if (dfs(dependantMap, i, visited, stackHist, ans) == false)
+            return {};
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
+
 static void Test()
 {
     vector<vector<int>> prerequisites = {
         {1,0},{2,0},{3,1},{3,2}
     }; // Output: [0,1,2,3] or [0,2,1,3]
-    
+    auto ans = findOrder(4, prerequisites);
+    for (auto node : ans) {
+        cout << node << " ";
+    }
+    cout << endl;
 }
 }
