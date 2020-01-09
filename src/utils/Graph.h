@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 Depth First Traversal for a Graph
 Depth First Traversal (or Search) for a graph is similar to Depth First Traversal of a tree.
@@ -36,18 +38,9 @@ namespace Graph
 			// add edge
 			m_nodes[idSource].emplace(idDest);
 		}
-		vector<int> dfs()
-		{
-			vector<int> result;
-			unordered_set<int> visited;
-			// start from each node, and do a dfs. skip visited nodes
-			for (auto idNodePair : m_nodes)
-			{
-				if(visited.count(idNodePair.first) == 0)
-					dfsUtil(idNodePair.first, visited, result);
-			}
-			return result;
-		}
+        
+        // regular bfs is not able to detect cyclic
+        // try topological sort + indegree
 		vector<int> bfs()
 		{
 			vector<int> result;
@@ -60,6 +53,24 @@ namespace Graph
 			}
 			return result;
 		}
+        
+        // if there is cycle, return empty
+        vector<int> dfs()
+        {
+            vector<int> result;
+            unordered_set<int> visited;
+            // start from each node, and do a dfs. skip visited nodes
+            for (auto idNodePair : m_nodes)
+            {
+                // keep the stack history to detect cyclic
+                unordered_set<int> stackHist;
+                if (dfsUtil(idNodePair.first, visited, stackHist, result) == false)
+                    return {};
+            }
+            return result;
+        }
+        
+        // if there is cycle, return empty
 		vector<int> topologicalSort()
 		{
 			vector<int> result;			
@@ -67,12 +78,50 @@ namespace Graph
 			// start from each node, and do a dfs. skip visited nodes
 			for (auto idNodePair : m_nodes)
 			{
-				if (visited.count(idNodePair.first) == 0)
-					topologicalUtil(idNodePair.first, visited, result);
+                // keep the stack history to detect cyclic
+                unordered_set<int> stackHist;
+				if (topologicalUtil(idNodePair.first, visited, stackHist, result) == false)
+                    return {};
 			}
 			std::reverse(result.begin(), result.end());
 			return result;
 		}
+        
+        vector<int> topologicalSortBFS()
+        {
+            // number of prerequisites / dependancies
+            unordered_map<int, int> indegrees;
+            for (auto& idNodePair : m_nodes) {
+                for (auto to : idNodePair.second)
+                    indegrees[to]++;
+            }
+            queue<int> q;
+            // for cycles, indegrees are never zero; thus, ignored for search
+            for (auto& idNodePair : m_nodes) {
+                auto cur = idNodePair.first;
+                // nodes without dependancies
+                if (indegrees.count(cur) == 0)
+                    q.push(cur);
+            }
+            vector<int> result;
+            while (!q.empty()) {
+                auto cur = q.front();
+                q.pop();
+                result.push_back(cur);
+                // reduce indegree for all neighbor nodes
+                for (auto nextId : m_nodes[cur])
+                {
+                    if (--indegrees[nextId] == 0) {
+                        q.push(nextId);
+                        indegrees.erase(nextId);
+                    }
+                }
+            }
+            if (result.size() != m_nodes.size())
+                result.clear();
+            return result;
+        }
+        
         template<class T = int>
         void printGraph()
         {
@@ -113,50 +162,72 @@ namespace Graph
 				}
 			}
 		}
-		// utility function for dfs
-		void dfsUtil(int nodeId, unordered_set<int>& visited, vector<int>& traverse)
+		// utility function for dfs.
+        // return false if cyclic detected
+		bool dfsUtil(int nodeId, unordered_set<int>& visited, unordered_set<int> stackHist, vector<int>& traversed)
 		{
-			if (m_nodes.count(nodeId) == 0)
-				throw std::invalid_argument("The node id doesn't exist in the graph.");
-			traverse.emplace_back(nodeId);
+            assert(m_nodes.count(nodeId));
+            if (visited.count(nodeId))
+                return true;
+			traversed.emplace_back(nodeId);
 			visited.emplace(nodeId);
+            stackHist.emplace(nodeId);
 			auto& neighbourIds = m_nodes[nodeId];
 			for (auto neighbourId : neighbourIds)
 			{
-				if (visited.count(neighbourId)) continue;				
-				dfsUtil(neighbourId, visited, traverse);
+                // any node in the stack history, then cyclic is detected
+                if (stackHist.count(neighbourId))
+                    return false;
+				if (visited.count(neighbourId))
+                    continue;
+				if (dfsUtil(neighbourId, visited, stackHist, traversed) == false)
+                    return false;
 			}
+            stackHist.erase(nodeId);
+            return true;
 		}
 		// utility function for dfs
-		void topologicalUtil(int nodeId, unordered_set<int>& visited, vector<int>& traverse)
+		bool topologicalUtil(int nodeId, unordered_set<int>& visited, unordered_set<int> stackHist, vector<int>& traverse)
 		{
-			if (m_nodes.count(nodeId) == 0)
-				throw std::invalid_argument("The node id doesn't exist in the graph.");
+            if (visited.count(nodeId))
+                return true;
+            
+            assert(m_nodes.count(nodeId));
 			
 			visited.emplace(nodeId);
+            stackHist.emplace(nodeId);
 			auto& neighbourIds = m_nodes[nodeId];
 			for (auto neighbourId : neighbourIds)
 			{
+                // cycle detected
+                if (stackHist.count(neighbourId))
+                    return false;
 				if (visited.count(neighbourId)) continue;
-				topologicalUtil(neighbourId, visited, traverse);
+				if (topologicalUtil(neighbourId, visited, stackHist, traverse) == false)
+                    return false;
 			}
 			traverse.emplace_back(nodeId);
+            stackHist.erase(nodeId);
+            return true;
 		}
 		// hash map for nodes, key is the node id, value is the adjacent ids
-		unordered_map<int, unordered_set<int>> m_nodes;
+        // HACK: switch to map to make sure smaller nodes got traversed first
+		map<int, unordered_set<int>> m_nodes;
 	};
 
 	static bool Test()
 	{
 		Graph g;
-		g.addEdge(5, 2);
-		g.addEdge(5, 0);
-		g.addEdge(4, 0);
-		g.addEdge(4, 1);
-		g.addEdge(2, 3);
-		g.addEdge(3, 1);
+        g.addEdge(1, 2);
+        g.addEdge(2, 3);
+        g.addEdge(2, 4);
+		g.addEdge(3, 4);
+        g.addEdge(3, 5);
+        g.addEdge(5, 4);
+        //g.addEdge(5, 1);
+        g.addEdge(6, 7);
 
-		auto result = g.topologicalSort();
+		auto result = g.topologicalSortBFS();
 		for (auto id : result)
 		{
 			cout << id << " ";

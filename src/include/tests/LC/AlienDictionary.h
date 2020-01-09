@@ -1,27 +1,46 @@
 #pragma once
 /*
 269: ALIEN DICTIONARY (HARD)
-There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you.
-You receive a list of words from the dictionary, where words are sorted lexicographically by the rules of this new language.
-Derive the order of letters in this language.
-
-For example,
-Given the following words in dictionary,
-
-[
-"wrt",
-"wrf",
-"er",
-"ett",
-"rftt"
-]
-The correct order is: "wertf".
-
-Note:
-
-You may assume all letters are in lowercase.
-If the order is invalid, return an empty string.
-There may be multiple valid order of letters, return any one of them is fine.
+ There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
+ 
+ Example 1:
+ 
+ Input:
+ [
+ "wrt",
+ "wrf",
+ "er",
+ "ett",
+ "rftt"
+ ]
+ Output: "wertf"
+ 
+ Example 2:
+ 
+ Input:
+ [
+ "z",
+ "x"
+ ]
+ Output: "zx"
+ 
+ Example 3:
+ 
+ Input:
+ [
+ "z",
+ "x",
+ "z"
+ ]
+ Output: ""
+ 
+ Explanation: The order is invalid, so return "".
+ Note:
+ 
+ You may assume all letters are in lowercase.
+ You may assume that if a is a prefix of b, then a must appear before b in the given dictionary.
+ If the order is invalid, return an empty string.
+ There may be multiple valid order of letters, return any one of them is fine.
 
 */
 
@@ -61,6 +80,7 @@ string alienOrder(vector<string>& words)
     
     g.printGraph<char>();
     
+    auto dfsItems = g.dfs();
     auto orderedItems = g.topologicalSort();
     stringstream ss;
     for (auto item : orderedItems)
@@ -72,14 +92,16 @@ string alienOrder(vector<string>& words)
 
 static void Test()
 {
-    /*
-     Input:  words[] = {"caa", "aaa", "aab"}
-     Output: Order of characters is 'c', 'a', 'b'
-     */
+    
+    //Output: Order of characters is 'c', 'a', 'b'
     //vector<string> words { "caa", "aaa", "aab" };
     
     //Output: wertf
-    vector<string> words { "wrt", "wrf", "er", "ett", "rftt" };
+    //vector<string> words { "wrt", "wrf", "er", "ett", "rftt" };
+    
+    //Output: wertf
+    vector<string> words { "z", "x", "z" };
+    
     cout << "Words: ";
     for (auto& word : words)
     {

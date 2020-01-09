@@ -243,6 +243,7 @@
 					$SRCROOT/src/include,
 					$SRCROOT/src/utils,
 					$SRCROOT/src/include/tests,
+					$SRCROOT/src/include/tests/LC,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -256,6 +257,7 @@
 					$SRCROOT/src/include,
 					$SRCROOT/src/utils,
 					$SRCROOT/src/include/tests,
+					$SRCROOT/src/include/tests/LC,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

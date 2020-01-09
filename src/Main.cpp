@@ -6,9 +6,8 @@
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
 
-#define DIR tests/LC
-#define TEST_NAME PartitionEqualSubsetSum
-#include STR(DIR/TEST_NAME.h)
+#define TEST_NAME Graph
+#include STR(TEST_NAME.h)
 
 #include <iostream>
 #include <memory>
