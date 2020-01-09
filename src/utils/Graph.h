@@ -14,6 +14,7 @@ A Depth First Traversal of the following graph is 2, 0, 1, 3.
 #include <unordered_map>
 #include "Common.h"
 
+using namespace std;
 namespace Graph
 {
 	// directional graph
@@ -72,6 +73,20 @@ namespace Graph
 			std::reverse(result.begin(), result.end());
 			return result;
 		}
+        template<class T = int>
+        void printGraph()
+        {
+            for (auto& idNodePair : m_nodes)
+            {
+                cout << "Id [" << (T)idNodePair.first << "]: ";
+                for (auto neighbourId : idNodePair.second)
+                {
+                    cout << (T)neighbourId << " ";
+                }
+                cout << endl;
+            }
+        }
+
 	private:
 		// utility function for bfs
 		void bfsUtil(int nodeId, unordered_set<int>& visited, vector<int>& traverse)

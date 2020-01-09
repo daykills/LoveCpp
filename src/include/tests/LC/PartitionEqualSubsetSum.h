@@ -33,33 +33,11 @@ namespace PartitionEqualSubsetSum
 {
 class Solution {
 public:
-    bool canPartition(vector<int>& nums) {
-        int sum = std::accumulate(nums.begin(), nums.end(), 0);
-        if (sum & 1) return false;
-        
-        sum /= 2;
-        
-        // dp[i] are all the possible values with first i numbers
-        vector<uint8_t> dp(sum + 1, 0);
-        // 0 is always reachable
-        dp[0] = 1;
-        for (auto num : nums) {
-            auto dpNew = dp;
-            for (auto i = 0; i <= sum; i++) {
-                auto newReachable = num + i;
-                if (!dp[i] || newReachable > sum)
-                    continue;
-                dpNew[newReachable] = 1;
-            }
-            dp = std::move(dpNew);
-        }
-        return dp[sum];
-    }
-    
-    bool canPartitionDP2(vector<int>& nums) {
+    bool canPartitionDP(vector<int>& nums) {
         int sum = accumulate(nums.begin(), nums.end(), 0);
         int target = sum >> 1;
         if (sum & 1) return false;
+        // dp[i] means i is reachable
         vector<uint8_t> dp(target + 1, 0);
         dp[0] = 1;
         for(auto num : nums)
@@ -72,15 +50,16 @@ public:
         bitset<5001> bits(1);
         int sum = accumulate(nums.begin(), nums.end(), 0);
         if (sum & 1) return false;
-        for (auto n : nums) bits |= bits << n;
+        for (auto n : nums)
+            bits |= bits << n;
         return bits[sum >> 1];
     }
 };
 
 static void Test()
 {
-    vector<int> nums = { 2,2,3,5 };
+    vector<int> nums = { 2,2,3,1 };
     Solution solution;
-    std::cout << solution.canPartition(nums) << std::endl;
+    std::cout << solution.canPartitionBit(nums) << std::endl;
 }
 }

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include <iostream>
 #include <queue>
@@ -17,6 +18,7 @@
 #include "TreePrinter.h"
 #include "binarytree.hpp"
 #include "linkedlist.hpp"
+#include "Graph.h"
 
 using namespace std;
 

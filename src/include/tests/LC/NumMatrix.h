@@ -68,7 +68,6 @@ private:
         auto n = m_matrix[0].size();
         if (n == 0)
             return;
-        vector<int> buff;
         for (auto i = 0; i < m; i++) {
             auto sumInRow = 0;
             for (auto j = 0; j < n; j++) {

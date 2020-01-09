@@ -1,13 +1,13 @@
 // LeetCodeTest.cpp : Defines the entry point for the console application.
 //
 
-#include "Common.h"
+#include "utils/Common.h"
 
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
 
 #define DIR tests/LC
-#define TEST_NAME FractionToDecimal
+#define TEST_NAME PartitionEqualSubsetSum
 #include STR(DIR/TEST_NAME.h)
 
 #include <iostream>
