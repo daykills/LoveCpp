@@ -15,41 +15,41 @@ For example, given n = 3, a solution set is:
 
 namespace GenerateParentheses
 {
-  // leftNum is how many left parentheses left, and rightNum for right;
-  // every layer, we add one left or right parenthese to combination
-  // base condition is when both are zero, we add combination to the result and return
-  void generate(int leftNum, int rightNum, string combination, vector<string>& result)
-  {
-    // base condition
-    if (leftNum == 0 && rightNum == 0)
-    {
-      result.emplace_back(combination);
-      return;
+// nLeft is how many left parentheses to be added, and nRight for right;
+// every layer, we add one left or right parenthese to str
+// base condition: when both are zero, we add str to the result
+void dfs(vector<string>& res, vector<char>& str, int nLeft, int nRight) {
+    if (nLeft == 0 && nRight == 0) {
+        res.emplace_back(str.data(), str.size());
+        return;
     }
-    // as long as leftNum is >0, we can always add a left parenthese
-    if (leftNum > 0)
-    {
-      generate(leftNum - 1, rightNum, combination + "(", result);
+    // as long as leftNum is >0, we can always add '('
+    if (nLeft > 0) {
+        str.push_back('(');
+        dfs(res, str, nLeft - 1, nRight);
+        str.pop_back();
     }
-    // only when leftNum is smaller than rightNum, we can add ")"
-    if (leftNum < rightNum)
-    {
-      generate(leftNum, rightNum - 1, combination + ")", result);
+    // only when nRight is bigger than nRight, we can add ')'
+    if (nRight > nLeft) {
+        str.push_back(')');
+        dfs(res, str, nLeft, nRight - 1);
+        str.pop_back();
     }
-  }
+}
 
-  vector<string> generateParenthesis(int n)
-  {
-    vector<string> result;
-    generate(n, n, "", result);
-    return result;
-  }
+vector<string> generateParenthesis(int n) {
+    vector<string> res;
+    vector<char> str;
+    str.reserve(n * 2);
+    dfs(res, str, n, n);
+    return res;
+}
 
-  static void Test()
-  {
+static void Test()
+{
     auto result = generateParenthesis(4);
     for (auto str : result)
-      cout << " " << str;
+        cout << " " << str;
     cout << endl;
-  }
+}
 }

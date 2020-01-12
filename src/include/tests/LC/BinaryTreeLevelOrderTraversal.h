@@ -26,141 +26,96 @@ confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on
 
 namespace BinaryTreeLevelOrderTraversal
 {
-    // Definition for a binary tree node.
-    struct TreeNode {
-        int val;
-        TreeNode* left;
-        TreeNode* right;
-        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-    };
-    
-    //Definition for singly-linked list.
-    struct ListNode {
-        int val;
-        ListNode* next;
-        ListNode(int x) : val(x), next(NULL) {}
-    };
-    
-    //////////////////////////////////////////////////////////////////////////////////
-    void levelOrderRecusion(TreeNode *root, unsigned int level, vector<vector<int> > &result)
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+//Definition for singly-linked list.
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+void levelOrderRecusion(TreeNode *root, unsigned int level, vector<vector<int> > &result)
+{
+    if (root == nullptr) return;
+    // no value from this level yet
+    if (result.size() <= level)
     {
-        if (root == nullptr) return;
-        // no value from this level yet
-        if (result.size() <= level)
-        {
-            result.emplace_back(vector<int>());
-        }
-        result[level].emplace_back(root->val);
-        levelOrderRecusion(root->left, level + 1, result);
-        levelOrderRecusion(root->right, level + 1, result);
+        result.emplace_back(vector<int>());
     }
+    result[level].emplace_back(root->val);
+    levelOrderRecusion(root->left, level + 1, result);
+    levelOrderRecusion(root->right, level + 1, result);
+}
+
+vector<vector<int>> levelOrderDFS(TreeNode* root)
+{
+    vector<vector<int>> result;
     
-    vector<vector<int>> levelOrder(TreeNode* root)
-    {
-        vector<vector<int>> result;
-        
-        levelOrderRecusion(root, 0, result);
-        
-        return result;
-    }
+    levelOrderRecusion(root, 0, result);
     
-    vector<vector<int>> levelOrderOneLoop(TreeNode* root) {
-        if (root == nullptr)
-            return vector<vector<int>>();
-        // use nullptr as the level separator
-        vector<vector<int>> result;
-        std::queue<TreeNode*> q;
-        q.push(nullptr);
-        q.push(root);
-        bool separatorSet = false;
-        while (!q.empty()) {
+    return result;
+}
+
+////////////////////////////////////////////////////////
+// breadth first traversal
+vector<vector<int>> levelOrder(TreeNode* root) {
+    if (!root)
+        return {};
+    vector<vector<int>> ans;
+    queue<TreeNode*> q;
+    q.push(root);
+    while (!q.empty()) {
+        auto nNodes = q.size();
+        ans.emplace_back(nNodes);
+        auto& level = ans.back();
+        for (auto i = 0; i < nNodes; i++) {
             auto cur = q.front();
             q.pop();
-            // See a separator
-            if (cur == nullptr) {
-                result.emplace_back();
-                separatorSet = false;
-                continue;
-            }
-            auto& level = result.back();
-            level.push_back(cur->val);
-            for (auto i = 0; i < 2; i++) {
-                auto child = i == 0 ? cur->left : cur->right;
-                if (child) {
-                    if (separatorSet == false) {
-                        q.push(nullptr);
-                        separatorSet = true;
-                    }
-                    q.push(child);
-                }
-            }
+            level[i] = cur->val;
+            if (cur->left)
+                q.push(cur->left);
+            if (cur->right)
+                q.push(cur->right);
         }
-        return result;
     }
+    return ans;
+}
+////////////////////////////////////////////////////////////////////////////////////
+bool Test()
+{
+    //[1, 2, 2, 3, 3, null, null, 4, 4]
+    const int n = 7;
+    TreeNode* nodes[n];
+    for (int i = 0; i < n; i++)
+    {
+        nodes[i] = new TreeNode(i);
+    }
+    nodes[0]->left = nodes[1];
+    nodes[0]->right = nodes[2];
+    nodes[1]->left = nodes[3];
+    nodes[1]->right = nodes[4];
+    nodes[3]->left = nodes[5];
+    nodes[3]->right = nodes[6];
     
-    ////////////////////////////////////////////////////////
-    // breadth first traversal
-    vector<vector<int>> levelOrderBF(TreeNode* root)
+    TreePrinter::Printer<TreeNode> treePrinter;
+    treePrinter.printPretty(nodes[0], 1, 1, cout);
+    
+    for (auto level : levelOrder(nodes[0]))
     {
-        vector<vector<int>> result;
-        
-        if (root == nullptr) return result;
-        
-        // nullptr as the spliter
-        TreeNode* spliter = nullptr;
-        queue<TreeNode*> queue;
-        queue.push(root);
-        while (!queue.empty())
+        for (auto value : level)
         {
-            // start of each level, inser a spliter in the back of the queue
-            queue.push(spliter);
-            vector<int> level;
-            // emplace all the nodes of the current level
-            while (queue.front() != spliter)
-            {
-                auto cur = queue.front();
-                queue.pop();
-                level.emplace_back(cur->val);
-                // enqueue nodes of the next level
-                if (cur->left !=  nullptr)
-                    queue.emplace(cur->left);
-                if (cur->right != nullptr)
-                    queue.emplace(cur->right);
-            }
-            result.emplace_back(level);
-            // pop up spliter
-            queue.pop();
+            cout << value << " ";
         }
-        return result;
+        cout << endl;
     }
-    ////////////////////////////////////////////////////////////////////////////////////
-    bool Test()
-    {
-        //[1, 2, 2, 3, 3, null, null, 4, 4]
-        const int n = 7;
-        TreeNode* nodes[n];
-        for (int i = 0; i < n; i++)
-        {
-            nodes[i] = new TreeNode(i);
-        }
-        nodes[0]->left = nodes[1];
-        nodes[0]->right = nodes[2];
-        nodes[1]->left = nodes[3];
-        nodes[1]->right = nodes[4];
-        nodes[3]->left = nodes[5];
-        nodes[3]->right = nodes[6];
-        
-        TreePrinter::Printer<TreeNode> treePrinter;
-        treePrinter.printPretty(nodes[0], 1, 1, cout);
-        
-        for (auto level : levelOrder(nodes[0]))
-        {
-            for (auto value : level)
-            {
-                cout << value << " ";
-            }
-            cout << endl;
-        }
-        return true;
-    }
+    return true;
+}
 }

@@ -6,7 +6,7 @@
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
 
-#define TEST_NAME CourseSchedule2
+#define TEST_NAME SlidingWindowMedian
 #include STR(TEST_NAME.h)
 
 #include <iostream>

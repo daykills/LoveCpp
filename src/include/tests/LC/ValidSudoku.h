@@ -21,53 +21,81 @@ A valid Sudoku board (partially filled) is not necessarily solvable. Only the fi
 
 namespace ValidSudoku
 {
-  bool isValidSudoku(vector<vector<char>>& board)
-  {
-    const int BOARD_SIZE = 9;
-    int n = board.size();
-    if (n != BOARD_SIZE) return false;
-
-    // history, whether one number has appeared in one row/col
-    vector<vector<bool>> row(n, vector<bool>(n, false));
-    vector<vector<bool>> col(n, vector<bool>(n, false));
-    vector<vector<bool>> grid(n, vector<bool>(n, false));
-
-    for (auto iRow = 0; iRow < n; iRow++)
-    {
-      auto iGridRow = iRow / 3;
-      for (auto iCol = 0; iCol < n; iCol++)
-      {
-        if (board[iRow][iCol] == '.') continue;
-        int num = (int)(board[iRow][iCol] - '1');
-
-        if (row[iRow][num]) return false;
-        if (col[iCol][num]) return false;
-        row[iRow][num] = col[iCol][num] = true;
-
-        auto iGridCol = iCol / 3;
-        auto iGrid = iGridRow * 3 + iGridCol;
-        if (grid[iGrid][num]) return false;
-        grid[iGrid][num] = true;
-      }
+bool isValidSudoku(vector<vector<char>>& board)
+{
+    static constexpr int n = 9;
+    static constexpr int nMinor = 3;
+    assert(board.size() == n);
+    assert(board[0].size() == n);
+    std::bitset<n> hist;
+    // scan each row
+    for (auto row = 0; row < n; row++) {
+        hist.reset();
+        for (auto col = 0; col < n; col++) {
+            if (board[row][col] != '.') {
+                int num = board[row][col] - '0';
+                if (hist[num])
+                    return false;
+                hist[num] = 1;
+            }
+        }
+    }
+    // scan each col
+    for (auto col = 0; col < n; col++) {
+        hist.reset();
+        for (auto row = 0; row < n; row++) {
+            if (board[row][col] != '.') {
+                int num = board[row][col] - '0';
+                if (hist[num])
+                    return false;
+                hist[num] = 1;
+            }
+        }
+    }
+    // scan each row
+    for (auto row = 0; row < n; row += nMinor) {
+        for (auto col = 0; col < n; col += nMinor) {
+            hist.reset();
+            for (auto i = 0; i < n; i++) {
+                auto rowMinor = i / nMinor;
+                auto colMinor = i % nMinor;
+                if (board[row + rowMinor][col + colMinor] != '.') {
+                    int num = board[row + rowMinor][col + colMinor] - '0';
+                    if (hist[num])
+                        return false;
+                    hist[num] = 1;
+                }
+            }
+        }
     }
     return true;
-  }
+}
 
-  void Test()
-  {
-    vector<string> input{ ".87654321", "2........", "3........", "4........", "5........", "6........", "7........", "8........", "9........" };
-
+void Test()
+{
+    vector<string> input{
+        ".87654321",
+        "2........",
+        "3........",
+        "4........",
+        "5........",
+        "6........",
+        "7........",
+        "8........",
+        "9........"
+    };
+    
     for (auto& line : input)
     {
-      cout << line << " " << endl;
+        cout << line << " " << endl;
     }
-
+    
     vector<vector<char>> matrix;
     for (auto& line : input)
     {
-      matrix.emplace_back(vector<char>(line.begin(), line.end()));
+        matrix.emplace_back(vector<char>(line.begin(), line.end()));
     }
-
+    
     cout << "result: " << isValidSudoku(matrix) << endl;
-  }
+}
 }
