@@ -7,7 +7,6 @@
 #define STR(x) XSTR(x)
 
 #define TEST_NAME DivideTwoIntegers
-#include STR(TEST_NAME.h)
 
 #include <iostream>
 #include <memory>

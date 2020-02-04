@@ -50,7 +50,7 @@ int lengthOfLIS(vector<int>& nums) {
 
 static void Test()
 {
-    vector<int> nums = {2, 5, 3, 1, 2, 3, 4,};
+    vector<int> nums = {2, 5, 6, 3, 1, 2, 3, 4,};
     std::cout << lengthOfLIS(nums) << std::endl;
 }
 
