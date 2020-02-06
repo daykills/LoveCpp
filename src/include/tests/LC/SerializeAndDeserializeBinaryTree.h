@@ -24,14 +24,6 @@ Special thanks to @Louis1992 for adding this problem and creating all test cases
 
 namespace SerializeAndDeserializeBinaryTree
 {
-	// Definition for a binary tree node.
-	struct TreeNode {
-		int val;
-		TreeNode* left;
-		TreeNode* right;
-		TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-	};
-
 	class Codec {
 	public:
 
@@ -42,8 +34,8 @@ namespace SerializeAndDeserializeBinaryTree
 		}
 
 		TreeNode* deserialize(string data) {
-			istringstream in(data);
-			return deserialize(in);
+			istringstream is(data);
+			return deserializeFromStream(is);
 		}
 
 	private:
@@ -75,8 +67,8 @@ namespace SerializeAndDeserializeBinaryTree
             if (root == nullptr) os << "# ";
             else {
                 os << root->val << " ";
-                serializeToStream(root->left, os);
-                serializeToStream(root->right, os);
+                serializeRecursive(root->left, os);
+                serializeRecursive(root->right, os);
             }
         }
         
@@ -95,29 +87,16 @@ namespace SerializeAndDeserializeBinaryTree
 	void Test()
 	{
 		//[1, 2, 2, 3, 3, null, null, 4, 4]
-		const int n = 7;
-		TreeNode* nodes[n];
-		for (int i = 0; i < n; i++)
-		{
-			nodes[i] = new TreeNode(i);
-		}
-		nodes[0]->left = nodes[1];
-		nodes[0]->right = nodes[2];
-		nodes[1]->left = nodes[3];
-		nodes[1]->right = nodes[4];
-		//nodes[3]->left = nodes[5];
-		nodes[3]->right = nodes[6];
-
-		TreePrinter::Printer<TreeNode> treePrinter;
-		treePrinter.printPretty(nodes[0], 1, 1, cout);
-
-		Codec codec;
-
-		auto serializedTree = codec.serialize(nodes[0]);
-		cout << "Serialize result: " << serializedTree << endl;
-
-		auto deserializedTree = codec.deserialize(serializedTree);
-		cout << "Deserialize result: " << endl;
-		treePrinter.printPretty(deserializedTree, 1, 1, cout);
+        TreeNode *root = makeTree({ 1,2,3,4,5,null,7 });
+        TreePrinter::Printer<TreeNode> treePrinter;
+        treePrinter.printPretty(root, 1, 1, cout);
+        
+        Codec codec;
+        auto serializedTree = codec.serialize(root);
+        cout << "Serialize result: " << serializedTree << endl;
+        
+        auto deserializedTree = codec.deserialize(serializedTree);
+        cout << "Deserialize result: " << endl;
+        treePrinter.printPretty(deserializedTree, 1, 1, cout);
 	}
 }
