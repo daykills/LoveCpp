@@ -28,7 +28,7 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-void reorderList(ListNode* head) {
+void reorderListOnePass(ListNode* head) {
     if (!head) return;
 
     // find the mid point.
@@ -72,6 +72,72 @@ void reorderList(ListNode* head) {
     }
 }
 
+void reorderListNew(ListNode* head) {
+    if (!head || !head->next) return;
+    
+    // find the second half of the list
+    ListNode dummy(0);
+    dummy.next = head;
+    auto slow = &dummy;
+    auto fast = slow;
+    while (fast && fast->next
+           && fast->next->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    auto halfHead = slow->next;
+    slow->next = nullptr;
+    
+    // reverse half head;
+    ListNode* reversed = nullptr;
+    auto cur = halfHead;
+    while (cur) {
+        auto newRevHead = cur;
+        cur = cur->next;
+        newRevHead->next = reversed;
+        reversed = newRevHead;
+    }
+    
+    // merge reversed and head
+    dummy.next = nullptr;
+    auto prev = &dummy;
+    while (head) {
+        assert(prev);
+        prev->next = head;
+        head = head->next;
+        prev = prev->next;
+        
+        prev->next = reversed;
+        if (reversed) {
+            reversed = reversed->next;
+            prev = prev->next;
+        }
+    }
+    head = dummy.next;
+}
+
+// recursive way:
+// L0→Ln→L1→Ln-1→L2→Ln-2→… = L0→Ln→PREV_RESULT
+void reorderList(ListNode* head) {
+    if (!head || head->next == nullptr)
+        return;
+    // find the last node
+    auto prev = head;
+    auto last = head->next;
+    while (last->next) {
+        prev = last;
+        last = last->next;
+    }
+    // break the last node from the list
+    prev->next = nullptr;
+    // start recursion
+    auto subHead = head->next;
+    reorderList(subHead);
+    // merge into complete list
+    head->next = last;
+    last->next = subHead;
+}
+
 void Test()
 {
     vector<int> vals = { 1, 2, 3, 4, 5 };
@@ -81,6 +147,11 @@ void Test()
         pre->next = new ListNode(val);
         pre = pre->next;
     }
-    reorderList(dummy.next);
+    reorderListNew(dummy.next);
+    auto cur = dummy.next;
+    while (cur) {
+        cout << cur->val << endl;
+        cur = cur->next;
+    }
 }
 }

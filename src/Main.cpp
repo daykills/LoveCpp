@@ -6,7 +6,7 @@
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
 
-#define TEST_NAME LowestCommonAncestorOfABinaryTree
+#define TEST_NAME WordSearch2
 #include STR(TEST_NAME.h)
 
 #include <iostream>

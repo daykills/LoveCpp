@@ -14,128 +14,68 @@ You may assume that all inputs are consist of lowercase letters a-z.
 
 namespace ImplementTrie
 {
-/*
 class TrieNode {
+public:
+    TrieNode() : m_isWord(false) {}
+    bool isWord() const {
+        return m_isWord;
+    }
+    TrieNode* getNode(char c) {
+        if (m_children.count(c))
+            return m_children[c];
+        return nullptr;
+    }
+    void insert(const string& word) {
+        if (word.empty()) {
+            m_isWord = true;
+            return;
+        }
+        auto c = word.front();
+        if (!m_children.count(c))
+            m_children[c] = new TrieNode();
+        m_children[c]->insert(word.substr(1));
+    }
 private:
-    // map is in order
+    bool m_isWord;
     unordered_map<char, TrieNode*> m_children;
-    //
-    bool isEndOfAWord;
-public:
-    char value;
-    // Initialize your data structure here.
-    TrieNode(char ch = 0) : value(ch), isEndOfAWord(false)
-    {
-    }
-    void insert(const string& str)
-    {
-        if (str.empty())
-        {
-            return;
-        }
-        
-        auto ch = str.front();
-        
-        if (m_children.find(ch) == m_children.end())
-        {
-            m_children.emplace(ch, new TrieNode(ch));
-        }
-        // last letter, mark next child isEndOfAWord
-        if (str.length() == 1)
-        {
-            m_children[ch]->isEndOfAWord = true;
-            return;
-        }
-        // recursively insert the rest of remaining string
-        m_children[ch]->insert(str.substr(1, str.length() - 1));
-    }
-    bool search(const string& str)
-    {
-        // if str is empty, and there is an ending character, then we find the word
-        if (str.empty()) return isEndOfAWord;
-        auto ch = str.front();
-        if (m_children.find(ch) == m_children.end()) return false;
-        return m_children[ch]->search(str.substr(1, str.length() - 1));
-    }
-    bool startsWith(const string& str)
-    {
-        if (str.empty()) return true;
-        auto ch = str.front();
-        if (m_children.find(ch) == m_children.end()) return false;
-        return m_children[ch]->startsWith(str.substr(1, str.length() - 1));
-    }
 };
-
-class Trie {
-public:
-    Trie() {
-        root = new TrieNode();
-    }
-    
-    // Inserts a word into the trie.
-    void insert(string word)
-    {
-        root->insert(word);
-    }
-    
-    // Returns if the word is in the trie.
-    bool search(string word)
-    {
-        return root->search(word);
-    }
-    
-    // Returns if there is any word in the trie
-    // that starts with the given prefix.
-    bool startsWith(string prefix)
-    {
-        return root->startsWith(prefix);
-    }
-    
-private:
-    TrieNode* root;
-};
-*/
 
 class Trie {
 public:
     /** Initialize your data structure here. */
-    Trie() {
-    }
+    Trie() {}
+    
     /** Inserts a word into the trie. */
     void insert(string word) {
-        if (word.empty()) {
-            m_children.emplace(kEndOfWord, new Trie());
-            return;
-        }
-        if (!m_children.count(word[0]))
-            m_children.emplace(word[0], new Trie());
-        auto child = m_children[word[0]];
-        child->insert(word.substr(1));
+        if (word.empty()) return;
+        m_root.insert(word);
     }
     
     /** Returns if the word is in the trie. */
     bool search(string word) {
-        if (word.empty())
-            return m_children.count(kEndOfWord);
-        if (!m_children.count(word[0]))
-            return false;
-        return m_children[word[0]]->search(word.substr(1));
+        auto node = &m_root;
+        for (auto c : word) {
+            node = node->getNode(c);
+            if (!node) return false;
+        }
+        return node->isWord();
     }
     
     /** Returns if there is any word in the trie that starts with the given prefix. */
     bool startsWith(string prefix) {
-        if (prefix.empty())
-            return true;
-        if (!m_children.count(prefix[0]))
-            return false;
-        return m_children[prefix[0]]->startsWith(prefix.substr(1));
+        auto node = &m_root;
+        for (auto c : prefix) {
+            node = node->getNode(c);
+            if (!node) return false;
+        }
+        return node;
     }
+    
+    TrieNode* root() { return &m_root; }
+    
 private:
-    static constexpr char kEndOfWord = 0;
-    unordered_map<char, Trie*> m_children;
+    TrieNode m_root;
 };
-
-
 
 int Test()
 {
