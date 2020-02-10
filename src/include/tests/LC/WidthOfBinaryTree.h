@@ -69,33 +69,29 @@ namespace WidthOfBinaryTree
 {
 int widthOfBinaryTree(TreeNode* root) {
     if (!root) return 0;
-    // queue to store the node and its pos
+    uint64_t maxWid = 1;
+    // q to store node and its position in the level
     queue<pair<TreeNode*, uint64_t>> q;
     q.emplace(root, 0);
-    uint64_t ans = 1;
     while (!q.empty()) {
-        auto nNodes = q.size();
-        auto startPos = 0;
-        for (auto i = 0; i < nNodes; i++) {
+        auto nodeCount = q.size();
+        uint64_t startPos;
+        for (auto i = 0; i < nodeCount; i++) {
             auto node = q.front().first;
             auto pos = q.front().second;
             q.pop();
-            if (i == 0) {
+            if (i == 0)
                 startPos = pos;
-            } else if (i == nNodes - 1) {
-                ans = max(ans, pos - startPos + 1);
-            }
-            // pos doubles in next level
-            pos *= 2;
-            if (node->left) {
-                q.emplace(node->left, pos);
-            }
-            if (node->right) {
-                q.emplace(node->right, pos + 1);
-            }
+            if (i == nodeCount - 1)
+                maxWid = max(maxWid, pos - startPos + 1);
+            // posLeft = pos * 2, posRight = posLeft + 1
+            if (node->left)
+                q.emplace(node->left, pos * 2);
+            if (node->right)
+                q.emplace(node->right, pos * 2 + 1);
         }
     }
-    return ans;
+    return maxWid;
 }
 
 void Test()

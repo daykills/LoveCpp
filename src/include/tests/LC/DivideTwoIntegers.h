@@ -58,7 +58,7 @@ namespace DivideTwoIntegers
 
   int Test()
   {
-    int num1 = 2147483647;
+    int num1 = 11;
     int num2 = 3;
     cout << num1 << " / " << num2 << endl;
     return divide(num1, num2);
