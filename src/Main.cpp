@@ -5,9 +5,10 @@
 
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
-#define TEST_NAME SlidingPuzzle
+#define TEST_GROUP_NAME Amazon
+#define TEST_NAME RemoveObstacle
 
-#include STR(TEST_NAME.h)
+#include STR(TEST_GROUP_NAME/TEST_NAME.h)
 
 #include <iostream>
 #include <memory>
