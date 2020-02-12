@@ -43,6 +43,7 @@ int removeObstacle(vector<vector<int>>& lot) {
                 continue;
             if (lot[i][j] == 9)
                 return distance;
+            lot[i][j] = 0;
             q.emplace(i - 1, j);
             q.emplace(i + 1, j);
             q.emplace(i, j - 1);
