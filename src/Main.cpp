@@ -5,8 +5,8 @@
 
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
-#define TEST_GROUP_NAME LC
-#define TEST_NAME SlidingPuzzle
+#define TEST_GROUP_NAME LintCode
+#define TEST_NAME HighFive
 
 #include STR(TEST_GROUP_NAME/TEST_NAME.h)
 
