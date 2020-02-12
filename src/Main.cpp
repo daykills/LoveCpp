@@ -5,7 +5,7 @@
 
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
-#define TEST_NAME ClosestXdestinations
+#define TEST_NAME SlidingPuzzle
 
 #include STR(TEST_NAME.h)
 
