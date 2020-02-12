@@ -30,6 +30,7 @@
 		38138EFC2154C214007CDE05 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 		382A033D2154CC0300EE1F2B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3895A1C323C6DC7800FD3E59 /* utils */ = {isa = PBXFileReference; lastKnownFileType = folder; path = utils; sourceTree = "<group>"; };
+		38A328EA23F4B322008DF4BB /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 		382A027F2154CB7900EE1F2B /* src */ = {
 			isa = PBXGroup;
 			children = (
+				38A328EA23F4B322008DF4BB /* include */,
 				3895A1C323C6DC7800FD3E59 /* utils */,
 				380F6E62222683A500EDE402 /* tests */,
 				382A033D2154CC0300EE1F2B /* main.cpp */,
@@ -242,9 +244,6 @@
 					$SRCROOT/src,
 					$SRCROOT/src/include,
 					$SRCROOT/src/utils,
-					$SRCROOT/src/include/tests,
-					$SRCROOT/src/include,
-					$SRCROOT/src/include/tests/LC,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -257,9 +256,6 @@
 					$SRCROOT/src,
 					$SRCROOT/src/include,
 					$SRCROOT/src/utils,
-					$SRCROOT/src/include/tests,
-					$SRCROOT/src/include,
-					$SRCROOT/src/include/tests/LC,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
