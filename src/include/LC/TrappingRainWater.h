@@ -17,54 +17,80 @@ What is the minimum candies you must give?
 
 namespace TrappingRainWater
 {
-	int trap(vector<int>& height)
-	{
-		int n = height.size();
-		if (n < 2) return 0;
+int trap(vector<int>& height) {
+    if (height.size() < 3) return 0;
+    auto itMax = std::max_element(height.begin(), height.end());
+    auto iMax = distance(height.begin(), itMax);
+    auto water = 0;
+    auto lastHeight = height[0];
+    // for lower part
+    for (auto i = 1; i < iMax; i++) {
+        if (height[i] >= lastHeight) {
+            lastHeight = height[i];
+        } else {
+            water += lastHeight - height[i];
+        }
+    }
+    // for higher part
+    lastHeight = height.back();
+    for (auto i = height.size() - 2; i > iMax; i--) {
+        if (height[i] >= lastHeight) {
+            lastHeight = height[i];
+        } else {
+            water += lastHeight - height[i];
+        }
+    }
+    return water;
+}
 
-		// find the highest
-		int iHighest = 0;
-		for (int i = 1; i <n; i++)
-		{
-			if (height[i] > height[iHighest]) iHighest = i;
-		}
+int trapStack(vector<int>& height) {
+    auto n = height.size();
+    stack<int> s;
+    int water = 0;
+    for (auto i = 0; i < n; i++) {
+        // down-ward slop, push to stack
+        if (s.empty() || height[s.top()] >= height[i]) {
+            s.push(i);
+            continue;
+        }
+        // ditch found
+        while (!s.empty() && height[s.top()] <= height[i]) {
+            auto t = s.top();
+            s.pop();
+            // false ditch
+            if (s.empty())
+                break;
+            auto waterLevel = min(height[i], height[s.top()]);
+            auto bottom = height[t];
+            water += (waterLevel - bottom) * (i - s.top() - 1);
+        }
+    }
+    return water;
+}
 
-		// for left part
-		int water = 0;
-		int lastHigh = height[0];
-		for (auto i = 1; i < iHighest; i++)
-		{
-			if (height[i] >= lastHigh)
-			{
-				lastHigh = height[i];
-			}
-			else
-			{
-				water += lastHigh - height[i];
-			}
-		}
-		// for right part
-		lastHigh = height[n - 1];
-		for (auto i = n - 2; i > iHighest; i--)
-		{
-			if (height[i] >= lastHigh)
-			{
-				lastHigh = height[i];
-			}
-			else
-			{
-				water += lastHigh - height[i];
-			}
-		}
-		return water;
-	}
+int trapStack_old(vector<int>& height) {
+    stack<int> st;
+    int i = 0, res = 0, n = height.size();
+    while (i < n) {
+        if (st.empty() || height[i] <= height[st.top()]) {
+            st.push(i++);
+        } else {
+            int t = st.top(); st.pop();
+            if (st.empty()) continue;
+            int waterLevel = min(height[i], height[st.top()]);
+            int bottomLevel = height[t];
+            res += (waterLevel - bottomLevel) * (i - st.top() - 1);
+        }
+    }
+    return res;
+}
 
-	static void Test()
-	{
-		vector<int> heights { 2, 4, 3, 5, 2, 3, 1 };
-		for (auto i : heights)
-			cout << " " << i;
-		cout << endl;
-		cout << "result: " << trap(heights) << endl;
-	}
+static void Test()
+{
+    vector<int> heights { 0,1,0,2,1,0,1,3,2,1,2,1 };
+    for (auto i : heights)
+        cout << " " << i;
+    cout << endl;
+    cout << "result: " << trapStack(heights) << endl;
+}
 }
