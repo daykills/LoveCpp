@@ -21,18 +21,38 @@
 namespace LargestRectangleInHistogram
 {
 
+int largestRectangleAreaOld(vector<int>& heights) {
+    auto n = heights.size();
+    if (n == 0) return 0;
+    int ans = 0;
+    for (auto i = 0; i < n; i++) {
+        if (i < n - 1 && heights[i + 1] >= heights[i])
+            continue;
+        auto minHeight = heights[i];
+        auto maxHist = minHeight;
+        for (int j = i - 1; j >= 0 && minHeight > 0; j--) {
+            minHeight = min(minHeight, heights[j]);
+            maxHist = max(maxHist, (i - j + 1) * minHeight);
+        }
+        ans = max(ans, maxHist);
+    }
+    return ans;
+}
+
 int largestRectangleArea(vector<int>& height) {
     int res = 0;
+    stack<int> st;
+    height.push_back(0);
     for (int i = 0; i < height.size(); ++i) {
-        // no need to check the up-ward slops
-        if (i + 1 < height.size() && height[i] <= height[i + 1]) {
-            continue;
-        }
-        int minH = height[i];
-        for (int j = i; j >= 0; --j) {
-            minH = min(minH, height[j]);
-            int area = minH * (i - j + 1);
-            res = max(res, area);
+        if (st.empty() || height[st.top()] <= height[i]) {
+            st.push(i);
+        } else {
+            int cur = st.top();
+            st.pop();
+            // cur
+            auto span = st.empty() ? i : i - st.top() - 1;
+            res = max(res, height[cur] * span);
+            --i;
         }
     }
     return res;
@@ -40,7 +60,7 @@ int largestRectangleArea(vector<int>& height) {
 
 static void Test()
 {
-    vector<int> heights = { 2,1,5,6,5,3 };
+    vector<int> heights = { 1,2,3,1,2,3,1,2,3 };
     std::cout << largestRectangleArea(heights) << std::endl;
 }
 }

@@ -45,44 +45,27 @@ int trap(vector<int>& height) {
 
 int trapStack(vector<int>& height) {
     auto n = height.size();
+    if (n < 3) return 0;
     stack<int> s;
     int water = 0;
     for (auto i = 0; i < n; i++) {
-        // down-ward slop, push to stack
+        // down slop
         if (s.empty() || height[s.top()] >= height[i]) {
             s.push(i);
             continue;
         }
-        // ditch found
+        
+        // collect water from stack - make it monotone again
         while (!s.empty() && height[s.top()] <= height[i]) {
-            auto t = s.top();
+            auto bottom = s.top();
             s.pop();
-            // false ditch
-            if (s.empty())
-                break;
-            auto waterLevel = min(height[i], height[s.top()]);
-            auto bottom = height[t];
-            water += (waterLevel - bottom) * (i - s.top() - 1);
+            if (s.empty()) break;
+            auto waterLevel = min(height[s.top()], height[i]);
+            water += (waterLevel - height[bottom]) * (i - s.top() - 1);
         }
+        s.push(i);
     }
     return water;
-}
-
-int trapStack_old(vector<int>& height) {
-    stack<int> st;
-    int i = 0, res = 0, n = height.size();
-    while (i < n) {
-        if (st.empty() || height[i] <= height[st.top()]) {
-            st.push(i++);
-        } else {
-            int t = st.top(); st.pop();
-            if (st.empty()) continue;
-            int waterLevel = min(height[i], height[st.top()]);
-            int bottomLevel = height[t];
-            res += (waterLevel - bottomLevel) * (i - st.top() - 1);
-        }
-    }
-    return res;
 }
 
 static void Test()
