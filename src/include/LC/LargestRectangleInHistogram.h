@@ -40,27 +40,19 @@ int largestRectangleAreaOld(vector<int>& heights) {
 }
 
 int largestRectangleArea(vector<int>& height) {
-    int res = 0;
-    stack<int> st;
+    int maxArea = 0;
+    stack<int> s;
     height.push_back(0);
-    for (int i = 0; i < height.size();) {
-        if (st.empty() || height[st.top()] <= height[i]) {
-            st.push(i++);
-        } else {
-            int cur = st.top();
-            st.pop();
-            if (st.empty()) {
-                // all items before i are <= than h[cur]
-                res = max(res, height[cur] * i);
-                continue;
-            }
-            // (st.top, i - 1] are all <= height[cur]
-            auto span = i - 1 - st.top();
-            res = max(res, height[cur] * span);
-            --i;
+    for (int i = 0; i < height.size(); i++) {
+        // clear stack until all elements are smaller than height[i]
+        while (!s.empty() && height[i] <= height[s.top()]) {
+            auto cur = s.top(); s.pop();
+            auto span = s.empty() ? i : (i - 1 - s.top());
+            maxArea = max(maxArea, span * height[cur]);
         }
+        s.push(i);
     }
-    return res;
+    return maxArea;
 }
 
 static void Test()
