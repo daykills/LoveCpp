@@ -54,43 +54,55 @@
 
 namespace ShipWithinDays
 {
-int shippingDays(vector<int>& weights, int capacity) {
-    int days = 0;
-    int load = 0;
-    for (auto weight : weights) {
-        if (weight > capacity) return INT_MAX;
-        load += weight;
-        if (load > capacity) {
-            // ship current load
-            days++;
-            load = weight;
+class Solution {
+public:
+    int shippingDays(vector<int>& weights, int capacity) {
+        static unordered_map<int, int> cache;
+        if (cache.count(capacity))
+            return cache[capacity];
+        
+        int days = 0;
+        int load = 0;
+        for (auto weight : weights) {
+            if (weight > capacity) {
+                cache[capacity] = INT_MAX;
+                return INT_MAX;
+            }
+            load += weight;
+            if (load > capacity) {
+                // ship current load
+                days++;
+                load = weight;
+            }
         }
+        if (load) days++;
+        cache[capacity] = days;
+        return days;
     }
-    if (load) days++;
-    return days;
-}
-int shipWithinDays(vector<int>& weights, int D) {
-    const auto totalWeight = std::accumulate(weights.begin(), weights.end(), 0);
-    auto maxWeight = totalWeight / D;
-    for (auto weight : weights) {
-        maxWeight = max(maxWeight, weight);
-    }
-    auto lo = maxWeight;
-    auto hi = totalWeight;
-    while (lo < hi) {
-        auto mid = (lo + hi) / 2;
-        auto days = shippingDays(weights, mid);
-        if (days > D) {
-            lo = mid + 1;
-        } else {
-            hi = mid;
+    int shipWithinDays(vector<int>& weights, int D) {
+        const auto totalWeight = std::accumulate(weights.begin(), weights.end(), 0);
+        auto maxWeight = totalWeight / D;
+        for (auto weight : weights) {
+            maxWeight = max(maxWeight, weight);
         }
+        auto lo = maxWeight;
+        auto hi = totalWeight;
+        while (lo < hi) {
+            auto mid = (lo + hi) / 2;
+            auto days = shippingDays(weights, mid);
+            if (days > D) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
     }
-    return lo;
-}
+};
 
 void Test() {
     vector<int> weights = { 1,2,3,4,5,6,7,8,9,10 };
-    cout << shipWithinDays(weights, 5) << endl;
+    Solution s;
+    cout << s.shipWithinDays(weights, 5) << endl;
 }
 }
