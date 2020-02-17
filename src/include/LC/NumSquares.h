@@ -29,47 +29,44 @@
 
 namespace NumSquares
 {
-int numSquares(int n) {
-    if (n <= 0) return 0;
-    // cntPerfectSquares[i] = the least number of perfect square numbers
-    // which sum to i. Note that cntPerfectSquares[0] is 0.
-    vector<int> cntPerfectSquares(n + 1, INT_MAX);
-    cntPerfectSquares[0] = 0;
-    for (int i = 1; i <= n; i++)
-    {
-        // For each i, it must be the sum of some number (i - j*j) and
-        // a perfect square number (j*j).
-        for (int j = 1; j * j <= i; j++)
-        {
-            cntPerfectSquares[i] =
-            min(cntPerfectSquares[i], cntPerfectSquares[i - j*j] + 1);
+int numSquaresBFS(int n) {
+    auto maxCand = (int)sqrt(n);
+    // q to store remainder
+    queue<int> q;
+    q.push(n);
+    int step = 0;
+    while (!q.empty()) {
+        auto cnt = q.size();
+        for (auto i = 0; i < cnt; i++) {
+            auto remainder = q.front(); q.pop();
+            for (auto num = maxCand; num >= 1; num--) {
+                auto square = num * num;
+                if (square > remainder)
+                    continue;
+                if (square == remainder)
+                    return step + 1;
+                q.push(remainder - square);
+            }
         }
+        step++;
     }
-    
-    return cntPerfectSquares.back();
+    return INT_MAX;
 }
 
-int numSquaresBFS(int n) {
-    int maxNum = (int)sqrt(n);
-    // q of sum & perfect squres
-    queue<pair<int, vector<int>>> q;
-    // start with nothing
-    q.emplace(0, vector<int>());
-    while (true) {
-        auto sum = q.front().first;
-        auto hist = std::move(q.front().second);
-        q.pop();
-        for (auto num = maxNum; num >= 1; num--) {
-            auto sqr = num * num;
-            auto newSum = sum + sqr;
-            hist.push_back(sqr);
-            if (newSum == n)
-                return hist.size();
-            q.emplace(newSum, hist);
-            hist.pop_back();
+int numSquares(int n) {
+    if (n < 2) return n;
+    // dp[i] is the min squares to reach i
+    vector<int> dp(n + 1, INT_MAX);
+    dp[0] = 0;
+    for (auto i = 1; i <= n; i++) {
+        for (int j = 1; j < sqrt(i) + 1; j++) {
+            auto square = j * j;
+            if (square > i)
+                continue;
+            dp[i] = min(dp[i], dp[i - square] + 1);
         }
     }
-    return 0;
+    return dp.back();
 }
 
 void Test() {
