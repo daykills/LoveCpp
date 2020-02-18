@@ -33,17 +33,29 @@ namespace PartitionEqualSubsetSum
 {
 class Solution {
 public:
-    bool canPartitionDP(vector<int>& nums) {
-        int sum = accumulate(nums.begin(), nums.end(), 0);
-        int target = sum >> 1;
+    bool canPartition(vector<int>& nums) {
+        int sum = std::accumulate(nums.begin(), nums.end(), 0);
         if (sum & 1) return false;
-        // dp[i] means i is reachable
-        vector<uint8_t> dp(target + 1, 0);
+        
+        sum /= 2;
+        
+        // dp[i]: times that i has been reached
+        vector<uint8_t> dp(sum + 1, 0);
+        // 0 is always reachable
         dp[0] = 1;
-        for(auto num : nums)
-            for(int i = num; i <= target; i++)
-                dp[i] = dp[i] || dp[i - num];
-        return dp[target];
+        // dpPre is the state after processing last number
+        vector<uint8_t> dpPre = dp;
+        for (auto num : nums) {
+            // basically shift dpPre with num distance
+            for (auto i = 0; i <= sum; i++) {
+                auto newReachable = num + i;
+                if (!dpPre[i] || newReachable > sum)
+                    continue;
+                dp[newReachable]++;
+            }
+            std::copy (dp.begin(), dp.end(), dpPre.begin());
+        }
+        return dp[sum];
     }
     
     bool canPartitionBit(vector<int>& nums) {
