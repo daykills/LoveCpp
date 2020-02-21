@@ -1,4 +1,5 @@
 /*
+ https://www.geeksforgeeks.org/print-all-the-peaks-and-troughs-in-an-array-of-integers/
  在一个array 中找peak element
  array > array, array > array
  假设array[-1] < array[0], array[array.length - 1] > array[array.length]
@@ -21,74 +22,35 @@
 
 namespace PeakNumber
 {
-class IDeckOfCard {
-public:
-    IDeckOfCard() = default;
-    virtual ~IDeckOfCard() = default;
-    virtual vector<int> getFromTop(int n) = 0;
-    virtual vector<int> getFromBottom(int n) = 0;
-    virtual void shuffule() = 0;
-};
-
-class DeckOfCard : public IDeckOfCard
-{
-public:
-    // size: valid cards are [top, bottom]
-    DeckOfCard(int size)
-        : m_cards(size)
-        , m_top(0)
-        , m_bottom(size - 1)
-        , m_empty(false) {
-    }
-    
-    vector<int> getFromTop(int n) override {
-        if (n == 0 || m_empty) return {};
-        vector<int> cards;
-        cards.reserve(n);
-        while (n > 0 && m_top != m_bottom) {
-            cards.push_back(m_cards[m_top]);
-            m_top = (m_top + 1) % m_cards.size();
-            n--;
+vector<int> getPeaks(const vector<int>& nums) {
+    auto n = nums.size();
+    if (n == 0) return {};
+    auto val = [&nums](int i) {
+        if (i < 0 || i >= nums.size()) return INT_MIN;
+        return nums[i];
+    };
+    bool rising = true;
+    vector<int> peaks;
+    // look for the turning point
+    for (auto i = 0; i <= n; i++) {
+        if (val(i) > val(i - 1))
+            rising = true;
+        else {
+            if (rising) {
+                peaks.push_back(val(i - 1));
+            }
+            rising = false;
         }
-        if (n > 0) {
-            assert(m_top == m_bottom);
-            cards.push_back(m_cards[m_top])
-            m_empty = true;
-        }
-        return cards;
     }
-    vector<int> getFromBottom(int n) override {
-        if (n == 0 || m_empty) return {};
-        vector<int> cards;
-        cards.reserve(n);
-        while (n > 0 && m_top != m_bottom) {
-            cards.push_back(m_cards[m_top]);
-            m_bottom = (m_bottom + m_cards.size() - 1) % m_cards.size();
-            n--;
-        }
-        if (n > 0) {
-            assert(m_top == m_bottom);
-            cards.push_back(m_cards[m_top])
-            m_empty = true;
-        }
-        return cards;
-    }
-    void shuffule() override {
-        m_empty = false;
-        m_top = 0;
-        m_bottom = m_cards.size() - 1;
-    }
-    
-private:
-    vector<int> m_cards;
-    int m_bottom;
-    int m_top;
-    bool m_empty;
-};
+    return peaks;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////
 void Test()
 {
-    DeckOfCard cards(100);
+    vector<int> nums = { 5, 10, 10, 5, 7, 4, };
+    auto peaks = getPeaks(nums);
+    for (auto peak : peaks)
+        cout << peak << endl;
 }
 }
