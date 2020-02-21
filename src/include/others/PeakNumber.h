@@ -29,10 +29,10 @@ vector<int> getPeaks(const vector<int>& nums) {
         if (i < 0 || i >= nums.size()) return INT_MIN;
         return nums[i];
     };
-    bool rising = true;
+    bool rising = val(0) > val(-1);
     vector<int> peaks;
     // look for the turning point
-    for (auto i = 0; i <= n; i++) {
+    for (auto i = 1; i <= n; i++) {
         if (val(i) > val(i - 1))
             rising = true;
         else {
@@ -48,7 +48,7 @@ vector<int> getPeaks(const vector<int>& nums) {
 ////////////////////////////////////////////////////////////////////////////////////
 void Test()
 {
-    vector<int> nums = { 5, 10, 10, 5, 7, 4, };
+    vector<int> nums = { 10, 10, 10, 5, 7, 4, };
     auto peaks = getPeaks(nums);
     for (auto peak : peaks)
         cout << peak << endl;
