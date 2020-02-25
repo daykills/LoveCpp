@@ -39,14 +39,18 @@
 namespace BuildingH2O
 {
 
+mutex s_mut;
+vector<char> s_result;
 void releaseHydrogen() {
-    printf("H");
+    s_result.push_back('H');
 }
 
 void releaseOxygen() {
-    printf("O");
+    s_result.push_back('O');
 }
 
+/* mutex only
+ 
 class H2O {
 public:
     std::mutex mtx, mtx2;
@@ -77,10 +81,51 @@ public:
         mtx.unlock();
     }
 };
+*/
+
+class H2O {
+public:
+    H2O(){
+    }
+
+    void hydrogen(function<void()> releaseHydrogen) {
+        process(m_hPromiseQ).get();
+        lock_guard<mutex> lck(m_mut2);
+        // releaseHydrogen() outputs "H". Do not change or remove this line.
+        releaseHydrogen();
+    }
+
+    void oxygen(function<void()> releaseOxygen) {
+        process(m_oPromiseQ).get();
+        lock_guard<mutex> lck(m_mut2);
+        // releaseOxygen() outputs "O". Do not change or remove this line.
+        releaseOxygen();
+    }
+    
+private:
+    
+    future<void> process(queue<promise<void>>& q) {
+        lock_guard<mutex> lck(m_mut);
+        q.emplace();
+        future<void> f = q.back().get_future();
+        if (m_hPromiseQ.size() >= 2 && m_oPromiseQ.size() >= 1) {
+            m_hPromiseQ.front().set_value(); m_hPromiseQ.pop();
+            m_hPromiseQ.front().set_value(); m_hPromiseQ.pop();
+            m_oPromiseQ.front().set_value(); m_oPromiseQ.pop();
+        }
+        return f;
+    }
+    
+    queue<promise<void>> m_oPromiseQ;
+    queue<promise<void>> m_hPromiseQ;
+    
+    mutex m_mut;
+    mutex m_mut2;
+};
 
 static void Test()
 {
-    string input = "OOHHHH";
+    string input = "HHHHHHHHHHOHHOHHHHOOHHHOOOOHHOOHOHHHHHOOHOHHHOOOOOOHHHHHHHHH";
     vector<thread> workers;
     H2O h2o;
     for (auto i = 0; i < input.size(); i++) {
@@ -96,11 +141,24 @@ static void Test()
                 h2o.hydrogen(releaseHydrogen);
         }));
     }
-    
     std::for_each(workers.begin(), workers.end(), [](std::thread &t)
                   {
         t.join();
     });
-    printf("\n");
+    int hCnt = 0;
+    int oCnt = 0;
+    for (auto i = 0; i < s_result.size(); i++) {
+        if (s_result[i] == 'H')
+            hCnt++;
+        else
+            oCnt++;
+        cout << s_result[i];
+        if (i % 3 == 2) {
+            cout << "_";
+            if (oCnt * 2 != hCnt)
+                cout << "X";
+        }
+    }
+    cout << endl;
 }
 }
