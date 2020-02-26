@@ -83,14 +83,6 @@ void test_equality( const std::vector<SensorSample>& a, const std::vector<Sensor
     }
 }
 
-void producer() {
-    
-}
-
-void consumer() {
-    
-}
-
 void exercise() {
     std::vector<SensorSample> output;
     // your code here
@@ -98,20 +90,19 @@ void exercise() {
     atomic<bool> workComplete = false;
     std::condition_variable cvQueueFull;
     std::condition_variable cvQueueEmpty;
-    std::mutex mutQueueFull;
-    std::mutex mutQueueEmpty;
-    std::mutex mutQueueAccess;
+    std::mutex mut;
     
     std::thread tProducer([&]() {
         for (auto& data : sensor_data) {
             // if queue is full, wait for new item processed
             if (taskQ.size() >= MAX_WORK_QUEUE_ELEMENTS) {
-                std::unique_lock<std::mutex> lock(mutQueueFull);
+                std::unique_lock<std::mutex> lock(mut);
                 cvQueueFull.wait(lock);
             }
             {
-                std::lock_guard<std::mutex> lck(mutQueueAccess);
-                taskQ.push_front(data);
+                std::lock_guard<std::mutex> lck(mut);
+                taskQ.push_back(data);
+                std::cout << "Enqueue ->: " << data.sample_id << std::endl;
             }
             cvQueueEmpty.notify_one();
             if (workComplete)
@@ -123,10 +114,15 @@ void exercise() {
     std::thread tConsumer([&]() {
         for (auto i = 0; i < TOTAL_SAMPLE_COUNT; i++) {
             if (taskQ.empty()) {
-                std::unique_lock<std::mutex> lckCV(mutQueueEmpty);
+                std::unique_lock<std::mutex> lckCV(mut);
                 cvQueueEmpty.wait(lckCV);
             }
-            SensorSample data = taskQ.front(); taskQ.pop_front();
+            SensorSample data;
+            {
+                std::lock_guard<std::mutex> lck(mut);
+                data = taskQ.front(); taskQ.pop_front();
+                std::cout << "Dequeue <-: " << data.sample_id << std::endl;
+            }
             // let producer start working
             cvQueueFull.notify_one();
             if (data.value > FILTER_THRESHOLD)
