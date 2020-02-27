@@ -18,7 +18,7 @@ struct SensorSample {
 // Constants
 constexpr int      FILTER_THRESHOLD         = 100;
 constexpr size_t   TOTAL_SAMPLE_COUNT       = 20;
-constexpr size_t   MAX_WORK_QUEUE_ELEMENTS  = 10;
+constexpr size_t   MAX_WORK_QUEUE_ELEMENTS  = 3;
 constexpr uint32_t TARGET_PUBLISH_PERIOD_MS = 200;
 
 /* ===============================================================
@@ -92,37 +92,40 @@ void exercise() {
     std::condition_variable cvQueueEmpty;
     std::mutex mut;
     
-    std::thread tProducer([&]() {
+    auto producer = [&]() {
         for (auto& data : sensor_data) {
             // if queue is full, wait for new item processed
-            if (taskQ.size() >= MAX_WORK_QUEUE_ELEMENTS) {
-                std::unique_lock<std::mutex> lock(mut);
-                cvQueueFull.wait(lock);
-            }
             {
-                std::lock_guard<std::mutex> lck(mut);
+                std::unique_lock<std::mutex> lck(mut);
+                if (taskQ.size() >= MAX_WORK_QUEUE_ELEMENTS) {
+                    std::cout << "Enqueue FULL " << std::endl;
+                    cvQueueFull.wait(lck);
+                }
+                //std::lock_guard<std::mutex> lck(mut);
                 taskQ.push_back(data);
                 std::cout << "Enqueue ->: " << data.sample_id << std::endl;
             }
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            
             cvQueueEmpty.notify_one();
             if (workComplete)
                 break;
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
         }
-    });
+    };
     
-    std::thread tConsumer([&]() {
+    auto consumer = [&]() {
         for (auto i = 0; i < TOTAL_SAMPLE_COUNT; i++) {
-            if (taskQ.empty()) {
-                std::unique_lock<std::mutex> lckCV(mut);
-                cvQueueEmpty.wait(lckCV);
-            }
             SensorSample data;
             {
-                std::lock_guard<std::mutex> lck(mut);
+                std::unique_lock<std::mutex> lck(mut);
+                if (taskQ.empty()) {
+                    std::cout << "Dequeue EMPTY" << std::endl;
+                    cvQueueEmpty.wait(lck);
+                }
                 data = taskQ.front(); taskQ.pop_front();
                 std::cout << "Dequeue <-: " << data.sample_id << std::endl;
             }
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
             // let producer start working
             cvQueueFull.notify_one();
             if (data.value > FILTER_THRESHOLD)
@@ -130,10 +133,22 @@ void exercise() {
         }
         cvQueueFull.notify_all();
         workComplete = true;
-    });
+    };
+    auto nProducer = 1;
+    auto nConsumer = 1;
+    std::vector<thread> producers;
+    std::vector<thread> consumers;
+    for (auto i = 0; i < nProducer; i++)
+        producers.emplace_back(producer);
+    for (auto i = 0; i < nConsumer; i++)
+        consumers.emplace_back(consumer);
     
-    tProducer.join();
-    tConsumer.join();
+    for (auto& tProducer : producers)
+        tProducer.join();
+    
+    for (auto& tConsumer : consumers)
+        tConsumer.join();
+    
     // Check results
     test_equality(output, correct_sensor0_filtered_data);
 }
