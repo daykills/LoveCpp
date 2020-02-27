@@ -97,16 +97,17 @@ void exercise() {
             // if queue is full, wait for new item processed
             {
                 std::unique_lock<std::mutex> lck(mut);
-                if (taskQ.size() >= MAX_WORK_QUEUE_ELEMENTS) {
-                    std::cout << "Enqueue FULL " << std::endl;
-                    cvQueueFull.wait(lck);
-                }
-                //std::lock_guard<std::mutex> lck(mut);
+                cvQueueFull.wait(lck, [&taskQ]() {
+                    if (taskQ.size() >= MAX_WORK_QUEUE_ELEMENTS)
+                        std::cout << "Enqueue FULL " << std::endl;
+                    return taskQ.size() < MAX_WORK_QUEUE_ELEMENTS;
+                });
+                
                 taskQ.push_back(data);
                 std::cout << "Enqueue ->: " << data.sample_id << std::endl;
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
-            
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            // let consumer start working
             cvQueueEmpty.notify_one();
             if (workComplete)
                 break;
@@ -118,14 +119,15 @@ void exercise() {
             SensorSample data;
             {
                 std::unique_lock<std::mutex> lck(mut);
-                if (taskQ.empty()) {
-                    std::cout << "Dequeue EMPTY" << std::endl;
-                    cvQueueEmpty.wait(lck);
-                }
+                cvQueueEmpty.wait(lck, [&taskQ]() {
+                    if (taskQ.empty())
+                        std::cout << "Dequeue EMPTY" << std::endl;
+                    return !taskQ.empty();
+                });
                 data = taskQ.front(); taskQ.pop_front();
                 std::cout << "Dequeue <-: " << data.sample_id << std::endl;
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
             // let producer start working
             cvQueueFull.notify_one();
             if (data.value > FILTER_THRESHOLD)
