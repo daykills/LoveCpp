@@ -79,52 +79,57 @@ class ImgProcessor {
 public:
     virtual void run(Image& img) = 0;
     virtual ~ImgProcessor() = default;
+    virtual void setParam(const string& config)  = 0;
 };
 
 class ConvertToGrayScaleProcessor : public ImgProcessor {
 public:
-    ConvertToGrayScaleProcessor() {}
     void run(Image& img) override {
         ImgLib::convertToGrayScale(img);
     }
+    void setParam(const string& config) override {}
 };
 
 class BlurProcessor : public ImgProcessor {
 public:
-    BlurProcessor(float factor) : m_factor(factor)
-    {}
-    
     void run(Image& img) override {
         ImgLib::blur(img, m_factor);
     }
-private:
+    void setParam(const string& config) override {
+        istringstream is(config);
+        is >> m_factor;
+    }
+protected:
     float m_factor;
 };
 
 class ResizeProcessor : public ImgProcessor {
 public:
-    ResizeProcessor(int x, int y)
-    : m_x(x), m_y(y)
-    {}
-    
     void run(Image& img) override {
         ImgLib::resize(img, m_x, m_y);
     }
-private:
+    void setParam(const string& config) override {
+        istringstream is(config);
+        is >> m_x >> m_y;
+    }
+protected:
     int m_x;
     int m_y;
 };
 
 class BlendProcessor : public ImgProcessor {
 public:
-    BlendProcessor(string& pathOther) : m_other(pathOther)
-    {}
-    
     void run(Image& img) override {
-        ImgLib::blend(img, m_other);
+        ImgLib::blend(img, *m_other);
     }
-private:
-    Image m_other;
+    void setParam(const string& config) override {
+        istringstream is(config);
+        string other;
+        is >> other;
+        m_other.reset(new Image(other));
+    }
+protected:
+    unique_ptr<Image> m_other;
 };
 
 class ImgProcessorFactory {
@@ -133,23 +138,21 @@ public:
         istringstream is(operation);
         string command;
         is >> command;
+        ImgProcessor* processor = nullptr;
         if (command == "ConvertToGrayScale") {
-            return new ConvertToGrayScaleProcessor();
+            processor = new ConvertToGrayScaleProcessor();
         } else if (command == "Blur") {
-            float factor = 0;
-            is >> factor;
-            return new BlurProcessor(factor);
+            processor = new BlurProcessor();
         } else if (command == "Resize") {
-            int x = 0;
-            int y = 0;
-            is >> x >> y;
-            return new ResizeProcessor(x, y);
+            processor = new ResizeProcessor();
         } else if (command == "BlendWith") {
-            string otherPath;
-            is >> otherPath;
-            return new BlendProcessor(otherPath);
+            processor = new BlendProcessor();
         }
-        return nullptr;
+        assert(processor != nullptr);
+        string rest;
+        getline(is, rest);
+        processor->setParam(rest);
+        return processor;
     }
 private:
     ImgProcessorFactory() = default;
