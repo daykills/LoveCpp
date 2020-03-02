@@ -84,9 +84,9 @@ public:
         return m_airlineCostMap[airline](seating, distance);
     }
     
-    float getOperatingCost(const string& seating, float distance) {
+    operating_cost_type getOperatingCostStrategy(const string& seating) {
         assert(m_operatingCostMap.count(seating));
-        return m_operatingCostMap[seating](distance);
+        return m_operatingCostMap[seating];
     }
     
     void registerOperatingCostStrategy(const string& seating, function<float(float distance)> operatingCostBlock) {
@@ -128,15 +128,14 @@ static void registerStrategies() {
      - Southwest charges $1.00/mile
      */
     esitmator.registerAirlinePricingStrategy("Delta", [&esitmator](const string& seating, float distance) {
-        return 0.5 * distance + esitmator.getOperatingCost(seating, distance);
+        return 0.5 * distance + esitmator.getOperatingCostStrategy(seating)(distance);
     });
     esitmator.registerAirlinePricingStrategy("United", [&esitmator](const string& seating, float distance) {
-        return 0.75 * distance + esitmator.getOperatingCost(seating, distance) + (seating == "Premium" ? 0.1 * distance : 0);
+        return 0.75 * distance + esitmator.getOperatingCostStrategy(seating)(distance) + (seating == "Premium" ? 0.1 * distance : 0);
     });
     esitmator.registerAirlinePricingStrategy("Southwest", [&esitmator](const string& seating, float distance) {
         return distance;
     });
-    
 }
 
 void estimateCost(const vector<string>& inputs) {
