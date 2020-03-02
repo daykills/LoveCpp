@@ -132,22 +132,26 @@ protected:
     unique_ptr<Image> m_other;
 };
 
+static std::function<ImgProcessor*()> getCreator(const string& command) {
+    static unordered_map<string, std::function<ImgProcessor*()>> s_map {
+        { "ConvertToGrayScale", [](){ return new ConvertToGrayScaleProcessor(); } },
+        { "Blur", [](){ return new BlurProcessor(); } },
+        { "Resize", [](){ return new ResizeProcessor(); } },
+        { "BlendWith", [](){ return new BlendProcessor(); } },
+    };
+    assert(s_map.count(command));
+    return s_map[command];
+}
+
 class ImgProcessorFactory {
 public:
     static ImgProcessor* createImpProcessor(const string& operation) {
         istringstream is(operation);
         string command;
         is >> command;
-        ImgProcessor* processor = nullptr;
-        if (command == "ConvertToGrayScale") {
-            processor = new ConvertToGrayScaleProcessor();
-        } else if (command == "Blur") {
-            processor = new BlurProcessor();
-        } else if (command == "Resize") {
-            processor = new ResizeProcessor();
-        } else if (command == "BlendWith") {
-            processor = new BlendProcessor();
-        }
+        auto processorCreater = getCreator(command);
+        assert(processorCreater != nullptr);
+        auto processor = processorCreater();
         assert(processor != nullptr);
         string rest;
         getline(is, rest);
