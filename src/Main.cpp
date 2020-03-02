@@ -6,7 +6,7 @@
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
 #define TEST_GROUP_NAME others
-#define TEST_NAME BatchImgProcessor
+#define TEST_NAME AirlineTicketing
 
 #include STR(TEST_GROUP_NAME/TEST_NAME.h)
 
