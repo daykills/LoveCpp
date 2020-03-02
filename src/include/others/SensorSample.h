@@ -1,3 +1,24 @@
+/* ===============================================================
+ Exercise 1: Single Producer, Single Consumer
+ 
+ 1. Create a 'sensor driver' thread that will serve as a producer
+ - Reads samples from the pre-defined dataset and "publishes" them to a work queue at a fixed rate (200ms)
+ 
+ 2. Create a 'Filter' thread that will serve as a sensor data consumer and produce filtered outputs
+ - Sleeps until data is available and upon receiving data, filters out elements under threshhold value (100)
+ - Prints the delta in time between each sample received by the consumer in milliseconds
+ - Upon processing the pre-defined number of sensor samples (20), exit
+ 
+ 3. Create instances of the producer and consumer, and run such that the output container is populated with the results
+ - Exercise method should evaluate test clause when both producer and consumer have finished their work
+ 
+ +-------------+     +---------------+     +------------+     +--------------+     +-------------+
+ |             |     | Sensor Driver |     |            |     |    Filter    |     |             |
+ | Input Data  +---->+               +---->+ Work Queue +---->+              +---->+ Output Data |
+ |             |     |   (Producer)  |     |            |     |  (Consumer)  |     |             |
+ +-------------+     +---------------+     +------------+     +--------------+     +-------------+
+ */
+
 #include "Common.h"
 
 // ==============================================================
@@ -20,28 +41,6 @@ constexpr int      FILTER_THRESHOLD         = 100;
 constexpr size_t   TOTAL_SAMPLE_COUNT       = 20;
 constexpr size_t   MAX_WORK_QUEUE_ELEMENTS  = 3;
 constexpr uint32_t TARGET_PUBLISH_PERIOD_MS = 200;
-
-/* ===============================================================
- Exercise 1: Single Producer, Single Consumer
- 
- 1. Create a 'sensor driver' thread that will serve as a producer
- - Reads samples from the pre-defined dataset and "publishes" them to a work queue at a fixed rate (200ms)
- 
- 2. Create a 'Filter' thread that will serve as a sensor data consumer and produce filtered outputs
- - Sleeps until data is available and upon receiving data, filters out elements under threshhold value (100)
- - Prints the delta in time between each sample received by the consumer in milliseconds
- - Upon processing the pre-defined number of sensor samples (20), exit
- 
- 3. Create instances of the producer and consumer, and run such that the output container is populated with the results
- - Exercise method should evaluate test clause when both producer and consumer have finished their work
- 
- +-------------+     +---------------+     +------------+     +--------------+     +-------------+
- |             |     | Sensor Driver |     |            |     |    Filter    |     |             |
- | Input Data  +---->+               +---->+ Work Queue +---->+              +---->+ Output Data |
- |             |     |   (Producer)  |     |            |     |  (Consumer)  |     |             |
- +-------------+     +---------------+     +------------+     +--------------+     +-------------+
- */
-
 
 // Sample Data
 std::vector<SensorSample> sensor_data{{
