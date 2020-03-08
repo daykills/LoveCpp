@@ -48,28 +48,41 @@
 namespace CherryPickup
 {
 
-string gridHash(vector<vector<int>>& grid) {
+string gridHash(vector<vector<int>>& grid, int row, int col, bool isBack) {
     auto n = grid.size();
     assert(n == grid[0].size());
-    string hash(n * n, 0);
+    string hash;
     int cnt = 0;
-    for (auto i = 0; i < n; i++) {
-        for (auto j = 0; j < n; j++) {
-            hash[cnt++] = grid[i][j] + '0';
+    if (isBack) {
+        // in return trip, whole grid is encoded
+        hash = string(n * n, '0');
+        for (auto i = 0; i < n; i++) {
+            for (auto j = 0; j < n; j++) {
+                hash[cnt++] = grid[i][j] + '0' + 1;
+            }
+        }
+    } else {
+        hash = string((row + 1) * (col + 1), '0');
+        for (auto i = 0; i <= row; i++) {
+            for (auto j = 0; j <= col; j++) {
+                hash[cnt++] = grid[i][j] + '0' + 1;
+            }
         }
     }
+    
     return hash;
 }
 
 void dfs(vector<vector<int>>& grid, int cherry, bool isBack, int i, int j, int& maxCherry,
          vector<vector<unordered_set<string>>>& visited,
-         vector<vector<unordered_set<string>>>& visitedBack,
-         string& hash) {
+         vector<vector<unordered_set<string>>>& visitedBack) {
     auto n = grid.size();
     assert(n == grid[0].size());
     // base condition
     if (i < 0 || i >= n || j < 0 || j >= n || grid[i][j] == -1)
         return;
+    
+    auto hash = gridHash(grid, i, j, isBack);
     if (!isBack) {
         if (visited[i][j].count(hash))
             return;
@@ -88,21 +101,19 @@ void dfs(vector<vector<int>>& grid, int cherry, bool isBack, int i, int j, int& 
     auto tmp = grid[i][j];
     grid[i][j] = 0;
     cherry += tmp;
-    hash[i * n + j] = '0';
     
     // turning back, not count cherry
     if (!isBack) {
         if (i == n - 1 && j == n - 1) {
-            dfs(grid, cherry, true, n - 1, n - 1, maxCherry, visited, visitedBack, hash);
+            dfs(grid, cherry, true, n - 1, n - 1, maxCherry, visited, visitedBack);
         }
-        dfs(grid, cherry, false, i + 1, j, maxCherry, visited, visitedBack, hash);
-        dfs(grid, cherry, false, i, j + 1, maxCherry, visited, visitedBack, hash);
+        dfs(grid, cherry, false, i + 1, j, maxCherry, visited, visitedBack);
+        dfs(grid, cherry, false, i, j + 1, maxCherry, visited, visitedBack);
     } else {
-        dfs(grid, cherry, true, i - 1, j, maxCherry, visited, visitedBack, hash);
-        dfs(grid, cherry, true, i, j - 1, maxCherry, visited, visitedBack, hash);
+        dfs(grid, cherry, true, i - 1, j, maxCherry, visited, visitedBack);
+        dfs(grid, cherry, true, i, j - 1, maxCherry, visited, visitedBack);
     }
     grid[i][j] = tmp;
-    hash[i * n + j] = '0' + tmp;
 }
 
 int cherryPickup(vector<vector<int>>& grid) {
@@ -110,21 +121,22 @@ int cherryPickup(vector<vector<int>>& grid) {
     assert(n == grid[0].size());
     vector<vector<unordered_set<string>>> visited(n, vector<unordered_set<string>>(n));
     vector<vector<unordered_set<string>>> visitedBack(n, vector<unordered_set<string>>(n));
-    string hash(n * n, 0);
-    int cnt = 0;
-    for (auto i = 0; i < n; i++) {
-        for (auto j = 0; j < n; j++) {
-            hash[cnt++] = grid[i][j] + '0';
-        }
-    }
+    
     int maxCherry = 0;
-    dfs(grid, 0, false, 0, 0, maxCherry, visited, visitedBack, hash);
+    dfs(grid, 0, false, 0, 0, maxCherry, visited, visitedBack);
     return maxCherry;
 }
 
 void Test()
 {
     vector<vector<int>> grid {
+        /*
+        {1,1,1,0,0},
+        {0,0,1,0,1},
+        {1,0,1,0,0},
+        {0,0,1,0,0},
+        {0,0,1,1,1}
+        */
         {1,1,1,1,-1,-1,-1,1,0,0},
         {1,0,0,0,1,0,0,0,1,0},
         {0,0,1,1,1,1,0,1,1,1},
@@ -136,16 +148,9 @@ void Test()
         {1,0,-1,0,-1,0,0,1,0,0},
         {0,0,-1,0,1,0,1,0,0,1}
         /*
-        {1,1,0},
+        {1,1,1},
         {1,1,0},
         {0,1,1},
-         */
-        /*
-        {1,1,1,0,0},
-        {0,0,1,0,1},
-        {1,0,1,0,0},
-        {0,0,1,0,0},
-        {0,0,1,1,1},
          */
     };
     cout << "result: " << cherryPickup(grid) << endl;
