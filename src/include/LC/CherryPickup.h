@@ -47,83 +47,50 @@
 
 namespace CherryPickup
 {
-
-string gridHash(vector<vector<int>>& grid, int row, int col, bool isBack) {
+// max cherries to be picked up by two ppl starting r1, c1, r2, c2
+int dfs(vector<vector<int>>& grid, int r1, int c1, int r2, int c2) {
     auto n = grid.size();
     assert(n == grid[0].size());
-    string hash;
-    int cnt = 0;
-    if (isBack) {
-        // in return trip, whole grid is encoded
-        hash = string(n * n, '0');
-        for (auto i = 0; i < n; i++) {
-            for (auto j = 0; j < n; j++) {
-                hash[cnt++] = grid[i][j] + '0' + 1;
-            }
-        }
-    } else {
-        hash = string((row + 1) * (col + 1), '0');
-        for (auto i = 0; i <= row; i++) {
-            for (auto j = 0; j <= col; j++) {
-                hash[cnt++] = grid[i][j] + '0' + 1;
-            }
-        }
-    }
+    // only need to check upper bound
+    if (r1 >= n || c1 >= n || r2 >= n || c2 >= n
+        || grid[r1][c1] == - 1 || grid[r2][c2] == - 1)
+        return INT_MIN;
     
-    return hash;
+    int tmp1 = grid[r1][c1];
+    int tmp2 = grid[r2][c2];
+    // when one person reaches end, we return as the other one has to reach the end as well - they have same steps
+    // we could return INT_MIN if the other person is not at end, but not necessary
+    if (r1 == n - 1 && c1 == n - 1)
+        return tmp1;
+    if (r2 == n - 1 && c2 == n - 1)
+        return tmp2;
+
+    
+    int cherry = 0;
+    // reach the same spot, only one gets cherry
+    if (r1 == r2 && c1 == c2) {
+        cherry = tmp1;
+    } else {
+        cherry = tmp1 + tmp2;
+    }
+    // mark them picked
+    grid[r1][c1] = grid[r2][c2] = 0;
+    
+    int moreCherry = 0;
+    moreCherry = max(moreCherry, dfs(grid, r1 + 1, c1, r2 + 1, c2));
+    moreCherry = max(moreCherry, dfs(grid, r1 + 1, c1, r2, c2 + 1));
+    moreCherry = max(moreCherry, dfs(grid, r1, c1 + 1, r2 + 1, c2));
+    moreCherry = max(moreCherry, dfs(grid, r1, c1 + 1, r2, c2 + 1));
+    grid[r1][c1] = tmp1;
+    grid[r2][c2] = tmp2;
+    return cherry + moreCherry;
 }
 
-void dfs(vector<vector<int>>& grid, int cherry, bool isBack, int i, int j, int& maxCherry,
-         vector<vector<unordered_set<string>>>& visited,
-         vector<vector<unordered_set<string>>>& visitedBack) {
+int cherryPickupDFS(vector<vector<int>>& grid) {
     auto n = grid.size();
     assert(n == grid[0].size());
-    // base condition
-    if (i < 0 || i >= n || j < 0 || j >= n || grid[i][j] == -1)
-        return;
     
-    auto hash = gridHash(grid, i, j, isBack);
-    if (!isBack) {
-        if (visited[i][j].count(hash))
-            return;
-        visited[i][j].emplace(hash);
-    } else {
-        if (visitedBack[i][j].count(hash))
-            return;
-        visitedBack[i][j].emplace(hash);
-        // reach back to origin
-        if (i == 0 && j == 0) {
-            maxCherry = max(maxCherry, cherry);
-            return;
-        }
-    }
-    
-    auto tmp = grid[i][j];
-    grid[i][j] = 0;
-    cherry += tmp;
-    
-    // turning back, not count cherry
-    if (!isBack) {
-        if (i == n - 1 && j == n - 1) {
-            dfs(grid, cherry, true, n - 1, n - 1, maxCherry, visited, visitedBack);
-        }
-        dfs(grid, cherry, false, i + 1, j, maxCherry, visited, visitedBack);
-        dfs(grid, cherry, false, i, j + 1, maxCherry, visited, visitedBack);
-    } else {
-        dfs(grid, cherry, true, i - 1, j, maxCherry, visited, visitedBack);
-        dfs(grid, cherry, true, i, j - 1, maxCherry, visited, visitedBack);
-    }
-    grid[i][j] = tmp;
-}
-
-int cherryPickup(vector<vector<int>>& grid) {
-    auto n = grid.size();
-    assert(n == grid[0].size());
-    vector<vector<unordered_set<string>>> visited(n, vector<unordered_set<string>>(n));
-    vector<vector<unordered_set<string>>> visitedBack(n, vector<unordered_set<string>>(n));
-    
-    int maxCherry = 0;
-    dfs(grid, 0, false, 0, 0, maxCherry, visited, visitedBack);
+    int maxCherry = dfs(grid, 0, 0, 0, 0);
     return maxCherry;
 }
 
@@ -136,7 +103,7 @@ void Test()
         {1,0,1,0,0},
         {0,0,1,0,0},
         {0,0,1,1,1}
-        */
+         */
         {1,1,1,1,-1,-1,-1,1,0,0},
         {1,0,0,0,1,0,0,0,1,0},
         {0,0,1,1,1,1,0,1,1,1},
@@ -153,7 +120,7 @@ void Test()
         {0,1,1},
          */
     };
-    cout << "result: " << cherryPickup(grid) << endl;
+    cout << "result: " << cherryPickupDFS(grid) << endl;
 }
 
 }
