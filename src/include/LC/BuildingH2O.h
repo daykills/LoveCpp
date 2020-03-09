@@ -48,40 +48,7 @@ void releaseHydrogen() {
 void releaseOxygen() {
     s_result.push_back('O');
 }
-
-/* mutex only
- 
-class H2O {
-public:
-    std::mutex mtx, mtx2;
-    atomic<int> count;
-    H2O(){
-        count = 0;
-        mtx.lock();
-        mtx2.lock();
-        mtx.unlock();
-    }
-
-    void hydrogen(function<void()> releaseHydrogen) {
-        mtx.lock();
-        count++;
-        // releaseHydrogen() outputs "H". Do not change or remove this line.
-        releaseHydrogen();
-        if(count % 2 == 1){
-            mtx.unlock();
-        }else{
-            mtx2.unlock();
-        }
-    }
-
-    void oxygen(function<void()> releaseOxygen) {
-        mtx2.lock();
-        // releaseOxygen() outputs "O". Do not change or remove this line.
-        releaseOxygen();
-        mtx.unlock();
-    }
-};
-*/
+/* future / promis
 
 class H2O {
 public:
@@ -121,6 +88,42 @@ private:
     
     mutex m_mut;
     mutex m_mut2;
+};
+ */
+
+class H2O {
+public:
+    H2O() : m_hCnt(0) {
+    }
+
+    void hydrogen(function<void()> releaseHydrogen) {
+        unique_lock<mutex> lck(m_mut);
+        m_cvH.wait(lck, [this]() {
+            return m_hCnt < 2;
+        });
+        m_hCnt++;
+        m_cvO.notify_one();
+        // releaseHydrogen() outputs "H". Do not change or remove this line.
+        releaseHydrogen();
+    }
+
+    void oxygen(function<void()> releaseOxygen) {
+        unique_lock<mutex> lck(m_mut);
+        m_cvO.wait(lck, [this]() {
+            return m_hCnt == 2;
+        });
+        m_hCnt -= 2;
+        m_cvH.notify_one();
+        // releaseOxygen() outputs "O". Do not change or remove this line.
+        releaseOxygen();
+    }
+    
+private:
+    
+    atomic<int> m_hCnt;
+    condition_variable m_cvO;
+    condition_variable m_cvH;
+    mutex m_mut;
 };
 
 static void Test()
