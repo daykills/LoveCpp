@@ -23,111 +23,65 @@ A solution is ["cats and dog", "cat sand dog"].
 
 namespace WordBreak2
 {
-	///////////////////////////////////////////////////////
-	// dfs is too slow
-	void dfsSearch(const string& s, int start, const unordered_set<string>& wordDict, vector<string>& sentence, vector<string>& result)
-	{
-		int n = s.length();
-		// base condition: s is complete, add sentence to result
-		if (start == n)
-		{
-			// empty sentence, do nothing
-			if (sentence.empty()) return;
-			// add space between words
-			string str = sentence[0];
-			for (auto i = 1; i < (int)sentence.size(); i++)
-			{
-				str.append(" ");
-				str.append(sentence[i]);
-			}
-			result.emplace_back(str);
-			return;
-		}
-		// add next word to sentence for search
-		for (auto wordLen = 1; wordLen <= n - start; wordLen++)
-		{
-			string word = s.substr(start, wordLen);
-			// if word is valid, go on search
-			if (wordDict.find(word) != wordDict.end())
-			{
-				sentence.emplace_back(move(word));
-				dfsSearch(s, start + wordLen, wordDict, sentence, result);
-				sentence.pop_back();
-			}
-		}
-	}
+vector<string> wordBreakDP(string s, vector<string>& wordDict) {
+    auto n = s.length();
+    if (n == 0)
+        return {};
+    
+    unordered_set<string> wordSet(wordDict.begin(), wordDict.end());
+    // dp[i]: all phrases formed by first i chars
+    vector<vector<string>> dp(n + 1);
+    dp[0].emplace_back("");
+    for (auto i = 1; i <= n; i++) {
+        auto& phrases = dp[i];
+        int hi = i - 1;
+        for (int lo = hi; lo >= 0; lo--) {
+            auto subStr = s.substr(lo, hi - lo + 1);
+            if (!wordSet.count(subStr))
+                continue;
+            auto& prePhrases = dp[lo];
+            for (auto& phrase : prePhrases)
+                phrases.emplace_back(phrase + (phrase.empty() ? "" : " ") + subStr);
+        }
+    }
+    return dp.back();
+}
 
-	vector<string> wordBreakDfs(string s, unordered_set<string>& wordDict)
-	{
-		vector<string> result;
-		vector<string> sentence;
-		dfsSearch(s, 0, wordDict, sentence, result);
-		return result;
-	}
-	/////////////////////////////////////////////////////
-	// use dp to boost
-	void dfsSearch(const string& s, int start, const unordered_set<string>& wordDict,
-		const vector<bool>& dp, vector<string>& sentence, vector<string>& result)
-	{
-		int n = s.length();
-		// base condition: sentence is formed
-		if (n == start)
-		{
-			string str = sentence[0];
-			for (auto i = 1; i < (int)sentence.size(); i++)
-			{
-				str.append(" ");
-				str.append(sentence[i]);
-			}
-			result.emplace_back(move(str));
-			return;
-		}
+unordered_map<string, vector<string>> m_cachedResult;
 
-		for (auto end = start; end < n; end++)
-		{
-			// check whther end is usable
-			if (!dp[end + 1]) continue;
-			// check whther word is a word
-			string word = s.substr(start, end - start + 1);
-			if (wordDict.find(word) == wordDict.end()) continue;
-			sentence.emplace_back(move(word));
-			dfsSearch(s, end + 1, wordDict, dp, sentence, result);
-			sentence.pop_back();
-		}
-	}
-	vector<string> wordBreak(string s, unordered_set<string>& wordDict)
-	{
-		vector<string> result;
-		int n = s.length();
-		if (n == 0) return result;
-		// dp[i] means whether first i letters can form a sentence.
-		vector<bool> dp(n + 1, false);
-		dp[0] = true;
-		// populate dp[i] 
-		for (auto i = 1; i <= n; i++)
-		{
-			for (auto j = i - 1; j >= 0; j--)
-			{
-				dp[i] = dp[j] && wordDict.find(s.substr(j, i - j)) != wordDict.end();
-				if (dp[i]) break;
-			}
-		}
-		// no sentence is possible
-		if (dp[n] == false) return result;
+vector<string> wordBreak(string s, vector<string>& wordDict) {
+    auto n = s.length();
+    if (n == 0)
+        return { "" };
+    if (m_cachedResult.count(s))
+        return m_cachedResult[s];
+    vector<string> phrases;
+    for (auto& word : wordDict) {
+        if (word != s.substr(0, word.size()))
+            continue;
+        auto remainingPhrases = wordBreak(s.substr(word.size()), wordDict);
+        for (auto& phrase : remainingPhrases)
+            phrases.emplace_back(word + (phrase.empty() ? "" : " ") + phrase);
+    }
+    m_cachedResult[s] = phrases;
+    return phrases;
+}
 
-		vector<string> sentence;
-		dfsSearch(s, 0, wordDict, dp, sentence, result);
-		return result;
-	}
-
-	void Test()
-	{
-		string s("hipangpang");
-		unordered_set<string> wordDict{ "hi", "pang", "hip", "ang" };
-		cout << "input: " << s << endl;
-		cout << "result: " << endl;
-		auto result = wordBreak(s, wordDict);
-		for(auto& sentence : result)
-			cout << sentence << endl;
-	}
+void Test()
+{
+    
+    //string s("hipangpang");
+    string s("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    
+    vector<string> wordDict{
+        //"hi", "pang", "hip", "ang"
+        
+        "a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"
+    };
+    cout << "input: " << s << endl;
+    cout << "result: " << endl;
+    auto result = wordBreak(s, wordDict);
+    for(auto& sentence : result)
+        cout << sentence << endl;
+}
 }
