@@ -35,23 +35,23 @@ namespace SparseMatrixMultiplication
 
 class Solution {
 public:
-    // only store index and non-zero value in vector
-    vector<pair<int, vector<pair<int, int>>>> getSparseMatrix(vector<vector<int>>& matrix, bool byRow) {
+    // only store non-zero values
+    // [i][j] -> val
+    map<int, map<int, int>> getSparseMatrix(vector<vector<int>>& matrix, bool byRow) {
         auto m = matrix.size();
         assert(m);
         auto n = matrix[0].size();
         assert(n);
-        vector<pair<int, vector<pair<int, int>>>> sparse;
+        map<int, map<int, int>> sparse;
         if (byRow) {
             for (auto i = 0; i < m; i++) {
                 for (auto j = 0; j < n; j++) {
                     if (matrix[i][j] == 0) continue;
-                    if (sparse.empty() || sparse.back().first != i) {
-                        sparse.emplace_back();
-                        sparse.back().first = i;
+                    if (sparse.empty() || sparse.count(i) == 0) {
+                        sparse.emplace(i, map<int, int>());
                     }
-                    auto& curVec = sparse.back().second;
-                    curVec.emplace_back(j, matrix[i][j]);
+                    auto& curVec = sparse[i];
+                    curVec[j] = matrix[i][j];
                 }
             }
         } else {
@@ -59,19 +59,18 @@ public:
             for (auto j = 0; j < n; j++) {
                 for (auto i = 0; i < m; i++) {
                     if (matrix[i][j] == 0) continue;
-                    if (sparse.empty() || sparse.back().first != j) {
-                        sparse.emplace_back();
-                        sparse.back().first = j;
+                    if (sparse.empty() || sparse.count(j) == 0) {
+                        sparse.emplace(j, map<int, int>());
                     }
-                    auto& curVec = sparse.back().second;
-                    curVec.emplace_back(i, matrix[i][j]);
+                    auto& curVec = sparse[j];
+                    curVec[i] = matrix[i][j];
                 }
             }
         }
         return sparse;
     };
     
-    int multplyVec(vector<pair<int, int>>& vec1, vector<pair<int, int>>& vec2) {
+    int multplyVec(map<int, int>& vec1, map<int, int>& vec2) {
         auto it1 = vec1.begin();
         auto it2 = vec2.begin();
         int result = 0;
