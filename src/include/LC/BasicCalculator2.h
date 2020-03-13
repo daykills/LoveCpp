@@ -37,19 +37,19 @@ public:
         char op;
         int num = 0;
         // preOprand: previous number used.
-        // For example, 2-3*4+5, when pos is at 4, ans so far is -1, preOperand is -3
+        // For example, 2-3*4+5, when pos is at 4, ans so far is -1, last is -3
         // With * as the next operator, ans becomes "-1-(-3)+3*4=14", preOperand is 3*4=12
-        int preOperand = 0;
+        int last = 0;
         int ans = 0;
         // expected format: (last op num)
         while (ss >> op >> num) {
             if (op == '+' || op == '-') {
-                preOperand = op == '+' ? num : -num;
-                ans += preOperand;
+                last = op == '+' ? num : -num;
+                ans += last;
             } else {
-                auto newOperand = op == '*' ? preOperand * num : preOperand / num;
-                ans = ans - preOperand + newOperand;
-                preOperand = newOperand;
+                auto newNum = op == '*' ? last * num : last / num;
+                ans = ans - last + newNum;
+                last = newNum;
             }
         }
         return ans;
