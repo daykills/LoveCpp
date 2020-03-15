@@ -18,78 +18,37 @@ What is the minimum candies you must give?
 
 namespace JumpGame2
 {
-	int jumpBfs(vector<int>& nums)
-	{
-		int n = nums.size();
-		if (n < 2) return 0;
-		// queue to store the location and step
-		queue<pair<int, int>> q;
+int jump(vector<int>& nums) {
+    int n = nums.size();
+    if (n < 2)
+        return 0;
+    // farthest that last jump can reach
+    int lastJump = -1;
+    // maxReach keeps the maxium reach so far
+    int maxReach = 0;
+    int step = 0;
+    for (auto i = 0; i < n; i++) {
+        auto next = i + nums[i];
+        maxReach = max(maxReach, next);
+        if (maxReach >= n - 1) {
+            assert(lastJump < n - 1);
+            return ++step;
+        }
+        // out of last jump range
+        if (i >= lastJump) {
+            step++;
+            lastJump = maxReach;
+        }
+    }
+    return step;
+}
 
-		// enqueue for the first move
-		for (auto i = 1; i <= nums[0]; i++)
-			q.emplace(0, i);
-
-		unordered_set<int> visited;
-
-		int step = 1;
-		while (!q.empty())
-		{
-			int nMoves = q.size();
-			for (auto i = 0; i < nMoves; i++)
-			{
-				auto move = q.front();
-				q.pop();
-
-				auto pos = move.first + move.second;
-				// we can reach the end from move. return
-				if (pos >= n - 1) return step;
-				// if already visited, skip
-				if (visited.find(pos) != visited.end()) continue;
-				// mark pos visited
-				visited.emplace(pos);
-				// enqueue all moves
-				for (auto nextStep = nums[pos]; nextStep >= 1; nextStep--)
-				{
-					q.emplace(pos, nextStep);
-				}
-			}
-			step++;
-		}
-		return step;
-	}
-
-	int jump(vector<int>& nums)
-	{
-		int n = nums.size();
-		if (n < 2) return 0;
-
-		int step = 0;
-		int lastJump = -1;
-		// maxJump keeps the maxium reach so far
-		int maxJump = 0;
-		for (auto i = 0; i < n; i++)
-		{
-			int maxNext = i + nums[i];
-			if (maxNext >= n - 1) return ++step;
-			maxJump = max(maxJump, maxNext);
-
-			// getting out of the range of last jump
-			if (i >= lastJump)
-			{
-				lastJump = maxJump;
-				step++;
-			}
-		}
-		return step;
-	}
-
-	static void Test()
-	{
-		vector<int> jumps{ 1, 5, 0, 11, 8, 2, 1, 4, 1, 0, 3, 5, 1, 0, 0, 3 };
-		for (auto i : jumps)
-			cout << i << " ";
-		cout << endl;
-		cout << "result greedy: " << jump(jumps) << endl;
-		cout << "result bfs: " << jumpBfs(jumps) << endl;
-	}
+static void Test()
+{
+    vector<int> jumps{ 1, 1, 1, 1 };
+    for (auto i : jumps)
+        cout << i << " ";
+    cout << endl;
+    cout << "result greedy: " << jump(jumps) << endl;
+}
 }

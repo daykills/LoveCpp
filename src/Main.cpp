@@ -6,7 +6,7 @@
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
 #define TEST_GROUP_NAME LC
-#define TEST_NAME BasicCalculator3
+#define TEST_NAME JumpGame2
 
 #include STR(TEST_GROUP_NAME/TEST_NAME.h)
 
