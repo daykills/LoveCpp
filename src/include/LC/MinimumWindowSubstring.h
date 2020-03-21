@@ -19,46 +19,47 @@ If there are multiple such windows, you are guaranteed that there will always be
 
 namespace MinimumWindowSubstring
 {
-	string minWindow(string s, string t)
-	{
-        // charCount stores counts of each character in the window
-        // for required characters, count range is [0, expected]
-        // start with expected; 0 means window has enough such charater
-        // for un-required characters, count range is [-INT, 0].
-        std::vector<int> charCount(128, 0);
-        for (auto c : t) charCount[c]++;
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        // required chars start with positive
+        // non-required chars start with 0
+        vector<int> charCount(128, 0);
+        for (auto c : t)
+            charCount[c]++;
         
-        auto requiredCharacterCountInWindow = 0;
+        auto nRequiredChar = 0;
         auto minLen = INT_MAX;
-        string ans = "";
-        auto left = 0;
+        string substr;
+        auto lo = 0;
         for (auto i = 0; i < s.size(); i++) {
-            // one more required char is included
-            if (--charCount[s[i]] >= 0) requiredCharacterCountInWindow++;
-            // if we have all characters in window, slide left side of the window
-            while (requiredCharacterCountInWindow == t.size()) {
-                // required char count is zero in window 0
-                // non-required is negative
-                if (charCount[s[left]]++ == 0) {
-                    auto len = i - left + 1;
+            charCount[s[i]]--;
+            if (charCount[s[i]] >= 0) nRequiredChar++;
+            // we got all required characters, so we can move lo to right
+            while (nRequiredChar == t.size()) {
+                // when moving a required char out
+                if (charCount[s[lo]]++ == 0) {
+                    // substr from lo to i
+                    auto len = i - lo + 1;
                     if (len < minLen) {
-                        ans = s.substr(left, len);
+                        substr = s.substr(lo, len);
                         minLen = len;
                     }
-                    left++;
-                    requiredCharacterCountInWindow--;
-                    break;
+                    nRequiredChar--;
                 }
-                left++;
+                lo++;
             }
         }
-        return ans;
-	}
+        return substr;
+    }
+};
 
-	static void Test()
-	{
-		string s("ADOBECODEBANC");
-		string t("COO");
-		cout << minWindow(s, t) << endl;	// should be 8
-	}
+static void Test()
+{
+    string s("ADOBECODEBANC");
+    string t("COO");
+    Solution solu;
+    cout << solu.minWindow(s, t) << endl;    // should be 8
+}
+
 }

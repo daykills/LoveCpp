@@ -37,86 +37,77 @@ In this case, that line should be left-justified.
 
 namespace TextJustification
 {
-	vector<string> fullJustify(vector<string>& words, int maxWidth)
-	{
-		vector<string> result;
-		int n = words.size();
-		if (n == 0) return result;
+vector<string> fullJustify(vector<string>& words, int maxWidth)
+{
+    int n = words.size();
+    if (n == 0) return {};
+    
+    vector<string> justified;
+    auto iStart = 0;
+    int lineLen = 0;
+    for (auto i = 0; i < words.size(); i++) {
+        auto& w = words[i];
+        // new line length, with space
+        auto newLineLen = lineLen + w.size() + (lineLen == 0 ? 0 : 1);
+        if (newLineLen <= maxWidth) {
+            lineLen = newLineLen;
+            continue;
+        }
+        auto nSpaces = maxWidth - lineLen;
+        // process current line as it's full
+        auto nWords = i - iStart;
+        // long single word process
+        if (nWords == 1) {
+            justified.emplace_back(words[iStart] + string(nSpaces, ' '));
+            iStart = i;
+            lineLen = w.size();
+            continue;
+        }
+        // add spaces between words
+        auto nSpacesForEach = 1 + nSpaces / (nWords - 1);
+        auto extraSpace = nSpaces % (nWords - 1);
+        string line;
+        for (auto j = iStart; j < i; j++) {
+            line += words[j];
+            if (j != i - 1) {
+                auto nSpacesToAdd = nSpacesForEach;
+                if (j - iStart < extraSpace) nSpacesToAdd++;
+                line += string(nSpacesToAdd, ' ');
+            }
+        }
+        justified.emplace_back(move(line));
+        iStart = i;
+        lineLen = w.size();
+    }
+    // last line
+    string line;
+    for (auto i = iStart; i < n; i++) {
+        line += words[i] + (i == n - 1 ? "" : " ");
+    }
+    line += string(maxWidth - line.size(), ' ');
+    justified.emplace_back(move(line));
+    return justified;
+}
 
-		// start index of words for current line, and total length for current line
-		int start = 0, totalLen = 0;
-		for (auto end = 0; end < n; end++)
-		{
-			auto wordLen = words[end].length();
-			// add extra one for space
-			int newTotalLen = (totalLen == 0) ? wordLen : totalLen + wordLen + 1;
-			if (newTotalLen <= maxWidth)
-			{
-				totalLen = newTotalLen;
-				continue;
-			}
-			else
-			{
-				string line;
-				int extraSpaces = maxWidth - totalLen;
-				// add current line to result
-				int nWords = end - start;
-				if (nWords == 1)
-				{
-					line.append(words[start]);
-					line.append(extraSpaces, ' ');
-				}
-				else
-				{
-					int extraSpacesPerWord = extraSpaces / (nWords - 1) + 1;
-					int extraSpacesResidule = extraSpaces % (nWords - 1);
-					for (auto i = start; i < end - 1; i++)
-					{
-						line.append(words[i]);
-						// words on the left get one more extra space
-						auto nExtraSpace = (i < start + extraSpacesResidule) ? extraSpacesPerWord + 1 : extraSpacesPerWord;
-						line.append(nExtraSpace, ' ');
-					}
-					line.append(words[end - 1]);
-				}
-				result.emplace_back(move(line));
-				// reset status
-				totalLen = wordLen;
-				start = end;
-			}
-		}
-		// handle last line
-		string line;
-		for (auto i = start; i < n; i++)
-		{
-			line.append(words[i]);
-			if (i != n - 1)
-				line.append(1, ' ');
-			else
-				line.append(maxWidth - totalLen, ' ');
-		}
-		result.emplace_back(move(line));
-		return result;
-	}
-	int Test()
-	{
-		//vector<string> words{ "This", "is", "an", "example", "of", "text", "justification." }; // 16
-		//vector<string> words{ "What", "must", "be", "shall", "be." };
-		vector<string> words{ "" }; // 0
-		
-		int maxWidth = 0;
+int Test()
+{
+    vector<string> words{ "This", "is", "an", "example", "of", "text", "justification." }; // 16
+    //vector<string> words{ "What", "must", "be", "shall", "be." };
+    //vector<string> words{ "" }; // 0
+    
+    int maxWidth = 16;
 
-		for (const auto& word : words)
-		{
-			cout << word << endl;
-		}
-		auto result = fullJustify(words, maxWidth);
+    for (const auto& word : words)
+    {
+        cout << word << endl;
+    }
+    auto result = fullJustify(words, maxWidth);
 
-		cout << "With maxWidth: " << maxWidth << endl;
-		for (const auto& word : result)
-		{
-			cout << word << endl;
-		}
-		return 0;
-	}
+    cout << "With maxWidth: " << maxWidth << endl;
+    for (const auto& word : result)
+    {
+        cout << "[" << word << "]" << endl;
+    }
+    return 0;
+}
 }
