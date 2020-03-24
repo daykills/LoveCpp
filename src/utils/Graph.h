@@ -24,12 +24,12 @@ class Graph
 {
 public:
     // add a edge from idSource to idDest - directional
-    void addEdge(int idSource, int idDest)
+    void addEdge(int idSource, int idDest, int weight = 0)
     {
         m_nodes.emplace(idSource);
         m_nodes.emplace(idDest);
         // add edge
-        m_edges[idSource].emplace(idDest);
+        m_edges[idSource].emplace(idDest, weight);
     }
     
     // regular bfs is not able to detect cyclic
@@ -85,8 +85,9 @@ public:
         // number of prerequisites / dependancies
         unordered_map<int, int> indegrees;
         for (auto& idNodePair : m_edges) {
-            for (auto to : idNodePair.second)
-                indegrees[to]++;
+            for (auto idAndWeight : idNodePair.second) {
+                indegrees[idAndWeight.first]++;
+            }
         }
         queue<int> q;
         // for cycles, indegrees are never zero; thus, ignored for search
@@ -101,8 +102,9 @@ public:
             q.pop();
             result.push_back(cur);
             // reduce indegree for all neighbor nodes
-            for (auto nextId : m_edges[cur])
+            for (auto nextIdAndWeight : m_edges[cur])
             {
+                auto nextId = nextIdAndWeight.first;
                 if (--indegrees[nextId] == 0) {
                     q.push(nextId);
                     indegrees.erase(nextId);
@@ -114,15 +116,48 @@ public:
         return result;
     }
     
+    // Get shortest paths from src to all other vertices with Dijkstra
+    void shortestPath(int src) {
+        using weight_and_node_type = pair<int, int>;
+        // min heap to have shortest distance on top
+        priority_queue<weight_and_node_type, vector<weight_and_node_type> , greater<weight_and_node_type>> minHeap;
+        // map for distances from source, init as INT_MAX
+        map<int, int> dist;
+        for (auto node : m_nodes) dist.emplace(node, INT_MAX);
+        minHeap.emplace(0, src);
+        dist[src] = 0;
+        while (!minHeap.empty()) {
+            // The first vertex in pair is the minimum distance
+            // vertex, extract it from priority queue.
+            auto& curPair = minHeap.top();
+            auto curDist = curPair.first;
+            auto cur = curPair.second;
+            minHeap.pop();
+            if (m_edges.count(cur) == 0) continue;
+            auto& nextNodes = m_edges[cur];
+            for (auto& nodeAndWeight : nextNodes) {
+                auto next = nodeAndWeight.first;
+                auto weight = nodeAndWeight.second;
+                if (dist[next] > curDist + weight) {
+                    dist[next] = curDist + weight;
+                    minHeap.emplace(dist[next], next);
+                }
+            }
+        }
+        for (auto& nodeAndDist : dist) {
+            cout << nodeAndDist.first << ": " << nodeAndDist.second << endl;
+        }
+    }
+    
     template<class T = int>
     void printGraph()
     {
         for (auto& edge : m_edges)
         {
             cout << "Id [" << (T)edge.first << "]: ";
-            for (auto neighbourId : edge.second)
+            for (auto nodeAndDist : edge.second)
             {
-                cout << (T)neighbourId << " ";
+                cout << (T)nodeAndDist.first << " ";
             }
             cout << endl;
         }
@@ -144,8 +179,9 @@ private:
             traverse.emplace_back(q.front());
             q.pop();
             // add nodes for next level
-            for (auto neighbourId : neighbourIds)
+            for (auto neighbourIdAndWeight : neighbourIds)
             {
+                auto neighbourId = neighbourIdAndWeight.first;
                 if (visited.count(neighbourId) == 0)
                 {
                     q.emplace(neighbourId);
@@ -165,8 +201,9 @@ private:
         visited.emplace(nodeId);
         stackHist.emplace(nodeId);
         auto& neighbourIds = m_edges[nodeId];
-        for (auto neighbourId : neighbourIds)
+        for (auto neighbourIdAndWeight : neighbourIds)
         {
+            auto neighbourId = neighbourIdAndWeight.first;
             // any node in the stack history, then cyclic is detected
             if (stackHist.count(neighbourId))
                 return false;
@@ -184,13 +221,15 @@ private:
         if (visited.count(nodeId))
             return true;
         
-        assert(m_edges.count(nodeId));
-        
         visited.emplace(nodeId);
         stackHist.emplace(nodeId);
+        // it has no coming out edge
+        if (m_edges.count(nodeId) == 0)
+            return true;
         auto& neighbourIds = m_edges[nodeId];
-        for (auto neighbourId : neighbourIds)
+        for (auto neighbourIdAndWeight : neighbourIds)
         {
+            auto neighbourId = neighbourIdAndWeight.first;
             // cycle detected
             if (stackHist.count(neighbourId))
                 return false;
@@ -204,23 +243,44 @@ private:
     }
     // hash map for nodes, key is the node id, value is the adjacent ids
     // HACK: switch to map to make sure smaller nodes got traversed first
-    map<int, unordered_set<int>> m_edges;
+    // m_edge also stores the weight of edge
+    map<int, unordered_map<int, int>> m_edges;
     unordered_set<int> m_nodes;
 };
 
 static void Test()
 {
     Graph g;
-    g.addEdge(1, 2);
-    g.addEdge(2, 3);
-    g.addEdge(2, 4);
-    g.addEdge(3, 4);
-    g.addEdge(3, 5);
-    g.addEdge(5, 4);
-    //g.addEdge(5, 1);
-    g.addEdge(6, 7);
+    /*
+     g.addEdge(1, 2);
+     g.addEdge(2, 3);
+     g.addEdge(2, 4);
+     g.addEdge(3, 4);
+     g.addEdge(3, 5);
+     g.addEdge(5, 4);
+     //g.addEdge(5, 1);
+     g.addEdge(6, 7);
+     */
     
-    auto result = g.topologicalSortBFS();
+    //  making above shown graph
+    g.addEdge(0, 1, 4);
+    g.addEdge(0, 7, 8);
+    g.addEdge(1, 2, 8);
+    g.addEdge(1, 7, 11);
+    g.addEdge(2, 3, 7);
+    g.addEdge(2, 8, 2);
+    g.addEdge(2, 5, 4);
+    g.addEdge(3, 4, 9);
+    g.addEdge(3, 5, 14);
+    g.addEdge(4, 5, 10);
+    g.addEdge(5, 6, 2);
+    g.addEdge(6, 7, 1);
+    g.addEdge(6, 8, 6);
+    g.addEdge(7, 8, 7);
+    g.printGraph();
+    g.shortestPath(0);
+    
+    auto result = g.topologicalSort();
     for (auto id : result)
     {
         cout << id << " ";
