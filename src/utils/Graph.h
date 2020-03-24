@@ -23,20 +23,13 @@ namespace Graph
 class Graph
 {
 public:
-    void addVetex(int id)
-    {
-        // if idSource or idDest is new, add them to m_nodes
-        if (m_nodes.count(id) == 0)
-            m_nodes.emplace(id, unordered_set<int>());
-    }
     // add a edge from idSource to idDest - directional
     void addEdge(int idSource, int idDest)
     {
-        // if idSource or idDest is new, add them to m_nodes
-        addVetex(idSource);
-        addVetex(idDest);
+        m_nodes.emplace(idSource);
+        m_nodes.emplace(idDest);
         // add edge
-        m_nodes[idSource].emplace(idDest);
+        m_edges[idSource].emplace(idDest);
     }
     
     // regular bfs is not able to detect cyclic
@@ -46,10 +39,10 @@ public:
         vector<int> result;
         unordered_set<int> visited;
         // start from each node, and do a dfs. skip visited nodes
-        for (auto idNodePair : m_nodes)
+        for (auto node : m_nodes)
         {
-            if (visited.count(idNodePair.first) == 0)
-                bfsUtil(idNodePair.first, visited, result);
+            if (visited.count(node) == 0)
+                bfsUtil(node, visited, result);
         }
         return result;
     }
@@ -60,11 +53,11 @@ public:
         vector<int> result;
         unordered_set<int> visited;
         // start from each node, and do a dfs. skip visited nodes
-        for (auto idNodePair : m_nodes)
+        for (auto node : m_nodes)
         {
             // keep the stack history to detect cyclic
             unordered_set<int> stackHist;
-            if (dfsUtil(idNodePair.first, visited, stackHist, result) == false)
+            if (dfsUtil(node, visited, stackHist, result) == false)
                 return {};
         }
         return result;
@@ -76,11 +69,11 @@ public:
         vector<int> result;
         unordered_set<int> visited;
         // start from each node, and do a dfs. skip visited nodes
-        for (auto idNodePair : m_nodes)
+        for (auto node : m_nodes)
         {
             // keep the stack history to detect cyclic
             unordered_set<int> stackHist;
-            if (topologicalUtil(idNodePair.first, visited, stackHist, result) == false)
+            if (topologicalUtil(node, visited, stackHist, result) == false)
                 return {};
         }
         std::reverse(result.begin(), result.end());
@@ -91,14 +84,13 @@ public:
     {
         // number of prerequisites / dependancies
         unordered_map<int, int> indegrees;
-        for (auto& idNodePair : m_nodes) {
+        for (auto& idNodePair : m_edges) {
             for (auto to : idNodePair.second)
                 indegrees[to]++;
         }
         queue<int> q;
         // for cycles, indegrees are never zero; thus, ignored for search
-        for (auto& idNodePair : m_nodes) {
-            auto cur = idNodePair.first;
+        for (auto cur : m_nodes) {
             // nodes without dependancies
             if (indegrees.count(cur) == 0)
                 q.push(cur);
@@ -109,7 +101,7 @@ public:
             q.pop();
             result.push_back(cur);
             // reduce indegree for all neighbor nodes
-            for (auto nextId : m_nodes[cur])
+            for (auto nextId : m_edges[cur])
             {
                 if (--indegrees[nextId] == 0) {
                     q.push(nextId);
@@ -117,7 +109,7 @@ public:
                 }
             }
         }
-        if (result.size() != m_nodes.size())
+        if (result.size() != m_edges.size())
             result.clear();
         return result;
     }
@@ -125,10 +117,10 @@ public:
     template<class T = int>
     void printGraph()
     {
-        for (auto& idNodePair : m_nodes)
+        for (auto& edge : m_edges)
         {
-            cout << "Id [" << (T)idNodePair.first << "]: ";
-            for (auto neighbourId : idNodePair.second)
+            cout << "Id [" << (T)edge.first << "]: ";
+            for (auto neighbourId : edge.second)
             {
                 cout << (T)neighbourId << " ";
             }
@@ -140,7 +132,7 @@ private:
     // utility function for bfs
     void bfsUtil(int nodeId, unordered_set<int>& visited, vector<int>& traverse)
     {
-        if (m_nodes.count(nodeId) == 0)
+        if (m_edges.count(nodeId) == 0)
             throw std::invalid_argument("The node id doesn't exist in the graph.");
         queue<int> q;
         // visited is updated whenever a node id is pushed into queue
@@ -148,7 +140,7 @@ private:
         visited.emplace(nodeId);
         while (!q.empty())
         {
-            auto& neighbourIds = m_nodes[q.front()];
+            auto& neighbourIds = m_edges[q.front()];
             traverse.emplace_back(q.front());
             q.pop();
             // add nodes for next level
@@ -166,13 +158,13 @@ private:
     // return false if cyclic detected
     bool dfsUtil(int nodeId, unordered_set<int>& visited, unordered_set<int> stackHist, vector<int>& traversed)
     {
-        assert(m_nodes.count(nodeId));
+        assert(m_edges.count(nodeId));
         if (visited.count(nodeId))
             return true;
         traversed.emplace_back(nodeId);
         visited.emplace(nodeId);
         stackHist.emplace(nodeId);
-        auto& neighbourIds = m_nodes[nodeId];
+        auto& neighbourIds = m_edges[nodeId];
         for (auto neighbourId : neighbourIds)
         {
             // any node in the stack history, then cyclic is detected
@@ -192,11 +184,11 @@ private:
         if (visited.count(nodeId))
             return true;
         
-        assert(m_nodes.count(nodeId));
+        assert(m_edges.count(nodeId));
         
         visited.emplace(nodeId);
         stackHist.emplace(nodeId);
-        auto& neighbourIds = m_nodes[nodeId];
+        auto& neighbourIds = m_edges[nodeId];
         for (auto neighbourId : neighbourIds)
         {
             // cycle detected
@@ -212,10 +204,11 @@ private:
     }
     // hash map for nodes, key is the node id, value is the adjacent ids
     // HACK: switch to map to make sure smaller nodes got traversed first
-    map<int, unordered_set<int>> m_nodes;
+    map<int, unordered_set<int>> m_edges;
+    unordered_set<int> m_nodes;
 };
 
-static bool Test()
+static void Test()
 {
     Graph g;
     g.addEdge(1, 2);
@@ -233,7 +226,5 @@ static bool Test()
         cout << id << " ";
     }
     cout << endl;
-    
-    return false;
 }
 }
